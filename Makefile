@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/05 16:42:33 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/05 17:46:12 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ STL_NAME			:=		stl_containers
 # Name directory
 PATH_SRC			:=		src
 PATH_BUILD			:=		build
+PATH_TESTING		:=		testing
 
 # List of sources
 SRCS				:=		$(shell find $(PATH_SRC) -name *.cpp)
@@ -47,6 +48,8 @@ _GREEN				:=		\e[38;5;46m
 _RESET				:=		\e[0m
 _INFO				:=		[$(_YELLOW)INFO$(_RESET)]
 _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
+SEED				:=		$(shell echo $$RANDOM)
+IS_FILE_EMPTY		:=
 
 # General functions
 all:						init $(FT_NAME) $(STL_NAME)
@@ -70,13 +73,23 @@ bonus:						all
 
 clean:
 							@ $(RM) $(PATH_BUILD)
-							@ printf "$(_INFO) Deleted files and directory\n"
+							@ $(RM) $(PATH_TESTING)
+							@ printf "$(_INFO) Deleted files and directories\n"
 
 fclean:						clean
 							@ $(RM) $(FT_NAME) $(STL_NAME)
 							@ printf "$(_INFO) Deleted binaries\n"
 
 re:							fclean all
+
+test:						debug
+							@ mkdir -p $(PATH_TESTING)
+							@ ./$(FT_NAME) $(SEED) > $(PATH_TESTING)/$(FT_NAME).log
+							@ ./$(STL_NAME) $(SEED) > $(PATH_TESTING)/$(STL_NAME).log
+							@ diff $(PATH_TESTING)/$(FT_NAME).log $(PATH_TESTING)/$(STL_NAME).log > ./$(PATH_TESTING)/diff.log
+							@ ./test.sh
+							@ cat $(PATH_TESTING)/diff.log
+
 
 # Debugging functions
 

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/05 16:38:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/05 16:58:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ struct Buffer
 
 int main(int argc, char* argv[]) {
 	(void)argc;
-	(void)argv;
+	//(void)argv;
+	std::cout << argv[1] << std::endl;
 	//if (argc != 2)
 	//{
 		//std::cerr << "Usage: ./test seed" << std::endl;

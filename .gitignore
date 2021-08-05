@@ -1,0 +1,8 @@
+*.txt
+*.swp
+*.o
+*.a
+*.sh
+a.out
+build/
+ft_containers

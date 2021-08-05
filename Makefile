@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/05 17:46:12 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/05 18:46:51 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,12 @@ RM					:=		rm -rf
 # Color Code and template code
 _YELLOW				:=		\e[38;5;184m
 _GREEN				:=		\e[38;5;46m
+_RED				:=		\e[38;5;9m
 _RESET				:=		\e[0m
 _INFO				:=		[$(_YELLOW)INFO$(_RESET)]
 _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
+_FAILURE			:=		[$(_RED)FAILURE$(_RESET)]
 SEED				:=		$(shell echo $$RANDOM)
-IS_FILE_EMPTY		:=
 
 # General functions
 all:						init $(FT_NAME) $(STL_NAME)
@@ -87,7 +88,12 @@ test:						debug
 							@ ./$(FT_NAME) $(SEED) > $(PATH_TESTING)/$(FT_NAME).log
 							@ ./$(STL_NAME) $(SEED) > $(PATH_TESTING)/$(STL_NAME).log
 							@ diff $(PATH_TESTING)/$(FT_NAME).log $(PATH_TESTING)/$(STL_NAME).log > ./$(PATH_TESTING)/diff.log
-							@ ./test.sh
+							@ if [ -a $(PATH_TESTING)/diff.log ]; \
+							then \
+								printf "$(_SUCCESS) Test successful\n"; \
+							else \
+								printf "$(_FAILURE) Failed test. Check the logs in /testing/diff.log\n"; \
+							fi; 
 							@ cat $(PATH_TESTING)/diff.log
 
 

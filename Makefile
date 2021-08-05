@@ -6,12 +6,13 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/05 11:08:19 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/05 16:42:33 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program built
-NAME				:=		ft_containers
+FT_NAME				:=		ft_containers
+STL_NAME			:=		stl_containers
 
 # Name directory
 PATH_SRC			:=		src
@@ -48,19 +49,22 @@ _INFO				:=		[$(_YELLOW)INFO$(_RESET)]
 _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
 
 # General functions
-all:						init $(NAME)
+all:						init $(FT_NAME) $(STL_NAME)
 							@ printf "$(_SUCCESS) Compilation done\n"
 
 init:
-							@ printf "$(_INFO) Initialize $(NAME)\n"
+							@ printf "$(_INFO) Initialize $(FT_NAME)\n"
+							@ printf "$(_INFO) Initialize $(STL_NAME)\n"
 
-$(NAME):					$(OBJS)
-							$(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT)
+$(FT_NAME):					$(OBJS)
+							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT) -D IS_TEST=0
 
+$(STL_NAME):				$(OBJS)
+							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT) -D IS_TEST=1
 
 $(PATH_BUILD)/%.o:			%.cpp
 							@ mkdir -p $(dir $@)
-							$(CC) $(FLAGS_COMP) -c $< -o $@
+							@ $(CC) $(FLAGS_COMP) -c $< -o $@
 
 bonus:						all
 
@@ -69,7 +73,8 @@ clean:
 							@ printf "$(_INFO) Deleted files and directory\n"
 
 fclean:						clean
-							@ $(RM) $(NAME)
+							@ $(RM) $(FT_NAME) $(STL_NAME)
+							@ printf "$(_INFO) Deleted binaries\n"
 
 re:							fclean all
 

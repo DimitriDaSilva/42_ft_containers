@@ -5,4 +5,5 @@
 *.sh
 a.out
 build/
+class_template/
 ft_containers

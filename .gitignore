@@ -6,6 +6,6 @@
 a.out
 build/
 class_template/
-testing/
+logs/
 ft_containers
 stl_containers

@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Vector.hpp                                      :+:      :+:    :+:   */
+/*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/07/27 21:33:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/08 14:32:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include "main.hpp"
 # include <iostream>
 # include <string>
 
-class Vector {
+namespace ft {
 
-	public:
+	template<class T, class U = std::allocator<T> >
+	class vector {
+
+		public:
 /******************************************************************************/
 /*                   	        PUBLIC DATA                                   */
 /******************************************************************************/
@@ -29,21 +33,21 @@ class Vector {
 /******************************************************************************/
 
 /*                                Constructors                                */
-		// Default
-		Vector(void);
-		// Copy
-		Vector(Vector const& other);
+			// Default
+			vector(void);
+			// Copy
+			vector(vector const& other);
 
 /*                                Destructors                                 */
-		// Default
-		virtual ~Vector(void);
+			// Default
+			virtual ~vector(void);
 
 /******************************************************************************/
 /*                   	   OVERLOADING OPERATORS                              */
 /******************************************************************************/
 
 /*                                Assignement                                 */
-		Vector& operator=(Vector const& other);
+			vector& operator=(vector const& other);
 
 /******************************************************************************/
 /*                   	    GETTERS & SETTERS                                 */
@@ -58,26 +62,31 @@ class Vector {
 /*                               EXCEPTIONS 								  */
 /******************************************************************************/
 
-		class NameException : public std::exception {
-			public:
-				const char* what(void) const throw ();
-		};
+			class NameException : public std::exception {
+				public:
+					const char* what(void) const throw ();
+			};
 
-	protected:
+		protected:
 /******************************************************************************/
 /*                   	       PROTECTED DATA                                 */
 /******************************************************************************/
 
 
-	private:
+		private:
 /******************************************************************************/
 /*                   	        PRIVATE DATA                                  */
 /******************************************************************************/
+			size_t	size_type;
+			std::ptrdiff_t difference_type;
 
-};
+
+	};
 
 /******************************************************************************/
 /*                          NON-CLASS FUNCTIONS		                          */
 /******************************************************************************/
+
+}
 
 #endif

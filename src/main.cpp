@@ -6,73 +6,29 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/05 16:58:34 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/08 15:11:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <string>
-#include <deque>
-#if IS_TEST
-	#include <map>
-	#include <stack>
-	#include <vector>
-	namespace ft = std;
-#else
-	//#include "Map.hpp"
-	//#include "Stack.hpp"
-	#include "Vector.hpp"
-#endif
-
-#include <stdlib.h>
-
-#define MAX_RAM 4294967296
-#define BUFFER_SIZE 4096
-struct Buffer
-{
-	int idx;
-	char buff[BUFFER_SIZE];
-};
-
-#define COUNT (MAX_RAM / (int)sizeof(Buffer))
-
-//template<typename T>
-//class MutantStack : public ft::stack<T>
-//{
-//public:
-	//MutantStack() {}
-	//MutantStack(const MutantStack<T>& src) { *this = src; }
-	//MutantStack<T>& operator=(const MutantStack<T>& rhs) 
-	//{
-		//this->c = rhs.c;
-		//return *this;
-	//}
-	//~MutantStack() {}
-
-	//typedef typename ft::stack<T>::container_type::iterator iterator;
-
-	//iterator begin() { return this->c.begin(); }
-	//iterator end() { return this->c.end(); }
-//};
+#include "main.hpp"
 
 int main(int argc, char* argv[]) {
-	(void)argc;
-	//(void)argv;
-	std::cout << argv[1] << std::endl;
-	//if (argc != 2)
-	//{
-		//std::cerr << "Usage: ./test seed" << std::endl;
-		//std::cerr << "Provide a seed please" << std::endl;
-		//std::cerr << "Count value:" << COUNT << std::endl;
-		//return 1;
-	//}
-	//const int seed = atoi(argv[1]);
-	//srand(seed);
+	if (argc != 2)
+	{
+		std::cerr << "Usage: ./test seed" << std::endl;
+		std::cerr << "Provide a seed please" << std::endl;
+		std::cerr << "Count value:" << COUNT << std::endl;
+		return 1;
+	}
+	const int seed = atoi(argv[1]);
+	srand(seed);
 
-	//ft::vector<std::string> vector_str;
-	//ft::vector<int> vector_int;
+	usleep(3 * 1000 * 1000);
+
+	ft::vector<std::string> vector_str;
+	ft::vector<int> vector_int;
 	//ft::stack<int> stack_int;
-	//ft::vector<Buffer> vector_buffer;
+	ft::vector<Buffer> vector_buffer;
 	//ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
 	//ft::map<int, int> map_int;
 

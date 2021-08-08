@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/05 18:46:51 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/08 15:49:27 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ STL_NAME			:=		stl_containers
 # Name directory
 PATH_SRC			:=		src
 PATH_BUILD			:=		build
-PATH_TESTING		:=		testing
+PATH_LOGS		:=		logs
 
 # List of sources
 SRCS				:=		$(shell find $(PATH_SRC) -name *.cpp)
@@ -74,7 +74,7 @@ bonus:						all
 
 clean:
 							@ $(RM) $(PATH_BUILD)
-							@ $(RM) $(PATH_TESTING)
+							@ $(RM) $(PATH_LOGS)
 							@ printf "$(_INFO) Deleted files and directories\n"
 
 fclean:						clean
@@ -84,18 +84,24 @@ fclean:						clean
 re:							fclean all
 
 test:						debug
-							@ mkdir -p $(PATH_TESTING)
-							@ ./$(FT_NAME) $(SEED) > $(PATH_TESTING)/$(FT_NAME).log
-							@ ./$(STL_NAME) $(SEED) > $(PATH_TESTING)/$(STL_NAME).log
-							@ diff $(PATH_TESTING)/$(FT_NAME).log $(PATH_TESTING)/$(STL_NAME).log > ./$(PATH_TESTING)/diff.log
-							@ if [ -a $(PATH_TESTING)/diff.log ]; \
+							@ printf "$(_INFO) Starting test\n"
+							@ mkdir -p $(PATH_LOGS)
+							@ /usr/bin/time -o $(PATH_LOGS)/$(FT_NAME).time ./$(FT_NAME) $(SEED) > $(PATH_LOGS)/$(FT_NAME).log
+							@ /usr/bin/time -o $(PATH_LOGS)/$(STL_NAME).time ./$(STL_NAME) $(SEED) > $(PATH_LOGS)/$(STL_NAME).log
+							@ diff $(PATH_LOGS)/$(FT_NAME).log $(PATH_LOGS)/$(STL_NAME).log > ./$(PATH_LOGS)/diff.log
+							@ if [ -a $(PATH_LOGS)/diff.log ]; \
 							then \
 								printf "$(_SUCCESS) Test successful\n"; \
 							else \
-								printf "$(_FAILURE) Failed test. Check the logs in /testing/diff.log\n"; \
+								printf "$(_FAILURE) Failed test. Check the logs\n"; \
+								cat $(PATH_LOGS)/diff.log; \
 							fi; 
-							@ cat $(PATH_TESTING)/diff.log
-
+							@ printf "$(_INFO) Time efficiency:\n"
+							@ printf "ft_containers:  "
+							@ cat $(PATH_LOGS)/$(FT_NAME).time | grep 'elapsed' | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
+							@ printf "stl_containers: "
+							@ cat $(PATH_LOGS)/$(STL_NAME).time | grep elapsed | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
+							@ rm $(PATH_LOGS)/*.time
 
 # Debugging functions
 

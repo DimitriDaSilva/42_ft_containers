@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/08 14:54:57 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/09 10:32:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if IS_TEST
+#ifdef IS_TEST
 	#include <map>
 	#include <stack>
 	#include <vector>

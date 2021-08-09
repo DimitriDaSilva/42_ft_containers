@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/08 15:49:27 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/09 11:18:35 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ STL_NAME			:=		stl_containers
 # Name directory
 PATH_SRC			:=		src
 PATH_BUILD			:=		build
-PATH_LOGS		:=		logs
+PATH_LOGS			:=		logs
 
 # List of sources
 SRCS				:=		$(shell find $(PATH_SRC) -name *.cpp)
@@ -41,6 +41,7 @@ FLAG_MEM_LEAK		:= 		-fsanitize=address
 
 # Others commands
 RM					:=		rm -rf
+SEED				:=		$(shell echo $$RANDOM)
 
 # Color Code and template code
 _YELLOW				:=		\e[38;5;184m
@@ -50,7 +51,6 @@ _RESET				:=		\e[0m
 _INFO				:=		[$(_YELLOW)INFO$(_RESET)]
 _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
 _FAILURE			:=		[$(_RED)FAILURE$(_RESET)]
-SEED				:=		$(shell echo $$RANDOM)
 
 # General functions
 all:						init $(FT_NAME) $(STL_NAME)
@@ -61,10 +61,10 @@ init:
 							@ printf "$(_INFO) Initialize $(STL_NAME)\n"
 
 $(FT_NAME):					$(OBJS)
-							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT) -D IS_TEST=0
+							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS)
 
-$(STL_NAME):				$(OBJS)
-							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS) $(FLAG_LIBFT) -D IS_TEST=1
+$(STL_NAME):
+							@ $(CC) $(FLAG_WARNING) -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
 
 $(PATH_BUILD)/%.o:			%.cpp
 							@ mkdir -p $(dir $@)
@@ -83,25 +83,25 @@ fclean:						clean
 
 re:							fclean all
 
-test:						debug
+test:						re
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
 							@ /usr/bin/time -o $(PATH_LOGS)/$(FT_NAME).time ./$(FT_NAME) $(SEED) > $(PATH_LOGS)/$(FT_NAME).log
 							@ /usr/bin/time -o $(PATH_LOGS)/$(STL_NAME).time ./$(STL_NAME) $(SEED) > $(PATH_LOGS)/$(STL_NAME).log
-							@ diff $(PATH_LOGS)/$(FT_NAME).log $(PATH_LOGS)/$(STL_NAME).log > ./$(PATH_LOGS)/diff.log
-							@ if [ -a $(PATH_LOGS)/diff.log ]; \
+							@ diff $(PATH_LOGS)/$(FT_NAME).log $(PATH_LOGS)/$(STL_NAME).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
+							@ if [ -s $(PATH_LOGS)/diff.log ]; \
 							then \
-								printf "$(_SUCCESS) Test successful\n"; \
-							else \
-								printf "$(_FAILURE) Failed test. Check the logs\n"; \
+								printf "$(_FAILURE) Failed test. Check the logs:\n"; \
 								cat $(PATH_LOGS)/diff.log; \
+							else \
+								printf "$(_SUCCESS) Test successful\n"; \
 							fi; 
 							@ printf "$(_INFO) Time efficiency:\n"
 							@ printf "ft_containers:  "
 							@ cat $(PATH_LOGS)/$(FT_NAME).time | grep 'elapsed' | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
 							@ printf "stl_containers: "
 							@ cat $(PATH_LOGS)/$(STL_NAME).time | grep elapsed | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
-							@ rm $(PATH_LOGS)/*.time
+							@ rm -f $(PATH_LOGS)/*.time $(PATH_LOGS)/log.diff
 
 # Debugging functions
 

@@ -6,24 +6,24 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/08 15:11:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/09 12:21:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.hpp"
 
-int main(int argc, char* argv[]) {
+int test_subject(int argc, char* argv[]) {
+	std::cout << "*** test_subject ***" << std::endl;
+
 	if (argc != 2)
 	{
 		std::cerr << "Usage: ./test seed" << std::endl;
 		std::cerr << "Provide a seed please" << std::endl;
 		std::cerr << "Count value:" << COUNT << std::endl;
-		return 1;
+		return EXIT_FAILURE;
 	}
 	const int seed = atoi(argv[1]);
 	srand(seed);
-
-	usleep(3 * 1000 * 1000);
 
 	ft::vector<std::string> vector_str;
 	ft::vector<int> vector_int;
@@ -82,5 +82,55 @@ int main(int argc, char* argv[]) {
 		//std::cout << *it;
 	//}
 	//std::cout << std::endl;
-	return (0);
+	return EXIT_SUCCESS;
+}
+
+void test_vector_capacity(void) {
+	std::cout << "*** test_vector_capacity ***" << std::endl;
+
+	ft::vector<int> vector;
+
+	std::cout << vector.size() << std::endl;
+	std::cout << vector.empty() << std::endl;
+
+	vector.push_back(4);
+	vector.push_back(2);
+
+	std::cout << vector.size() << std::endl;
+	std::cout << vector.empty() << std::endl;
+	std::cout << vector.capacity() << std::endl;
+	std::cout << vector.max_size() << std::endl;
+
+	vector.resize(1);
+
+	std::cout << vector.size() << std::endl;
+	std::cout << vector.capacity() << std::endl;
+
+	for (int i = 0; i < 50; i++) {
+		vector.push_back(i);
+	}
+
+	std::cout << vector.size() << std::endl;
+	std::cout << vector.capacity() << std::endl;
+
+	vector.resize(20);
+	vector.reserve(20);
+	vector.reserve(0);
+	try {
+		vector.reserve(-1);
+	} catch (std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
+
+	std::cout << vector.size() << std::endl;
+	std::cout << vector.capacity() << std::endl;
+}
+
+int main(int argc, char* argv[]) {
+	if (test_subject(argc, argv) != EXIT_SUCCESS) {
+		return (EXIT_FAILURE);
+	}
+	test_vector_capacity();
+
+	return (EXIT_SUCCESS);
 }

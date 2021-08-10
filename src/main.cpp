@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/09 12:21:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/09 15:40:44 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,9 @@ void test_vector_capacity(void) {
 	vector.resize(20);
 	vector.reserve(20);
 	vector.reserve(0);
+
 	try {
-		vector.reserve(-1);
+		vector.reserve(vector.max_size() + 1);
 	} catch (std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}

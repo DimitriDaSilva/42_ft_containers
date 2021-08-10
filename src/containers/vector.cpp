@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:05 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/09 12:19:09 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/10 10:36:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ bool ft::vector<T, A>::empty(void) const {
 template<class T, class A>
 void ft::vector<T, A>::reserve(size_type n) {
 	if (n > _max_size) {
-		throw std::length_error("Length error");
+		throw std::length_error("vector::reserve");
 	} else if (n > _capacity) {
 		value_type* tmp = _allocator.allocate(n);
 		for (size_type i = 0; i < _size; i++) {

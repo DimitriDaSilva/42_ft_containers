@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/09 12:19:09 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/10 11:08:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,35 @@
 # define VECTOR_HPP
 
 # include "main.hpp"
+# include "RandomAccessIterator.hpp"
 # include <iostream>
 # include <string>
 # include <limits>
+# include <iterator>
 # include <stdexcept> // std::lenght_error
 
 namespace ft {
 
 	template<class T, class A = std::allocator<T> >
 	class vector {
-
 		public:
 /******************************************************************************/
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
+			typedef T value_type; 
 			typedef A allocator_type;
-			typedef typename A::value_type value_type; 
 			typedef typename A::reference reference;
 			typedef typename A::const_reference const_reference;
+			typedef typename A::pointer pointer;
+			typedef typename A::const_pointer const_pointer;
 			typedef typename A::difference_type difference_type;
 			typedef typename A::size_type size_type;
+
+			typedef typename ft::RandomAccessIterator<value_type> iterator;
+			typedef typename ft::RandomAccessIterator<const value_type> const_iterator;
+			typedef std::reverse_iterator<iterator> reverse_iterator;
+			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */

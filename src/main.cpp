@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/09 15:40:44 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/11 19:10:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int test_subject(int argc, char* argv[]) {
 	//ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
 	//ft::map<int, int> map_int;
 
-	//for (int i = 0; i < COUNT; i++)
-	//{
-		//vector_buffer.push_back(Buffer());
-	//}
+	for (int i = 0; i < COUNT; i++)
+	{
+		vector_buffer.push_back(Buffer());
+	}
 
 	//for (int i = 0; i < COUNT; i++)
 	//{
@@ -127,11 +127,43 @@ void test_vector_capacity(void) {
 	std::cout << vector.capacity() << std::endl;
 }
 
+void test_vector_iterators(void) {
+	std::cout << "*** test_vector_iterators ***" << std::endl;
+
+	typedef ft::vector<int>::iterator iterator;
+	typedef ft::vector<int>::const_iterator const_iterator;
+
+	ft::vector<int> vec;
+
+	iterator begin;
+	iterator end;
+
+	begin = vec.begin();
+	end = vec.end();
+
+	for (int i = 0; i < 10; i++) {
+		vec.push_back(rand() % 100);
+	}
+
+	for (iterator it = vec.begin(); it != vec.end(); it++) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	const_iterator cbegin = vec.begin();
+	(void)cbegin;
+	//for (const_iterator it = vec.begin(); it != vec.end(); it++) {
+		//std::cout << *it << " ";
+	//}
+	std::cout << std::endl;
+}
+
 int main(int argc, char* argv[]) {
 	if (test_subject(argc, argv) != EXIT_SUCCESS) {
 		return (EXIT_FAILURE);
 	}
 	test_vector_capacity();
+	//test_vector_iterators();
 
 	return (EXIT_SUCCESS);
 }

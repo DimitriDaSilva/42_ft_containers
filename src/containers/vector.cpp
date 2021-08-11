@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:05 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/10 10:36:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/11 10:27:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ ft::vector<T, A>::~vector(void) {
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
 
+/*                                 Iterators                                  */
+template<class T, class A>
+typename ft::vector<T, A>::iterator ft::vector<T, A>::begin(void) const {
+	return RandomAccessIterator<T>(_ptr);
+}
 /*                                 Capacity                                   */
 
 template<class T, class A>

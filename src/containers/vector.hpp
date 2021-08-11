@@ -6,15 +6,15 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/10 11:08:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/11 10:30:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include "main.hpp"
-# include "RandomAccessIterator.hpp"
+# include "../main.hpp"
+# include "../utils/RandomAccessIterator.hpp"
 # include <iostream>
 # include <string>
 # include <limits>
@@ -40,7 +40,7 @@ namespace ft {
 			typedef typename A::size_type size_type;
 
 			typedef typename ft::RandomAccessIterator<value_type> iterator;
-			typedef typename ft::RandomAccessIterator<const value_type> const_iterator;
+			typedef typename ft::RandomAccessIterator<value_type const> const_iterator;
 			typedef std::reverse_iterator<iterator> reverse_iterator;
 			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -64,6 +64,11 @@ namespace ft {
 /******************************************************************************/
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
+
+/*                                 Iterators                                  */
+
+			iterator begin(void);
+			const_iterator begin(void) const;
 
 /*                                  Capacity                                  */
 			size_type size(void) const;

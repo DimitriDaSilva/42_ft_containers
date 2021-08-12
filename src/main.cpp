@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 18:20:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 18:41:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int test_subject(int argc, char* argv[]) {
 		//std::cout << *it;
 	//}
 	//std::cout << std::endl;
+	std::cout << std::endl;
 	return EXIT_SUCCESS;
 }
 
@@ -125,6 +126,8 @@ void test_vector_capacity(void) {
 
 	std::cout << vector.size() << std::endl;
 	std::cout << vector.capacity() << std::endl;
+
+	std::cout << std::endl;
 }
 
 void test_vector_iterators(void) {
@@ -164,34 +167,56 @@ void test_vector_iterators(void) {
 	std::cout << std::endl;
 }
 
-void test_utils_iterator_traits(void) {
+template<
+	typename it,
+	typename diff_type,
+	typename value_types,
+	typename ptr,
+	typename ref,
+	typename cat
+	>
+void test_single_iterator_traits(void) {
+	if (!(typeid(typename it::difference_type) == typeid(diff_type))) {
+		std::cout << "difference_type invalid" << std::endl;
+	} else if (!(typeid(typename it::value_type) == typeid(value_types))) {
+		std::cout << "value_type invalid" << std::endl;
+	} else if (!(typeid(typename it::pointer) == typeid(ptr))) {
+		std::cout << "pointer invalid" << std::endl;
+	} else if (!(typeid(typename it::reference) == typeid(ref))) {
+		std::cout << "reference invalid" << std::endl;
+	} else if (!(typeid(typename it::iterator_category) == typeid(cat))) {
+		std::cout << "iterator_category invalid" << std::endl;
+	} else {
+		std::cout << "all valid" << std::endl;
+	}
+}
+
+void test_iterator_traits(void) {
 	std::cout << "*** test_utils_iterator_traits ***" << std::endl;
 
-	typedef ft::iterator_traits<ft::vector<int>::iterator > t1;
+	test_single_iterator_traits<
+		ft::iterator_traits<ft::vector<int>::iterator>,
+		std::ptrdiff_t, 
+		int,
+		int*,
+		int&,
+		std::random_access_iterator_tag>();
+	test_single_iterator_traits<
+		ft::iterator_traits<ft::vector<std::string>::iterator>,
+		std::ptrdiff_t, 
+		std::string,
+		std::string*,
+		std::string&,
+		std::random_access_iterator_tag>();
+	test_single_iterator_traits<
+		ft::iterator_traits<ft::vector<char>::iterator>,
+		std::ptrdiff_t, 
+		char,
+		char*,
+		char&,
+		std::random_access_iterator_tag>();
 
-	if (typeid(t1::iterator_category) == typeid(std::random_access_iterator_tag)) {
-		std::cout << "ft::vector<int> is a random-access iterator" << std::endl;
-	}
-
-	if (typeid(t1::value_type) == typeid(int)) {
-		std::cout << "ft::vector<int> has a value_type of int" << std::endl;
-	}
-
-	typedef ft::iterator_traits<ft::vector<int>::const_iterator > t2;
-
-	if (typeid(t2::iterator_category) == typeid(std::random_access_iterator_tag)) {
-		std::cout << "ft::vector<int> is a random-access iterator" << std::endl;
-	}
-
-	if (typeid(t2::value_type) == typeid(const int)) {
-		std::cout << "ft::vector<int> has a value_type of const int" << std::endl;
-	}
-
-	//if (std::is_same<t2::value_type, const int *>::value) {
-		//std::cout << "t2 has pointer const int *" << std::endl;
-	//} else {
-		//std::cout << "t2 has pointer int *" << std::endl;
-	//}
+	std::cout << std::endl;
 }
 
 template<typename T>
@@ -210,7 +235,7 @@ void test_single_is_integral(std::string const& type_tested) {
 	}
 }
 
-void test_utils_is_integral(void) {
+void test_is_integral(void) {
 	std::cout << "*** test_utils_is_integral ***" << std::endl;
 
 	// correct ones
@@ -231,6 +256,8 @@ void test_utils_is_integral(void) {
 	test_single_is_integral<int *>("int *");
 	test_single_is_integral<std::string>("std::string");
 	test_single_is_integral<char *>("char *");
+
+	std::cout << std::endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -239,8 +266,8 @@ int main(int argc, char* argv[]) {
 	}
 	test_vector_capacity();
 	test_vector_iterators();
-	test_utils_iterator_traits();
-	test_utils_is_integral();
+	test_iterator_traits();
+	test_is_integral();
 
 	return (EXIT_SUCCESS);
 }

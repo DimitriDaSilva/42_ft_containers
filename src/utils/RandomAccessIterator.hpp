@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/11 19:10:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:15:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@
 # include <iostream>
 # include <string>
 # include <iterator>
-
-//namespace ft {
-	//template<class T, class A> class vector;
-//}
-
-//namespace ft {
-	//template<class T> class RandomAccessIterator;
-//}
 
 namespace ft {
 

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/11 19:10:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:09:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,12 +150,48 @@ void test_vector_iterators(void) {
 	}
 	std::cout << std::endl;
 
-	const_iterator cbegin = vec.begin();
-	(void)cbegin;
-	//for (const_iterator it = vec.begin(); it != vec.end(); it++) {
+	ft::vector<int> const_vec;
+
+	for (int i = 0; i < 10; i++) {
+		const_vec.push_back(rand() % 100);
+	}
+
+	const_iterator cbegin = const_vec.begin();
+
+	//for (const_iterator it = const_vec.begin(); it != const_vec.end(); it++) {
 		//std::cout << *it << " ";
 	//}
 	std::cout << std::endl;
+}
+
+void test_utils_iterator_traits(void) {
+	std::cout << "*** test_utils_iterator_traits ***" << std::endl;
+
+	typedef ft::iterator_traits<ft::vector<int>::iterator > t1;
+
+	if (typeid(t1::iterator_category) == typeid(std::random_access_iterator_tag)) {
+		std::cout << "ft::vector<int> is a random-access iterator" << std::endl;
+	}
+
+	if (typeid(t1::value_type) == typeid(int)) {
+		std::cout << "ft::vector<int> has a value_type of int" << std::endl;
+	}
+
+	typedef ft::iterator_traits<ft::vector<int>::const_iterator > t2;
+
+	if (typeid(t2::iterator_category) == typeid(std::random_access_iterator_tag)) {
+		std::cout << "ft::vector<int> is a random-access iterator" << std::endl;
+	}
+
+	if (typeid(t2::value_type) == typeid(const int)) {
+		std::cout << "ft::vector<int> has a value_type of const int" << std::endl;
+	}
+
+	if (std::is_same<t2::value_type, const int *>::value) {
+		std::cout << "t2 has pointer const int *" << std::endl;
+	} else {
+		std::cout << "t2 has pointer int *" << std::endl;
+	}
 }
 
 int main(int argc, char* argv[]) {
@@ -163,7 +199,8 @@ int main(int argc, char* argv[]) {
 		return (EXIT_FAILURE);
 	}
 	test_vector_capacity();
-	//test_vector_iterators();
+	test_vector_iterators();
+	test_utils_iterator_traits();
 
 	return (EXIT_SUCCESS);
 }

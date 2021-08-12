@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/11 18:50:03 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/12 11:40:39 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
 CC					:=		clang++
 
 # Flags - compilation
-FLAG_WARNING		:=		-Wall -Wextra -Werror -std=c++98
+FLAG_WARNING		:=		-Wall -Wextra -Werror #-std=c++98
 FLAG_INC			:= 		$(addprefix -I, $(INC_DIRS))
 FLAG_MAKEFILE		:=		-MMD -MP
 FLAG_DEBUG			:= 		-g
@@ -63,7 +63,7 @@ init:
 $(FT_NAME):					$(OBJS)
 							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS)
 
-$(STL_NAME):
+$(STL_NAME):				fclean
 							@ $(CC) $(FLAG_WARNING) -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
 
 $(PATH_BUILD)/%.o:			%.cpp

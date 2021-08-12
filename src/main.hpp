@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/11 18:49:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 11:51:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 
 #include <iostream>
 #include <string>
+#include <typeinfo>
 #include <deque>
+#include <type_traits>
 #ifdef IS_TEST
 	#include <map>
 	#include <stack>
 	#include <vector>
+	#include <iterator>
 	namespace ft = std;
 #else
 	//#include "map.hpp"
 	//#include "stack.hpp"
 	#include "containers/vector.hpp"
+	#include "utils/iterator_traits.hpp"
 #endif
 
 #include <stdlib.h>

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 17:07:22 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 18:20:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,57 +194,43 @@ void test_utils_iterator_traits(void) {
 	//}
 }
 
+template<typename T>
+void test_single_is_integral(std::string const& type_tested) {
+	int value = ft::is_integral<T>::value;
+	typedef typename ft::is_integral<T>::value_type value_type;
+	typedef typename ft::is_integral<T>::type type;
+
+	if (value
+			&& typeid(value_type) == typeid(bool)
+			&& typeid(type) == typeid(ft::true_type)
+			&& ft::is_integral<T>() == value) {
+		std::cout << type_tested << " is integral" << std::endl;
+	} else {
+		std::cout << type_tested << " is not integral" << std::endl;
+	}
+}
+
 void test_utils_is_integral(void) {
 	std::cout << "*** test_utils_is_integral ***" << std::endl;
 
 	// correct ones
-	if (ft::is_integral<bool>::value) {
-		std::cout << "bool is integral" << std::endl;
-	}
-	if (ft::is_integral<char>::value) {
-		std::cout << "char is integral" << std::endl;
-	}
-	if (ft::is_integral<wchar_t>::value) {
-		std::cout << "wchar_t is integral" << std::endl;
-	}
-	if (ft::is_integral<signed char>::value) {
-		std::cout << "signed char is integral" << std::endl;
-	}
-	if (ft::is_integral<short int>::value) {
-		std::cout << "short int is integral" << std::endl;
-	}
-	if (ft::is_integral<long int>::value) {
-		std::cout << "long int is integral" << std::endl;
-	}
-	if (ft::is_integral<long long int>::value) {
-		std::cout << "long long int is integral" << std::endl;
-	}
-	if (ft::is_integral<unsigned char>::value) {
-		std::cout << "unsigned char is integral" << std::endl;
-	}
-	if (ft::is_integral<unsigned short int>::value) {
-		std::cout << "unsigned short int is integral" << std::endl;
-	}
-	if (ft::is_integral<unsigned int>::value) {
-		std::cout << "unsigned int is integral" << std::endl;
-	}
-	if (ft::is_integral<unsigned long int>::value) {
-		std::cout << "unsigned long int is integral" << std::endl;
-	}
-	if (ft::is_integral<unsigned long long int>::value) {
-		std::cout << "unsigned long long int is integral" << std::endl;
-	}
+	test_single_is_integral<bool>("bool");
+	test_single_is_integral<char>("char");
+	test_single_is_integral<wchar_t>("wchar_t");
+	test_single_is_integral<signed char>("signed char");
+	test_single_is_integral<short int>("short int");
+	test_single_is_integral<long int>("long int");
+	test_single_is_integral<long long int>("long long int");
+	test_single_is_integral<unsigned char>("unsigned char");
+	test_single_is_integral<unsigned short int>("unsigned short int");
+	test_single_is_integral<unsigned int>("unsigned int");
+	test_single_is_integral<unsigned long int>("unsigned long int");
+	test_single_is_integral<unsigned long long int>("unsigned long long int");
 
 	// wrong ones
-	if (!ft::is_integral<int *>::value) {
-		std::cout << "int * is not integral" << std::endl;
-	}
-	if (!ft::is_integral<std::string>::value) {
-		std::cout << "std::string is not integral" << std::endl;
-	}
-	if (!ft::is_integral<char *>::value) {
-		std::cout << "char * is not integral" << std::endl;
-	}
+	test_single_is_integral<int *>("int *");
+	test_single_is_integral<std::string>("std::string");
+	test_single_is_integral<char *>("char *");
 }
 
 int main(int argc, char* argv[]) {

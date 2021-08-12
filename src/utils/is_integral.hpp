@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 15:29:24 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 17:26:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 18:19:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ namespace ft {
 		typedef T value_type;
 		typedef integral_constant<T,v> type;
 
-		// Member functions
-		operator T() const {return v;}
-
 		// Member constants
-		static const T value = v;
+		static const value_type value = v;
+
+		// Member functions
+		operator value_type() const {return value;}
 	};
 
 	// true_type and false_type are initializations of integral_constant.

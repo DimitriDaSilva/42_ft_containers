@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/12 11:40:39 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/12 17:13:31 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,13 @@ INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
 CC					:=		clang++
 
 # Flags - compilation
-FLAG_WARNING		:=		-Wall -Wextra -Werror #-std=c++98
+FLAG_WARNING		:=		-Wall -Wextra -Werror
+FLAG_CPP_VERSION	:=		-std=c++98
 FLAG_INC			:= 		$(addprefix -I, $(INC_DIRS))
 FLAG_MAKEFILE		:=		-MMD -MP
 FLAG_DEBUG			:= 		-g
 FLAG_OPTIMIZATION	:=		-O3
-FLAGS_COMP			:= 		$(FLAG_WARNING) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG) #$(FLAG_OPTIMIZATION)
+FLAGS_COMP			:= 		$(FLAG_WARNING) $(FLAG_CPP_VERSION) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG) #$(FLAG_OPTIMIZATION)
 
 # Flags - memory leak check
 FLAG_MEM_LEAK		:= 		-fsanitize=address
@@ -64,7 +65,7 @@ $(FT_NAME):					$(OBJS)
 							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS)
 
 $(STL_NAME):				fclean
-							@ $(CC) $(FLAG_WARNING) -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
+							@ $(CC) $(FLAG_WARNING) -std=c++20 -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
 
 $(PATH_BUILD)/%.o:			%.cpp
 							@ mkdir -p $(dir $@)

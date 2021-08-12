@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 12:09:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/12 17:07:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ void test_vector_iterators(void) {
 	std::cout << "*** test_vector_iterators ***" << std::endl;
 
 	typedef ft::vector<int>::iterator iterator;
-	typedef ft::vector<int>::const_iterator const_iterator;
 
 	ft::vector<int> vec;
 
@@ -156,7 +155,8 @@ void test_vector_iterators(void) {
 		const_vec.push_back(rand() % 100);
 	}
 
-	const_iterator cbegin = const_vec.begin();
+	//typedef ft::vector<int>::const_iterator const_iterator;
+	//const_iterator cbegin = const_vec.begin();
 
 	//for (const_iterator it = const_vec.begin(); it != const_vec.end(); it++) {
 		//std::cout << *it << " ";
@@ -187,10 +187,63 @@ void test_utils_iterator_traits(void) {
 		std::cout << "ft::vector<int> has a value_type of const int" << std::endl;
 	}
 
-	if (std::is_same<t2::value_type, const int *>::value) {
-		std::cout << "t2 has pointer const int *" << std::endl;
-	} else {
-		std::cout << "t2 has pointer int *" << std::endl;
+	//if (std::is_same<t2::value_type, const int *>::value) {
+		//std::cout << "t2 has pointer const int *" << std::endl;
+	//} else {
+		//std::cout << "t2 has pointer int *" << std::endl;
+	//}
+}
+
+void test_utils_is_integral(void) {
+	std::cout << "*** test_utils_is_integral ***" << std::endl;
+
+	// correct ones
+	if (ft::is_integral<bool>::value) {
+		std::cout << "bool is integral" << std::endl;
+	}
+	if (ft::is_integral<char>::value) {
+		std::cout << "char is integral" << std::endl;
+	}
+	if (ft::is_integral<wchar_t>::value) {
+		std::cout << "wchar_t is integral" << std::endl;
+	}
+	if (ft::is_integral<signed char>::value) {
+		std::cout << "signed char is integral" << std::endl;
+	}
+	if (ft::is_integral<short int>::value) {
+		std::cout << "short int is integral" << std::endl;
+	}
+	if (ft::is_integral<long int>::value) {
+		std::cout << "long int is integral" << std::endl;
+	}
+	if (ft::is_integral<long long int>::value) {
+		std::cout << "long long int is integral" << std::endl;
+	}
+	if (ft::is_integral<unsigned char>::value) {
+		std::cout << "unsigned char is integral" << std::endl;
+	}
+	if (ft::is_integral<unsigned short int>::value) {
+		std::cout << "unsigned short int is integral" << std::endl;
+	}
+	if (ft::is_integral<unsigned int>::value) {
+		std::cout << "unsigned int is integral" << std::endl;
+	}
+	if (ft::is_integral<unsigned long int>::value) {
+		std::cout << "unsigned long int is integral" << std::endl;
+	}
+	if (ft::is_integral<unsigned long long int>::value) {
+		std::cout << "unsigned long long int is integral" << std::endl;
+	}
+
+	// wrong ones
+	if (!ft::is_integral<int *>::value) {
+		std::cout << "int * is not integral" << std::endl;
+	}
+	if (!ft::is_integral<std::string>::value) {
+		std::cout << "std::string is not integral" << std::endl;
+	}
+	if (!ft::is_integral<char *>::value) {
+		std::cout << "char * is not integral" << std::endl;
 	}
 }
 
@@ -201,6 +254,7 @@ int main(int argc, char* argv[]) {
 	test_vector_capacity();
 	test_vector_iterators();
 	test_utils_iterator_traits();
+	test_utils_is_integral();
 
 	return (EXIT_SUCCESS);
 }

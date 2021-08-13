@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 12:22:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/13 12:37:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ namespace ft {
 /*                                Constructors                                */
 
 			// Default
-			explicit vector(void) {
+			vector(void) {
 				_size = 0;
 				_capacity = 0;
 				_max_size = std::numeric_limits<long>::max() / sizeof(T);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 12:22:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/13 17:33:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,10 @@ void test_vector_iterators(void) {
 	}
 
 	typedef ft::vector<int>::const_iterator const_iterator;
-	const_iterator cbegin = const_vec.begin();
-	(void)cbegin;
 
-	//for (const_iterator it = const_vec.begin(); it != const_vec.end(); it++) {
-		//std::cout << *it << " ";
-	//}
+	for (const_iterator it = const_vec.begin(); it != const_vec.end(); it++) {
+		std::cout << *it << " ";
+	}
 	std::cout << std::endl;
 }
 

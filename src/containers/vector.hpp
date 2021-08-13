@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 12:37:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/13 17:41:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define VECTOR_HPP
 
 # include "../main.hpp"
-# include "../utils/RandomAccessIterator.hpp"
+# include "../utils/Iterator.hpp"
+# include "../utils/ConstIterator.hpp"
 # include "../utils/enable_if.hpp"
 # include "../utils/is_const.hpp"
 # include <iostream>
@@ -41,8 +42,8 @@ namespace ft {
 			typedef typename A::difference_type difference_type;
 			typedef typename A::size_type size_type;
 
-			typedef ft::RandomAccessIterator<value_type> iterator;
-			typedef ft::RandomAccessIterator<value_type const> const_iterator;
+			typedef ft::Iterator<value_type> iterator;
+			typedef ft::ConstIterator<value_type> const_iterator;
 			typedef std::reverse_iterator<iterator> reverse_iterator;
 			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -79,21 +80,12 @@ namespace ft {
 
 /*                                 Iterators                                  */
 
-			iterator begin(void) {return _start;}
-			const_iterator begin(void) const {return _start;}
+			iterator begin(void) {return iterator(_start);}
 
-			//template<typename U = T>
-			//typename ft::enable_if<ft::is_const<U>::value, const_iterator>::type begin(void) const {
-				//return RandomAccessIterator<const U>(_start);
-			//}
-
-			////iterator begin(void) {return RandomAccessIterator<T>(_start);}
-
-			//template<typename U = T>
-			//typename ft::enable_if<!ft::is_const<U>::value, iterator>::type begin(void) const {
-				//return RandomAccessIterator<U>(_start);
-			//}
-
+			const_iterator begin(void) const {
+				std::cout << "test" << std::endl;
+				return const_iterator(_start);
+			}
 
 			iterator end(void) {
 				if (empty()) {

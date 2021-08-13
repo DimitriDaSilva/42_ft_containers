@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RandomAccessIterator.hpp                           :+:      :+:    :+:   */
+/*   Iterator.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 17:21:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/13 17:32:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RANDOMACCESSITERATOR_HPP
-# define RANDOMACCESSITERATOR_HPP
+#ifndef ITERATOR_HPP
+# define ITERATOR_HPP
 
 # include "../main.hpp"
 # include <iostream>
@@ -21,7 +21,7 @@
 namespace ft {
 
 	template<class T>
-	class RandomAccessIterator {
+	class Iterator {
 
 		public:
 /******************************************************************************/
@@ -46,20 +46,20 @@ namespace ft {
 /*                                Constructors                                */
 
 			// Default
-			RandomAccessIterator(void) : _ptr(NULL) {};
+			Iterator(void) : _ptr(NULL) {};
 
 			// Type specific
-			RandomAccessIterator(pointer ptr) : _ptr(ptr) {};
+			Iterator(pointer ptr) : _ptr(ptr) {};
 
 			// Copy
-			RandomAccessIterator(RandomAccessIterator const& rhs)
+			Iterator(Iterator const& rhs)
 				: _ptr(rhs._ptr) {};
 
 
 /*                                Destructors                                 */
 
 			// Default
-			virtual ~RandomAccessIterator(void) {}
+			virtual ~Iterator(void) {}
 
 
 /******************************************************************************/
@@ -78,7 +78,7 @@ namespace ft {
 
 /*                                Assignement                                 */
 
-			RandomAccessIterator& operator=(RandomAccessIterator const& rhs) {
+			Iterator& operator=(Iterator const& rhs) {
 				_ptr = rhs._ptr;
 
 				return *this;
@@ -86,42 +86,42 @@ namespace ft {
 
 /*                                Comparison                                  */
 
-			bool operator==(RandomAccessIterator const& rhs) const {
+			bool operator==(Iterator const& rhs) const {
 				return _ptr == rhs._ptr;
 			}
 
-			bool operator!=(RandomAccessIterator const& rhs) const {
+			bool operator!=(Iterator const& rhs) const {
 				return _ptr != rhs._ptr;
 			}
 
-			bool operator<(RandomAccessIterator const& rhs) const {
+			bool operator<(Iterator const& rhs) const {
 				return _ptr < rhs._ptr;
 			}
 
-			bool operator>(RandomAccessIterator const& rhs) const {
+			bool operator>(Iterator const& rhs) const {
 				return _ptr > rhs._ptr;
 			}
 			
-			bool operator<=(RandomAccessIterator const& rhs) const {
+			bool operator<=(Iterator const& rhs) const {
 				return _ptr <= rhs._ptr;
 			}
 
-			bool operator>=(RandomAccessIterator const& rhs) const {
+			bool operator>=(Iterator const& rhs) const {
 				return _ptr >= rhs._ptr;
 			}
 
 /*                        Increment / decrement                               */
 
 			// Pre-increment
-			RandomAccessIterator& operator++() {
+			Iterator& operator++() {
 				_ptr++;
 
 				return *this;
 			}
 
 			// Post-increment
-			RandomAccessIterator operator++(int) {
-				RandomAccessIterator<T> tmp(*this);
+			Iterator operator++(int) {
+				Iterator<T> tmp(*this);
 
 				_ptr++;
 
@@ -129,15 +129,15 @@ namespace ft {
 			}
 
 			// Pre-decrement
-			RandomAccessIterator& operator--() {
+			Iterator& operator--() {
 				_ptr--;
 
 				return *this;
 			}
 
 			// Post-decrement
-			RandomAccessIterator operator--(int) {
-				RandomAccessIterator<T> tmp(*this);
+			Iterator operator--(int) {
+				Iterator<T> tmp(*this);
 
 				_ptr--;
 
@@ -146,21 +146,21 @@ namespace ft {
 
 /*                                Arithmetic                                  */
 
-			RandomAccessIterator operator+(difference_type val) const {
-				return RandomAccessIterator<T>(_ptr + val);
+			Iterator operator+(difference_type val) const {
+				return Iterator<T>(_ptr + val);
 			}
 
-			RandomAccessIterator operator-(difference_type val) const {
-				return RandomAccessIterator<T>(_ptr - val);
+			Iterator operator-(difference_type val) const {
+				return Iterator<T>(_ptr - val);
 			}
 
-			RandomAccessIterator& operator+=(difference_type val) {
+			Iterator& operator+=(difference_type val) {
 				_ptr += val;
 
 				return *this;
 			}
 
-			RandomAccessIterator& operator-=(difference_type val) {
+			Iterator& operator-=(difference_type val) {
 				_ptr -= val;
 
 				return *this;
@@ -180,12 +180,12 @@ namespace ft {
 				return *(_ptr + val);
 			}
 
+			pointer _ptr;
 		private:
 /******************************************************************************/
 /*                   	        PRIVATE DATA                                  */
 /******************************************************************************/
 
-			pointer _ptr;
 	};
 }
 

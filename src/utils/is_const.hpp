@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enable_if.hpp                                      :+:      :+:    :+:   */
+/*   is_const.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/12 10:33:42 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 11:46:39 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/13 11:29:40 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/13 11:30:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENABLE_IF_HPP
-# define ENABLE_IF_HPP
+#ifndef IS_CONST_HPP
+# define IS_CONST_HPP
+
+# include "is_integral.hpp"
 
 namespace ft {
-	template<bool B, class T = void> struct enable_if {};
-	template<class T> struct enable_if<true, T> { typedef T type; };
-
-	//template< bool B, class T = void >
-	//using enable_if_t = typename enable_if<B,T>::type;
+	template<class T> struct is_const : ft::false_type {};
+	template<class T> struct is_const<const T> : ft::true_type {};
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 18:41:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/13 12:22:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void test_vector_capacity(void) {
 
 	std::cout << vector.size() << std::endl;
 	std::cout << vector.empty() << std::endl;
+	std::cout << vector.capacity() << std::endl;
 
 	vector.push_back(4);
 	vector.push_back(2);
@@ -158,8 +159,9 @@ void test_vector_iterators(void) {
 		const_vec.push_back(rand() % 100);
 	}
 
-	//typedef ft::vector<int>::const_iterator const_iterator;
-	//const_iterator cbegin = const_vec.begin();
+	typedef ft::vector<int>::const_iterator const_iterator;
+	const_iterator cbegin = const_vec.begin();
+	(void)cbegin;
 
 	//for (const_iterator it = const_vec.begin(); it != const_vec.end(); it++) {
 		//std::cout << *it << " ";
@@ -260,6 +262,17 @@ void test_is_integral(void) {
 	std::cout << std::endl;
 }
 
+void test_other_utils(void) {
+	std::cout << "*** test_other_utils ***" << std::endl;
+
+	std::cout << ft::is_const<int>::value << std::endl
+		<< ft::is_const<int const>::value << std::endl
+		<< ft::is_const<char>::value << std::endl
+		<< ft::is_const<char const>::value << std::endl;
+
+	std::cout << std::endl;
+}
+
 int main(int argc, char* argv[]) {
 	if (test_subject(argc, argv) != EXIT_SUCCESS) {
 		return (EXIT_FAILURE);
@@ -268,6 +281,7 @@ int main(int argc, char* argv[]) {
 	test_vector_iterators();
 	test_iterator_traits();
 	test_is_integral();
+	test_other_utils();
 
 	return (EXIT_SUCCESS);
 }

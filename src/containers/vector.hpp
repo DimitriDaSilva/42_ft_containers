@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 12:15:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/13 12:22:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "../main.hpp"
 # include "../utils/RandomAccessIterator.hpp"
+# include "../utils/enable_if.hpp"
+# include "../utils/is_const.hpp"
 # include <iostream>
 # include <string>
 # include <limits>
@@ -39,8 +41,8 @@ namespace ft {
 			typedef typename A::difference_type difference_type;
 			typedef typename A::size_type size_type;
 
-			typedef typename ft::RandomAccessIterator<value_type> iterator;
-			typedef typename ft::RandomAccessIterator<value_type const> const_iterator;
+			typedef ft::RandomAccessIterator<value_type> iterator;
+			typedef ft::RandomAccessIterator<value_type const> const_iterator;
 			typedef std::reverse_iterator<iterator> reverse_iterator;
 			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -54,11 +56,11 @@ namespace ft {
 /*                                Constructors                                */
 
 			// Default
-			vector(void) {
+			explicit vector(void) {
 				_size = 0;
-				_capacity = 2;
+				_capacity = 0;
 				_max_size = std::numeric_limits<long>::max() / sizeof(T);
-				_start = _allocator.allocate(_capacity);
+				_start = NULL;
 			} 
 
 			// Copy
@@ -78,10 +80,20 @@ namespace ft {
 /*                                 Iterators                                  */
 
 			iterator begin(void) {return _start;}
+			const_iterator begin(void) const {return _start;}
 
-			const_iterator begin(void) const {
-				return _start;
-			}
+			//template<typename U = T>
+			//typename ft::enable_if<ft::is_const<U>::value, const_iterator>::type begin(void) const {
+				//return RandomAccessIterator<const U>(_start);
+			//}
+
+			////iterator begin(void) {return RandomAccessIterator<T>(_start);}
+
+			//template<typename U = T>
+			//typename ft::enable_if<!ft::is_const<U>::value, iterator>::type begin(void) const {
+				//return RandomAccessIterator<U>(_start);
+			//}
+
 
 			iterator end(void) {
 				if (empty()) {
@@ -141,7 +153,9 @@ namespace ft {
 /*                                  Modifiers                                 */
 
 			void push_back (value_type const& val) {
-				if (_size == _capacity) {
+				if (empty()) {
+					reserve(2);
+				} else if (_size == _capacity) {
 					reserve(_capacity * 2);
 				}
 				_start[_size] = val;

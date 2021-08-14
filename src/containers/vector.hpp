@@ -6,22 +6,19 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 12:15:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/14 16:01:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include "../main.hpp"
-# include "../utils/RandomAccessIterator.hpp"
-# include "../utils/enable_if.hpp"
-# include "../utils/is_const.hpp"
-# include <iostream>
-# include <string>
-# include <limits>
-# include <iterator>
-# include <stdexcept> // std::lenght_error
+# include <limits>		// std::numeric_limits
+# include <stdexcept>	// std::lenght_error
+
+# include "../iterators/random_access_iterator.hpp"	// ft::random_access_iterator
+//# include "../utils/enable_if.hpp"					// ft::enable_if
+//# include "../utils/is_const.hpp"					// ft::is_const
 
 namespace ft {
 
@@ -41,8 +38,8 @@ namespace ft {
 			typedef typename A::difference_type difference_type;
 			typedef typename A::size_type size_type;
 
-			typedef ft::RandomAccessIterator<value_type> iterator;
-			typedef ft::RandomAccessIterator<const value_type> const_iterator;
+			typedef ft::random_access_iterator<value_type> iterator;
+			typedef ft::random_access_iterator<value_type const> const_iterator;
 			typedef std::reverse_iterator<iterator> reverse_iterator;
 			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -122,27 +119,27 @@ namespace ft {
 			}
 
 			// Reverse
-			reverse_iterator rbegin(void) {
-				if (empty()) {
-					return rend();
-				}
-				return _start + _size - 1;
-			}
+			//reverse_iterator rbegin(void) {
+				//if (empty()) {
+					//return rend();
+				//}
+				//return _start + _size - 1;
+			//}
 
-			const_reverse_iterator rbegin(void) const {
-				if (empty()) {
-					return rend();
-				}
-				return _start + _size - 1;
-			}
+			//const_reverse_iterator rbegin(void) const {
+				//if (empty()) {
+					//return rend();
+				//}
+				//return _start + _size - 1;
+			//}
 
-			reverse_iterator rend(void) {
-				return _start - 1;
-			}
+			//reverse_iterator rend(void) {
+				//return _start - 1;
+			//}
 
-			const_reverse_iterator rend(void) const {
-				return _start - 1;
-			}
+			//const_reverse_iterator rend(void) const {
+				//return _start - 1;
+			//}
 
 /*                                  Capacity                                  */
 

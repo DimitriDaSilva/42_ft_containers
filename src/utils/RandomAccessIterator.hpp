@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 17:21:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/14 11:47:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,10 @@ namespace ft {
 			RandomAccessIterator(RandomAccessIterator const& rhs)
 				: _ptr(rhs._ptr) {};
 
-
 /*                                Destructors                                 */
 
 			// Default
 			virtual ~RandomAccessIterator(void) {}
-
 
 /******************************************************************************/
 /*                   	    GETTERS & SETTERS                                 */
@@ -82,6 +80,13 @@ namespace ft {
 				_ptr = rhs._ptr;
 
 				return *this;
+			}
+
+			// Overload called when trying to copy construct a const_iterator
+			// based on an iterator
+			operator RandomAccessIterator<T const>(void) const
+			{
+				return RandomAccessIterator<T const>(_ptr);
 			}
 
 /*                                Comparison                                  */

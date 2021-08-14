@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/13 17:41:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/14 12:15:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 # define VECTOR_HPP
 
 # include "../main.hpp"
-# include "../utils/Iterator.hpp"
-# include "../utils/ConstIterator.hpp"
+# include "../utils/RandomAccessIterator.hpp"
 # include "../utils/enable_if.hpp"
 # include "../utils/is_const.hpp"
 # include <iostream>
@@ -42,8 +41,8 @@ namespace ft {
 			typedef typename A::difference_type difference_type;
 			typedef typename A::size_type size_type;
 
-			typedef ft::Iterator<value_type> iterator;
-			typedef ft::ConstIterator<value_type> const_iterator;
+			typedef ft::RandomAccessIterator<value_type> iterator;
+			typedef ft::RandomAccessIterator<const value_type> const_iterator;
 			typedef std::reverse_iterator<iterator> reverse_iterator;
 			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -72,6 +71,29 @@ namespace ft {
 			// Default
 			virtual ~vector(void) {
 				_allocator.deallocate(_start, _capacity);
+				_size = 0;
+				_capacity = 0;
+				_start = NULL;
+			}
+
+/******************************************************************************/
+/*                   	   OVERLOADING OPERATORS                              */
+/******************************************************************************/
+
+/*                                Assignement                                 */
+			vector& operator=(vector const& other) {
+				// Free memory
+				~vector();
+
+				// Deep copy of the sequence
+				insert(begin(), other.begin(), other.end());
+
+				_allocator = other._allocator;
+				_size = other._size;
+				_capacity = other._capacity;
+				_max_size = other._max_size;
+				
+				return *this;
 			}
 
 /******************************************************************************/
@@ -80,12 +102,10 @@ namespace ft {
 
 /*                                 Iterators                                  */
 
+			// Forward
 			iterator begin(void) {return iterator(_start);}
 
-			const_iterator begin(void) const {
-				std::cout << "test" << std::endl;
-				return const_iterator(_start);
-			}
+			const_iterator begin(void) const {return const_iterator(_start);}
 
 			iterator end(void) {
 				if (empty()) {
@@ -99,6 +119,29 @@ namespace ft {
 					return begin();
 				}
 				return _start + _size;
+			}
+
+			// Reverse
+			reverse_iterator rbegin(void) {
+				if (empty()) {
+					return rend();
+				}
+				return _start + _size - 1;
+			}
+
+			const_reverse_iterator rbegin(void) const {
+				if (empty()) {
+					return rend();
+				}
+				return _start + _size - 1;
+			}
+
+			reverse_iterator rend(void) {
+				return _start - 1;
+			}
+
+			const_reverse_iterator rend(void) const {
+				return _start - 1;
 			}
 
 /*                                  Capacity                                  */
@@ -154,16 +197,13 @@ namespace ft {
 				_size++;
 			}
 
-/******************************************************************************/
-/*                   	   OVERLOADING OPERATORS                              */
-/******************************************************************************/
-
-/*                                Assignement                                 */
-			vector& operator=(vector const& other) {
-				(void)other;
-
-				return *this;
-			}
+			// Range
+			template <class InputIterator>
+				void insert (iterator position, InputIterator first, InputIterator last) {
+					(void)position;
+					(void)first;
+					(void)last;
+				}
 
 /******************************************************************************/
 /*                               EXCEPTIONS 								  */

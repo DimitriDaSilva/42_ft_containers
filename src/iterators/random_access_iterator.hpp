@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 15:38:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/14 16:29:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ namespace ft {
 /*                   	   OVERLOADING OPERATORS                              */
 /******************************************************************************/
 
-
 /*                                Assignement                                 */
 
 			random_access_iterator& operator=(random_access_iterator const& rhs) {
@@ -76,9 +75,9 @@ namespace ft {
 
 			// Overload called when trying to copy construct a const_iterator
 			// based on an iterator
-			operator random_access_iterator<T const>(void) const
+			operator random_access_iterator<value_type const>(void) const
 			{
-				return random_access_iterator<T const>(_ptr);
+				return random_access_iterator<value_type const>(_ptr);
 			}
 
 /*                                Comparison                                  */

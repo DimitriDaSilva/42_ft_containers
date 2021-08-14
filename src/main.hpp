@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 16:00:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/14 16:16:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 	#  include <map>			// std::map
 	#  include <stack>			// std::stack
 	#  include <vector>			// std::vector
-	#  include <iterator>		// std::iterator_traits
+	#  include <iterator>		// std::iterator_traits, std::reverse_iterator
 	namespace ft = std;
 # else
 	//#  include "map.hpp"

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 16:29:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 16:51:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,16 @@ namespace ft {
 				return random_access_iterator<T>(_ptr + val);
 			}
 
+			difference_type operator+(random_access_iterator const& rhs) const {
+				return _ptr + rhs._ptr;
+			}
+
 			random_access_iterator operator-(difference_type val) const {
 				return random_access_iterator<T>(_ptr - val);
+			}
+
+			difference_type operator-(random_access_iterator const& rhs) const {
+				return _ptr - rhs._ptr;
 			}
 
 			random_access_iterator& operator+=(difference_type val) {

@@ -6,16 +6,19 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 12:42:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 18:27:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <iostream> // TODO: DELETE
 # include <limits>		// std::numeric_limits
 # include <stdexcept>	// std::lenght_error
+//# include <iterator>	// std::distance
 
+# include "../utils/distance.hpp"					// ft::distance
 # include "../iterators/random_access_iterator.hpp"	// ft::random_access_iterator
 //# include "../utils/enable_if.hpp"					// ft::enable_if
 //# include "../utils/is_const.hpp"					// ft::is_const
@@ -61,6 +64,7 @@ namespace ft {
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
 			{} 
 
+			// Fill
 			explicit vector(size_type n,
 							value_type const& val = value_type(),
                  			allocator_type const& alloc = allocator_type()) :
@@ -70,11 +74,10 @@ namespace ft {
 				_capacity(0),
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
 			{
-				// We allocate only n items when constructing
-				reserve(n);
 				assign(n, val);
 			}
 
+			// Range
 			template <class InputIterator>
 			vector (InputIterator first,
 					InputIterator last,
@@ -85,9 +88,9 @@ namespace ft {
 				_capacity(0),
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
 			{
-
+				//std::cout << ft::distance<InputIterator>(first, last) << std::endl;
+				assign(first, last);
 			}
-
 
 			// Copy
 			vector(vector const& other) {*this = other;}
@@ -97,9 +100,9 @@ namespace ft {
 			// Default
 			virtual ~vector(void) {
 				_allocator.deallocate(_start, _capacity);
+				_start = NULL;
 				_size = 0;
 				_capacity = 0;
-				_start = NULL;
 			}
 
 /******************************************************************************/
@@ -109,14 +112,14 @@ namespace ft {
 /*                                Assignement                                 */
 			vector& operator=(vector const& other) {
 				// Free memory
-				~vector();
+				this->~vector();
 
 				// Deep copy of the sequence
 				insert(begin(), other.begin(), other.end());
 
 				_allocator = other._allocator;
-				_size = other._size;
-				_capacity = other._capacity;
+				_size = other._size;	// Check if insert doesn't already change _size
+				_capacity = other._capacity; // Check if insert doesn't already change _size
 				_max_size = other._max_size;
 				
 				return *this;
@@ -176,7 +179,7 @@ namespace ft {
 
 			size_type max_size(void) const {return _max_size;}
 
-			void resize (size_type n, value_type val = value_type()) {
+			void resize(size_type n, value_type val = value_type()) {
 
 				// Reduced content to its first n elements
 				if (n < _size) {
@@ -203,7 +206,7 @@ namespace ft {
 			bool empty() const {return _size == 0;}
 
 			// Change _capacity
-			void reserve (size_type n) {
+			void reserve(size_type n) {
 
 				// We need to throw we try to allocate more than max_size
 				if (n > _max_size) {
@@ -232,21 +235,37 @@ namespace ft {
 /*                                  Modifiers                                 */
 
 			// Range
-			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last) {
-				(void)first;
-				(void)last;
+			template<class InputIterator>
+			void assign(InputIterator first, InputIterator last) {
+
+				// Destroy existing vector
+				this->~vector();
+
+				// When assigning we are overwritting so we only need
+				// last - first size
+				//std::cout << ft::distance<InputIterator>(first, last) << std::endl;
+				//reserve(last - first);
+				reserve(ft::distance<InputIterator>(first, last));
+				//reserve(ft::distance(first, last));
+				//reserve(100);
+
+				// Setting new elements
+				insert(begin(), first, last);
 			}
 
 			// Fill
-			void assign (size_type n, const value_type& val) {
+			void assign(size_type n, const value_type& val) {
+				// Destroy existing vector
+				~vector();
 
-				for (size_type i = 0; i < n; i++) {
-					push_back(val);
-				}
+				// We allocate only n items when constructing n size
+				reserve(n);
+
+				// Setting new elements
+				insert(begin(), n, val);
 			}
 
-			void push_back (value_type const& val) {
+			void push_back(value_type const& val) {
 
 				if (empty()) {
 					reserve(2);
@@ -259,60 +278,65 @@ namespace ft {
 
 			// Single element
 			iterator insert(iterator position, const value_type& val) {
+				(void)position;
+				(void)val;
 
 				iterator ret_position;
-				value_type* tmp;;
-				iterator it_old;
-				iterator it_new;
+				//value_type* tmp;;
+				//iterator it_old;
+				//iterator it_new;
 
-				// New element requires reallocation because vector is full
-				if (_size == _capacity) {
-					// Reallocate new
-					tmp = _allocator.allocate(_size + 1);
+				//// New element requires reallocation because vector is full
+				//if (_size == _capacity) {
+					//// Reallocate new
+					//tmp = _allocator.allocate(_size + 1);
 
-					// Copy sequence to new array
-					it_old = begin();
-					it_new = tmp;
-					while (it_old != end()) {
-						// Position found 
-						if (it_old == position) {
-							*it_new = val;
-							ret_position = it_new;
-							it_new++;
-							continue;
-						} else {
-							*it_new = *it_old;
-						}
-						it_old++;
-						it_new++;
-					}
+					//// Copy sequence to new array
+					//it_old = begin();
+					//it_new = tmp;
+					//while (it_old != end()) {
+						//// Position found 
+						//if (it_old == position) {
+							//*it_new = val;
+							//ret_position = it_new;
+							//it_new++;
+							//continue;
+						//} else {
+							//*it_new = *it_old;
+						//}
+						//it_old++;
+						//it_new++;
+					//}
 
-					_start = tmp;
-					_size += 1;
-					_capacity += 1;
+					//_start = tmp;
+					//_size += 1;
+					//_capacity += 1;
 
-				// No need to reallocate
-				} else {
+				//// No need to reallocate
+				//} else {
 
-				}
+				//}
 
 				return ret_position;
 			}
 
 			// Fill
 			void insert (iterator position, size_type n, const value_type& val) {
+				(void)position;
+				(void)n;
+				(void)val;
 
 				//for (iterator it ⁼ position; it )
 			}
 
 			// Range
 			template <class InputIterator>
-				void insert (iterator position, InputIterator first, InputIterator last) {
+			void insert (iterator position, InputIterator first, InputIterator last) {
 
-					(void)position;
-					(void)first;
-					(void)last;
-				}
+				(void)position;
+				(void)first;
+				(void)last;
+			}
 
 /******************************************************************************/
 /*                               EXCEPTIONS 								  */

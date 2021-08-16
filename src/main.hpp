@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 10:56:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 16:36:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 	#  include "containers/vector.hpp"
 	#  include "iterators/iterator_traits.hpp"
 	#  include "iterators/reverse_iterator.hpp"
+	#  include "utils/distance.hpp"
 	#  include "utils/enable_if.hpp"
 	#  include "utils/is_integral.hpp"
 	#  include "utils/is_const.hpp"

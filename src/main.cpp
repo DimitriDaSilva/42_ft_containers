@@ -6,11 +6,18 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 12:10:57 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 17:09:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.hpp"
+
+template<typename Vector>
+void print_vec_info(Vector vec) {
+	std::cout << vec.size() << std::endl;
+	std::cout << vec.empty() << std::endl;
+	std::cout << vec.capacity() << std::endl;
+}
 
 int test_subject(int argc, char* argv[]) {
 	std::cout << "*** test_subject ***" << std::endl;
@@ -92,16 +99,12 @@ void test_vector_constructors(void) {
 	// Test empty (default constructor)
 	ft::vector<int> vec_empty;
 
-	std::cout << vec_empty.size() << std::endl;
-	std::cout << vec_empty.empty() << std::endl;
-	std::cout << vec_empty.capacity() << std::endl;
+	print_vec_info(vec_empty);
 
 	// Test fill
 	ft::vector<int> vec_fill(6, 42);
 
-	std::cout << vec_fill.size() << std::endl;
-	std::cout << vec_fill.empty() << std::endl;
-	std::cout << vec_fill.capacity() << std::endl;
+	print_vec_info(vec_fill);
 
 	for (ft::vector<int>::iterator it = vec_fill.begin(); it != vec_fill.end(); it++) {
 		std::cout << *it << " ";
@@ -112,9 +115,12 @@ void test_vector_constructors(void) {
 	// we test if push_back triggers same memory allocation as std
 	vec_fill.push_back(4);
 
-	std::cout << vec_fill.size() << std::endl;
-	std::cout << vec_fill.empty() << std::endl;
-	std::cout << vec_fill.capacity() << std::endl;
+	print_vec_info(vec_fill);
+
+	// Test range
+	ft::vector<int> vec_range(vec_fill.begin(), vec_fill.end());
+
+	print_vec_info(vec_range);
 
 	std::cout << std::endl;
 }
@@ -122,58 +128,37 @@ void test_vector_constructors(void) {
 void test_vector_capacity(void) {
 	std::cout << "*** test_vector_capacity ***" << std::endl;
 
-	ft::vector<int> vector;
+	ft::vector<int> vec;
 
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.empty() << std::endl;
-	std::cout << vector.capacity() << std::endl;
-	std::cout << vector.max_size() << std::endl;
+	print_vec_info(vec);
+	std::cout << vec.max_size() << std::endl;
 
-	vector.push_back(4);
-	vector.push_back(2);
+	//vec.push_back(4);
+	//vec.push_back(2);
 
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.empty() << std::endl;
-	std::cout << vector.capacity() << std::endl;
+	print_vec_info(vec);
 
-	vector.resize(1);
+	vec.resize(1);
 
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.capacity() << std::endl;
+	print_vec_info(vec);
 
 	for (int i = 0; i < 50; i++) {
-		vector.push_back(i);
+		vec.push_back(i);
 	}
 
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.capacity() << std::endl;
+	print_vec_info(vec);
 
-	vector.resize(20);
-	vector.reserve(20);
-	vector.reserve(0);
+	vec.resize(20);
+	vec.reserve(20);
+	vec.reserve(0);
 
 	try {
-		vector.reserve(vector.max_size() + 1);
+		vec.reserve(vec.max_size() + 1);
 	} catch (std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
 
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.capacity() << std::endl;
-
-	ft::vector<int> vec;
-
-	std::cout << vec.size() << std::endl;
-	std::cout << vec.empty() << std::endl;
-	std::cout << vec.capacity() << std::endl;
-
-	for (int i = 0; i < 6; i++) {
-		vec.push_back(i);
-	}
-
-	std::cout << vec.size() << std::endl;
-	std::cout << vec.empty() << std::endl;
-	std::cout << vec.capacity() << std::endl;
+	print_vec_info(vec);
 
 	std::cout << std::endl;
 }
@@ -213,6 +198,16 @@ void test_vector_iterators(void) {
 	const_iterator const_it(it);
 
 	std::cout << std::endl;
+}
+
+void test_vector_modifiers(void) {
+	std::cout << "*** test_vector_modifiers ***" << std::endl;
+
+	// Test assign range
+	//ft::vector<int> vec(5, 42);
+	//ft::vector<int> new_vec;
+
+	//new_vec.assign(vec.begin(), vec.end());
 }
 
 template<
@@ -325,6 +320,11 @@ void test_other_utils(void) {
 		<< ft::is_const<char>::value << std::endl
 		<< ft::is_const<char const>::value << std::endl;
 
+	ft::vector<int> vec(5, 42);
+
+	std::cout << vec.end() - vec.begin() << std::endl;
+	std::cout << ft::distance<ft::vector<int>::iterator>(vec.begin(), vec.end()) << std::endl;
+
 	std::cout << std::endl;
 }
 
@@ -335,6 +335,7 @@ int main(int argc, char* argv[]) {
 	test_vector_constructors();
 	test_vector_capacity();
 	test_vector_iterators();
+	test_vector_modifiers();
 	test_iterator_traits();
 	test_reverse_iterator();
 	test_is_integral();

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 18:27:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 21:46:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 # include <iostream> // TODO: DELETE
 # include <limits>		// std::numeric_limits
 # include <stdexcept>	// std::lenght_error
-//# include <iterator>	// std::distance
+# include <iterator>	// std::distance
 
 # include "../utils/distance.hpp"					// ft::distance
 # include "../iterators/random_access_iterator.hpp"	// ft::random_access_iterator
-//# include "../utils/enable_if.hpp"					// ft::enable_if
+# include "../utils/enable_if.hpp"					// ft::enable_if
+# include "../utils/is_integral.hpp"					// ft::is_integral
 //# include "../utils/is_const.hpp"					// ft::is_const
 
 namespace ft {
@@ -81,14 +82,14 @@ namespace ft {
 			template <class InputIterator>
 			vector (InputIterator first,
 					InputIterator last,
-					allocator_type const& alloc = allocator_type()) :
+					allocator_type const& alloc = allocator_type(),
+					typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) :
 				_start(NULL),
 				_allocator(alloc),
 				_size(0),
 				_capacity(0),
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
 			{
-				//std::cout << ft::distance<InputIterator>(first, last) << std::endl;
 				assign(first, last);
 			}
 
@@ -235,19 +236,18 @@ namespace ft {
 /*                                  Modifiers                                 */
 
 			// Range
-			template<class InputIterator>
-			void assign(InputIterator first, InputIterator last) {
+			template<typename InputIterator>
+			void assign(InputIterator first,
+						InputIterator last,
+						typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+							InputIterator>::type* = NULL) {
 
 				// Destroy existing vector
 				this->~vector();
 
 				// When assigning we are overwritting so we only need
 				// last - first size
-				//std::cout << ft::distance<InputIterator>(first, last) << std::endl;
-				//reserve(last - first);
-				reserve(ft::distance<InputIterator>(first, last));
-				//reserve(ft::distance(first, last));
-				//reserve(100);
+				reserve(ft::distance(first, last));
 
 				// Setting new elements
 				insert(begin(), first, last);
@@ -256,7 +256,7 @@ namespace ft {
 			// Fill
 			void assign(size_type n, const value_type& val) {
 				// Destroy existing vector
-				~vector();
+				this->~vector();
 
 				// We allocate only n items when constructing n size
 				reserve(n);
@@ -278,50 +278,51 @@ namespace ft {
 
 			// Single element
 			iterator insert(iterator position, const value_type& val) {
-				(void)position;
-				(void)val;
 
 				iterator ret_position;
-				//value_type* tmp;;
-				//iterator it_old;
-				//iterator it_new;
+				value_type* tmp;;
+				iterator it_old;
+				iterator it_new;
 
-				//// New element requires reallocation because vector is full
-				//if (_size == _capacity) {
-					//// Reallocate new
-					//tmp = _allocator.allocate(_size + 1);
+				// New element requires reallocation because vector is full
+				if (_size == _capacity) {
+					// Reallocate new
+					tmp = _allocator.allocate(_capacity * 2);
 
-					//// Copy sequence to new array
-					//it_old = begin();
-					//it_new = tmp;
-					//while (it_old != end()) {
-						//// Position found 
-						//if (it_old == position) {
-							//*it_new = val;
-							//ret_position = it_new;
-							//it_new++;
-							//continue;
-						//} else {
-							//*it_new = *it_old;
-						//}
-						//it_old++;
-						//it_new++;
-					//}
+					// Copy sequence to new array
+					it_old = begin();
+					it_new = tmp;
+					while (it_old != end()) {
+						// Position found 
+						if (it_old == position) {
+							*it_new = val;
+							ret_position = it_new;
+							it_new++;
+							continue;
+						} else {
+							*it_new = *it_old;
+						}
+						it_old++;
+						it_new++;
+					}
 
-					//_start = tmp;
-					//_size += 1;
-					//_capacity += 1;
+					_start = tmp;
+					_size += 1;
+					_capacity *= 2;
 
-				//// No need to reallocate
-				//} else {
-
-				//}
+				// No need to reallocate so iterator position will still be valid
+				} else {
+					insert(position, 1, val);
+					ret_position = position;
+				}
 
 				return ret_position;
 			}
 
 			// Fill
-			void insert (iterator position, size_type n, const value_type& val) {
+			void insert(iterator position, size_type n, const value_type& val) {
+				//ft::vector<value_type, allocator_type> cpy(n, )
+
 				(void)position;
 				(void)n;
 				(void)val;
@@ -330,8 +331,10 @@ namespace ft {
 			}
 
 			// Range
-			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last) {
+			template<class InputIterator>
+			void insert(iterator position, InputIterator first, InputIterator last,
+						typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+							InputIterator>::type* = NULL) {
 
 				(void)position;
 				(void)first;

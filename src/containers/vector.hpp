@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 16:01:05 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 12:42:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,42 @@ namespace ft {
 
 /*                                Constructors                                */
 
-			// Default
-			vector(void) {
-				_size = 0;
-				_capacity = 0;
-				_max_size = std::numeric_limits<long>::max() / sizeof(T);
-				_start = NULL;
-			} 
+			// Empty container constructor (default constructor)
+			explicit vector(allocator_type const& alloc = allocator_type()) :
+				_start(NULL),
+				_allocator(alloc),
+				_size(0),
+				_capacity(0),
+				_max_size(std::numeric_limits<long>::max() / sizeof(T))
+			{} 
+
+			explicit vector(size_type n,
+							value_type const& val = value_type(),
+                 			allocator_type const& alloc = allocator_type()) :
+				_start(NULL),
+				_allocator(alloc),
+				_size(0),
+				_capacity(0),
+				_max_size(std::numeric_limits<long>::max() / sizeof(T))
+			{
+				// We allocate only n items when constructing
+				reserve(n);
+				assign(n, val);
+			}
+
+			template <class InputIterator>
+			vector (InputIterator first,
+					InputIterator last,
+					allocator_type const& alloc = allocator_type()) :
+				_start(NULL),
+				_allocator(alloc),
+				_size(0),
+				_capacity(0),
+				_max_size(std::numeric_limits<long>::max() / sizeof(T))
+			{
+
+			}
+
 
 			// Copy
 			vector(vector const& other) {*this = other;}
@@ -148,7 +177,12 @@ namespace ft {
 			size_type max_size(void) const {return _max_size;}
 
 			void resize (size_type n, value_type val = value_type()) {
+
+				// Reduced content to its first n elements
 				if (n < _size) {
+					// We also need to destroy items beyond size
+					// Destroy doesn't deallocate item so we don't need to
+					// change _capacity (or destroy beyond _size)
 					for (size_type i = n; i < _size; i++) {
 						_allocator.destroy(&_start[i]);
 					}
@@ -168,15 +202,28 @@ namespace ft {
 
 			bool empty() const {return _size == 0;}
 
+			// Change _capacity
 			void reserve (size_type n) {
+
+				// We need to throw we try to allocate more than max_size
 				if (n > _max_size) {
 					throw std::length_error("vector::reserve");
 				} else if (n > _capacity) {
+					// Allocate for n size
 					value_type* tmp = _allocator.allocate(n);
+
+					// Copy existing sequence
 					for (size_type i = 0; i < _size; i++) {
 						tmp[i] = _start[i];
 					}
-					_allocator.deallocate(_start, _capacity);
+
+					// We only want to deallocate if there has been previous
+					// allocation
+					if (_capacity != 0) {
+						_allocator.deallocate(_start, _capacity);
+					}
+
+					// Update data
 					_capacity = n;
 					_start = tmp;
 				}
@@ -184,7 +231,23 @@ namespace ft {
 
 /*                                  Modifiers                                 */
 
+			// Range
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last) {
+				(void)first;
+				(void)last;
+			}
+
+			// Fill
+			void assign (size_type n, const value_type& val) {
+
+				for (size_type i = 0; i < n; i++) {
+					push_back(val);
+				}
+			}
+
 			void push_back (value_type const& val) {
+
 				if (empty()) {
 					reserve(2);
 				} else if (_size == _capacity) {
@@ -194,9 +257,58 @@ namespace ft {
 				_size++;
 			}
 
+			// Single element
+			iterator insert(iterator position, const value_type& val) {
+
+				iterator ret_position;
+				value_type* tmp;;
+				iterator it_old;
+				iterator it_new;
+
+				// New element requires reallocation because vector is full
+				if (_size == _capacity) {
+					// Reallocate new
+					tmp = _allocator.allocate(_size + 1);
+
+					// Copy sequence to new array
+					it_old = begin();
+					it_new = tmp;
+					while (it_old != end()) {
+						// Position found 
+						if (it_old == position) {
+							*it_new = val;
+							ret_position = it_new;
+							it_new++;
+							continue;
+						} else {
+							*it_new = *it_old;
+						}
+						it_old++;
+						it_new++;
+					}
+
+					_start = tmp;
+					_size += 1;
+					_capacity += 1;
+
+				// No need to reallocate
+				} else {
+
+				}
+
+				return ret_position;
+			}
+
+			// Fill
+			void insert (iterator position, size_type n, const value_type& val) {
+
+				//for (iterator it ⁼ position; it )
+			}
+
 			// Range
 			template <class InputIterator>
 				void insert (iterator position, InputIterator first, InputIterator last) {
+
 					(void)position;
 					(void)first;
 					(void)last;

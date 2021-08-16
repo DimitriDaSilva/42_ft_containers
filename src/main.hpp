@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 16:16:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 10:56:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@
 	//#  include "map.hpp"
 	//#  include "stack.hpp"
 	#  include "containers/vector.hpp"
-	#  include "utils/enable_if.hpp"
-	#  include "utils/is_const.hpp"
-	#  include "utils/is_integral.hpp"
 	#  include "iterators/iterator_traits.hpp"
+	#  include "iterators/reverse_iterator.hpp"
+	#  include "utils/enable_if.hpp"
+	#  include "utils/is_integral.hpp"
+	#  include "utils/is_const.hpp"
 # endif
 
 # define MAX_RAM 4294967296

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 15:34:15 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/16 12:10:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,39 @@ int test_subject(int argc, char* argv[]) {
 	return EXIT_SUCCESS;
 }
 
+void test_vector_constructors(void) {
+	std::cout << "*** test_vector_constructors ***" << std::endl;
+
+	// Test empty (default constructor)
+	ft::vector<int> vec_empty;
+
+	std::cout << vec_empty.size() << std::endl;
+	std::cout << vec_empty.empty() << std::endl;
+	std::cout << vec_empty.capacity() << std::endl;
+
+	// Test fill
+	ft::vector<int> vec_fill(6, 42);
+
+	std::cout << vec_fill.size() << std::endl;
+	std::cout << vec_fill.empty() << std::endl;
+	std::cout << vec_fill.capacity() << std::endl;
+
+	for (ft::vector<int>::iterator it = vec_fill.begin(); it != vec_fill.end(); it++) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	// Because fill constructor only allocates exact needed memory
+	// we test if push_back triggers same memory allocation as std
+	vec_fill.push_back(4);
+
+	std::cout << vec_fill.size() << std::endl;
+	std::cout << vec_fill.empty() << std::endl;
+	std::cout << vec_fill.capacity() << std::endl;
+
+	std::cout << std::endl;
+}
+
 void test_vector_capacity(void) {
 	std::cout << "*** test_vector_capacity ***" << std::endl;
 
@@ -94,6 +127,7 @@ void test_vector_capacity(void) {
 	std::cout << vector.size() << std::endl;
 	std::cout << vector.empty() << std::endl;
 	std::cout << vector.capacity() << std::endl;
+	std::cout << vector.max_size() << std::endl;
 
 	vector.push_back(4);
 	vector.push_back(2);
@@ -101,7 +135,6 @@ void test_vector_capacity(void) {
 	std::cout << vector.size() << std::endl;
 	std::cout << vector.empty() << std::endl;
 	std::cout << vector.capacity() << std::endl;
-	std::cout << vector.max_size() << std::endl;
 
 	vector.resize(1);
 
@@ -127,6 +160,20 @@ void test_vector_capacity(void) {
 
 	std::cout << vector.size() << std::endl;
 	std::cout << vector.capacity() << std::endl;
+
+	ft::vector<int> vec;
+
+	std::cout << vec.size() << std::endl;
+	std::cout << vec.empty() << std::endl;
+	std::cout << vec.capacity() << std::endl;
+
+	for (int i = 0; i < 6; i++) {
+		vec.push_back(i);
+	}
+
+	std::cout << vec.size() << std::endl;
+	std::cout << vec.empty() << std::endl;
+	std::cout << vec.capacity() << std::endl;
 
 	std::cout << std::endl;
 }
@@ -220,6 +267,15 @@ void test_iterator_traits(void) {
 	std::cout << std::endl;
 }
 
+void test_reverse_iterator(void) {
+	std::cout << "*** test_reverse_iterator ***" << std::endl;
+
+	//ft::vector<int> v = { 0, 1, 2, 3, 4, 5 };
+	//typedef ft::reverse_iterator<ft::vector<int>::iterator> rev_it;
+
+	//ft::vector<int> vec;
+}
+
 template<typename T>
 void test_single_is_integral(std::string const& type_tested) {
 	int value = ft::is_integral<T>::value;
@@ -276,9 +332,11 @@ int main(int argc, char* argv[]) {
 	if (test_subject(argc, argv) != EXIT_SUCCESS) {
 		return (EXIT_FAILURE);
 	}
+	test_vector_constructors();
 	test_vector_capacity();
 	test_vector_iterators();
 	test_iterator_traits();
+	test_reverse_iterator();
 	test_is_integral();
 	test_other_utils();
 

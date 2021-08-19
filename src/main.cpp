@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 16:56:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 17:26:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void test_vector_capacity(void) {
 	ft::vector<int> vec;
 
 	print_vec_info(vec);
-	std::cout << vec.max_size() << std::endl;
+	std::cout << "Max size: " << vec.max_size() << std::endl;
 
 	//vec.push_back(4);
 	//vec.push_back(2);

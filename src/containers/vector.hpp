@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 09:26:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 16:41:53 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft {
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-			typedef T value_type; 
+			typedef T value_type;
 			typedef A allocator_type;
 			typedef typename A::reference reference;
 			typedef typename A::const_reference const_reference;
@@ -63,19 +63,26 @@ namespace ft {
 				_size(0),
 				_capacity(0),
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
-			{} 
+			{}
 
 			// Fill
 			explicit vector(size_type n,
 							value_type const& val = value_type(),
-                 			allocator_type const& alloc = allocator_type()) :
+							allocator_type const& alloc = allocator_type()) :
 				_start(NULL),
 				_allocator(alloc),
 				_size(0),
 				_capacity(0),
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
 			{
-				assign(n, val);
+
+				reserve(n);
+
+				for (size_type i = 0; i < n; i++) {
+					_allocator.construct(_start + i, val);
+				}
+
+				_size = n;
 			}
 
 			// Range
@@ -90,7 +97,15 @@ namespace ft {
 				_capacity(0),
 				_max_size(std::numeric_limits<long>::max() / sizeof(T))
 			{
-				assign(first, last);
+
+				reserve(ft::distance(first, last));
+
+				size_type i = 0;
+				for (iterator it_arg = first; it_arg != last; it_arg++) {
+					_allocator.construct(_start + i, *it_arg);
+					i++;
+				}
+
 			}
 
 			// Copy
@@ -112,17 +127,15 @@ namespace ft {
 
 /*                                Assignement                                 */
 			vector& operator=(vector const& other) {
-				// Free memory
-				this->~vector();
+				_max_size = other._max_size;
 
 				// Deep copy of the sequence
-				insert(begin(), other.begin(), other.end());
+				assign(other.begin(), other.end());
 
 				_allocator = other._allocator;
-				_size = other._size;	// Check if insert doesn't already change _size
-				_capacity = other._capacity; // Check if insert doesn't already change _size
-				_max_size = other._max_size;
-				
+				_size = other._size;			// Check if insert doesn't already change _size
+				_capacity = other._capacity;	// Check if insert doesn't already change _size
+
 				return *this;
 			}
 
@@ -133,9 +146,9 @@ namespace ft {
 /*                                 Iterators                                  */
 
 			// Forward
-			iterator begin(void) {return iterator(_start);}
+			iterator begin(void) {return _start;}
 
-			const_iterator begin(void) const {return const_iterator(_start);}
+			const_iterator begin(void) const {return _start;}
 
 			iterator end(void) {
 				if (empty()) {
@@ -297,7 +310,7 @@ namespace ft {
 						// Copy old to new
 						if (it_old != position) {
 							*it_new = *it_old;
-						// Position found 
+						// Position found
 						} else {
 							*it_new = val;
 
@@ -322,7 +335,8 @@ namespace ft {
 				} else {
 					// Val inserted right before position
 					insert(position, 1, val);
-					ret_position = position - 1;
+					// Position now points to the new val
+					ret_position = position;
 				}
 
 				return ret_position;
@@ -348,7 +362,7 @@ namespace ft {
 						// Copy old to new
 						if (it_old != position) {
 							*it_new = *it_old;
-						// Position found 
+						// Position found
 						} else {
 							for (int i = n; i > 0; i--) {
 								*it_new = val;
@@ -364,10 +378,20 @@ namespace ft {
 					_start = tmp;
 					_size += n;
 					_capacity += n;
-				} else 
+				} else {
+					// Offset existing values
+					for (iterator it = end(), pos = position + n; it != end() - n; it--, pos--) {
+						*it = *pos;
+					}
 
+					// Setting the new values before position
+					for (iterator it = position; it != position + n; it++) {
+						*it = val;
+					}
+
+					//Update private data of vector
+					_size += n;
 				}
-
 			}
 
 			// Range
@@ -376,9 +400,57 @@ namespace ft {
 						typename ft::enable_if<!ft::is_integral<InputIterator>::value,
 							InputIterator>::type* = NULL) {
 
-				(void)position;
-				(void)first;
-				(void)last;
+				value_type*		tmp;
+				iterator 		it_old;
+				iterator 		it_new;
+				difference_type	distance = ft::distance(first, last);
+
+				// New element requires reallocation because vector is full
+				if (_size + distance > _capacity) {
+					// Reallocate new
+					tmp = _allocator.allocate(_capacity + distance);
+
+					// Copy sequence to new array
+					it_old = begin();
+					it_new = tmp;
+					while (it_old != end()) {
+
+						// Copy old to new
+						if (it_old != position) {
+							*it_new = *it_old;
+						// Position found
+						} else {
+							for (int i = distance; i > 0; i--) {
+								*it_new = *first++;
+								it_new++;
+							}
+						}
+						it_old++;
+						it_new++;
+					}
+
+					// Update private data of vector
+					_allocator.deallocate(_start, _capacity);
+					_start = tmp;
+					_size += distance;
+					_capacity += distance;
+				} else {
+					// Offset existing values (if there are any)
+					if (!empty()) {
+						for (iterator it = end(), pos = position + distance; it != end() - distance; it--, pos--) {
+							*it = *pos;
+						}
+					}
+
+					// Setting the new values before position
+					for (iterator it = position; it != position + distance; it++) {
+						*it = *first++;
+					}
+
+					//Update private data of vector
+					_size += distance;
+				}
+
 			}
 
 /******************************************************************************/

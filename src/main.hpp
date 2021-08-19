@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 16:36:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 10:58:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ struct Buffer
 //public:
 	//MutantStack() {}
 	//MutantStack(const MutantStack<T>& src) { *this = src; }
-	//MutantStack<T>& operator=(const MutantStack<T>& rhs) 
+	//MutantStack<T>& operator=(const MutantStack<T>& rhs)
 	//{
 		//this->c = rhs.c;
 		//return *this;

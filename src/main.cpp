@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 21:11:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 16:29:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,18 @@
 
 template<typename Vector>
 void print_vec_info(Vector vec) {
-	std::cout << vec.size() << std::endl;
-	std::cout << vec.empty() << std::endl;
-	std::cout << vec.capacity() << std::endl;
+	std::cout << "Size: " << vec.size() << std::endl;
+	std::cout << "Capacity: " << vec.capacity() << std::endl;
+
+	if (vec.empty()) {
+		std::cout << "Vector is empty" << std::endl;
+	} else {
+		std::cout << "Values: ";
+		for (typename Vector::iterator it = vec.begin(); it != vec.end(); it++) {
+			std::cout << *it << " ";
+		}
+		std::cout << std::endl;
+	}
 }
 
 int test_subject(int argc, char* argv[]) {
@@ -64,7 +73,7 @@ int test_subject(int argc, char* argv[]) {
 	//{
 		////NORMAL ! :P
 	//}
-	
+
 	//for (int i = 0; i < COUNT; ++i)
 	//{
 		//map_int.insert(ft::make_pair(rand(), rand()));
@@ -106,9 +115,6 @@ void test_vector_constructors(void) {
 
 	print_vec_info(vec_fill);
 
-	for (ft::vector<int>::iterator it = vec_fill.begin(); it != vec_fill.end(); it++) {
-		std::cout << *it << " ";
-	}
 	std::cout << std::endl;
 
 	// Because fill constructor only allocates exact needed memory
@@ -239,21 +245,21 @@ void test_iterator_traits(void) {
 
 	test_single_iterator_traits<
 		ft::iterator_traits<ft::vector<int>::iterator>,
-		std::ptrdiff_t, 
+		std::ptrdiff_t,
 		int,
 		int*,
 		int&,
 		std::random_access_iterator_tag>();
 	test_single_iterator_traits<
 		ft::iterator_traits<ft::vector<std::string>::iterator>,
-		std::ptrdiff_t, 
+		std::ptrdiff_t,
 		std::string,
 		std::string*,
 		std::string&,
 		std::random_access_iterator_tag>();
 	test_single_iterator_traits<
 		ft::iterator_traits<ft::vector<char>::iterator>,
-		std::ptrdiff_t, 
+		std::ptrdiff_t,
 		char,
 		char*,
 		char&,

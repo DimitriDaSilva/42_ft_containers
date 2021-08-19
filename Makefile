@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/16 17:07:22 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/19 11:16:25 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ $(FT_NAME):					$(OBJS)
 							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS)
 
 $(STL_NAME):				fclean
-							@ $(CC) $(FLAG_WARNING) -std=c++20 -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
+							@ $(CC) $(FLAG_WARNING) -g -std=c++20 -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
 
 $(PATH_BUILD)/%.o:			%.cpp
 							@ mkdir -p $(dir $@)
@@ -84,7 +84,7 @@ fclean:						clean
 
 re:							fclean all
 
-test:						re
+test:						debug
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
 							@ /usr/bin/time -o $(PATH_LOGS)/$(FT_NAME).time ./$(FT_NAME) $(SEED) > $(PATH_LOGS)/$(FT_NAME).log

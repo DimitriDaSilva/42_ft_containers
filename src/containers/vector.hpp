@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 16:41:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 17:12:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,9 @@ namespace ft {
 
 				reserve(ft::distance(first, last));
 
-				size_type i = 0;
 				for (iterator it_arg = first; it_arg != last; it_arg++) {
-					_allocator.construct(_start + i, *it_arg);
-					i++;
+					_allocator.construct(_start + _size, *it_arg);
+					_size++;
 				}
 
 			}
@@ -127,6 +126,8 @@ namespace ft {
 
 /*                                Assignement                                 */
 			vector& operator=(vector const& other) {
+				_size = 0;
+				_capacity = 0;
 				_max_size = other._max_size;
 
 				// Deep copy of the sequence
@@ -231,7 +232,7 @@ namespace ft {
 
 					// Copy existing sequence
 					for (size_type i = 0; i < _size; i++) {
-						tmp[i] = _start[i];
+						_allocator.construct(&tmp[i], _start[i]);
 					}
 
 					// We only want to deallocate if there has been previous
@@ -256,7 +257,9 @@ namespace ft {
 							InputIterator>::type* = NULL) {
 
 				// Destroy existing vector
-				this->~vector();
+				if (_capacity != 0) {
+					this->~vector();
+				}
 
 				// When assigning we are overwritting so we only need
 				// last - first size
@@ -269,7 +272,9 @@ namespace ft {
 			// Fill
 			void assign(size_type n, const value_type& val) {
 				// Destroy existing vector
-				this->~vector();
+				if (_capacity != 0) {
+					this->~vector();
+				}
 
 				// We allocate only n items when constructing n size
 				reserve(n);

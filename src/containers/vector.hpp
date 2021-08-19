@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 21:46:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 09:26:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,10 +279,10 @@ namespace ft {
 			// Single element
 			iterator insert(iterator position, const value_type& val) {
 
-				iterator ret_position;
-				value_type* tmp;;
-				iterator it_old;
-				iterator it_new;
+				iterator	ret_position;
+				value_type*	tmp;;
+				iterator 	it_old;
+				iterator 	it_new;
 
 				// New element requires reallocation because vector is full
 				if (_size == _capacity) {
@@ -293,27 +293,36 @@ namespace ft {
 					it_old = begin();
 					it_new = tmp;
 					while (it_old != end()) {
+
+						// Copy old to new
+						if (it_old != position) {
+							*it_new = *it_old;
 						// Position found 
-						if (it_old == position) {
+						} else {
 							*it_new = val;
+
 							ret_position = it_new;
+
+							// For the position found we only want to increment
+							// the new iterator
 							it_new++;
 							continue;
-						} else {
-							*it_new = *it_old;
 						}
 						it_old++;
 						it_new++;
 					}
 
+					// Update private data of vector
+					_allocator.deallocate(_start, _capacity);
 					_start = tmp;
 					_size += 1;
 					_capacity *= 2;
 
 				// No need to reallocate so iterator position will still be valid
 				} else {
+					// Val inserted right before position
 					insert(position, 1, val);
-					ret_position = position;
+					ret_position = position - 1;
 				}
 
 				return ret_position;
@@ -321,13 +330,44 @@ namespace ft {
 
 			// Fill
 			void insert(iterator position, size_type n, const value_type& val) {
-				//ft::vector<value_type, allocator_type> cpy(n, )
 
-				(void)position;
-				(void)n;
-				(void)val;
+				value_type*	tmp;;
+				iterator 	it_old;
+				iterator 	it_new;
 
-				//for (iterator it ⁼ position; it )
+				// New element requires reallocation because vector is full
+				if (_size + n > _capacity) {
+					// Reallocate new
+					tmp = _allocator.allocate(_capacity + n);
+
+					// Copy sequence to new array
+					it_old = begin();
+					it_new = tmp;
+					while (it_old != end()) {
+
+						// Copy old to new
+						if (it_old != position) {
+							*it_new = *it_old;
+						// Position found 
+						} else {
+							for (int i = n; i > 0; i--) {
+								*it_new = val;
+								it_new++;
+							}
+						}
+						it_old++;
+						it_new++;
+					}
+
+					// Update private data of vector
+					_allocator.deallocate(_start, _capacity);
+					_start = tmp;
+					_size += n;
+					_capacity += n;
+				} else 
+
+				}
+
 			}
 
 			// Range

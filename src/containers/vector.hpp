@@ -6,22 +6,21 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 17:12:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 17:31:09 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <iostream> // TODO: DELETE
 # include <limits>		// std::numeric_limits
 # include <stdexcept>	// std::lenght_error
 # include <iterator>	// std::distance
 
-# include "../utils/distance.hpp"					// ft::distance
 # include "../iterators/random_access_iterator.hpp"	// ft::random_access_iterator
+# include "../utils/distance.hpp"					// ft::distance
 # include "../utils/enable_if.hpp"					// ft::enable_if
-# include "../utils/is_integral.hpp"					// ft::is_integral
+# include "../utils/is_integral.hpp"				// ft::is_integral
 //# include "../utils/is_const.hpp"					// ft::is_const
 
 namespace ft {

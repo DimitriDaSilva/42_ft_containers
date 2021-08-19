@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 17:26:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/19 17:46:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,25 +107,21 @@ void test_vector_constructors(void) {
 
 	// Test empty (default constructor)
 	ft::vector<int> vec_empty;
-
 	print_vec_info(vec_empty);
 
 	// Test fill
-	ft::vector<int> vec_fill(6, 42);
-
-	print_vec_info(vec_fill);
+	ft::vector<int> vec_fill1(6, 42);
+	print_vec_info(vec_fill1);
 
 	std::cout << std::endl;
 
 	// Because fill constructor only allocates exact needed memory
 	// we test if push_back triggers same memory allocation as std
-	vec_fill.push_back(4);
-
-	print_vec_info(vec_fill);
+	vec_fill1.push_back(4);
+	print_vec_info(vec_fill1);
 
 	// Test range
-	ft::vector<int> vec_range(vec_fill.begin(), vec_fill.end());
-
+	ft::vector<int> vec_range(vec_fill1.begin(), vec_fill1.end());
 	print_vec_info(vec_range);
 
 	std::cout << std::endl;
@@ -135,23 +131,20 @@ void test_vector_capacity(void) {
 	std::cout << "*** test_vector_capacity ***" << std::endl;
 
 	ft::vector<int> vec;
-
 	print_vec_info(vec);
+
 	std::cout << "Max size: " << vec.max_size() << std::endl;
 
-	//vec.push_back(4);
-	//vec.push_back(2);
-
+	vec.push_back(4);
+	vec.push_back(2);
 	print_vec_info(vec);
 
 	vec.resize(1);
-
 	print_vec_info(vec);
 
 	for (int i = 0; i < 50; i++) {
 		vec.push_back(i);
 	}
-
 	print_vec_info(vec);
 
 	vec.resize(20);
@@ -163,7 +156,6 @@ void test_vector_capacity(void) {
 	} catch (std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
-
 	print_vec_info(vec);
 
 	std::cout << std::endl;

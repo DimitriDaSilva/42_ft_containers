@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 17:31:09 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/20 12:29:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include <stdexcept>	// std::lenght_error
 # include <iterator>	// std::distance
 
-# include "../iterators/random_access_iterator.hpp"	// ft::random_access_iterator
-# include "../utils/distance.hpp"					// ft::distance
-# include "../utils/enable_if.hpp"					// ft::enable_if
-# include "../utils/is_integral.hpp"				// ft::is_integral
-//# include "../utils/is_const.hpp"					// ft::is_const
+# include "random_access_iterator.hpp"	// ft::random_access_iterator
+# include "distance.hpp"				// ft::distance
+# include "enable_if.hpp"				// ft::enable_if
+# include "is_integral.hpp"				// ft::is_integral
+//# include "is_const.hpp"				// ft::is_const
 
 namespace ft {
 
@@ -113,7 +113,9 @@ namespace ft {
 
 			// Default
 			virtual ~vector(void) {
-				_allocator.deallocate(_start, _capacity);
+				if (!empty()) {
+					_allocator.deallocate(_start, _capacity);
+				}
 				_start = NULL;
 				_size = 0;
 				_capacity = 0;

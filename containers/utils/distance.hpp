@@ -6,18 +6,18 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 15:14:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/19 08:54:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/20 10:29:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DISTANCE_HPP
 # define DISTANCE_HPP
 
-# include "../iterators/iterator_traits.hpp"
-
 # include <iterator>	// iterator tags
 # include <typeinfo>	// std::typeid
 # include <exception>	// std::exception
+
+# include "iterator_traits.hpp"	// ft::iterator_traits
 
 namespace ft {
 

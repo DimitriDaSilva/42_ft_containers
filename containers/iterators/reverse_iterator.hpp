@@ -6,15 +6,16 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 16:34:09 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/20 10:30:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_ITERATOR_HPP
 # define REVERSE_ITERATOR_HPP
 
-# include "./iterator_traits.hpp"	// ft::iterator_traits
 # include <stdlib.h>				// NULL
+
+# include "iterator_traits.hpp"		// ft::iterator_traits
 
 namespace ft {
 

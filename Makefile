@@ -6,35 +6,42 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/19 17:40:40 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/20 12:30:34 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program built
-FT_NAME				:=		ft_containers
-STL_NAME			:=		stl_containers
+NAME_FT				:=		ft_containers
+NAME_STL			:=		stl_containers
 
 # Name directory
-PATH_SRC			:=		src
+PATH_SRC			:=		tester
 PATH_BUILD			:=		build
+PATH_BUILD_FT		:=		$(PATH_BUILD)/ft
+PATH_BUILD_STL		:=		$(PATH_BUILD)/stl
+PATH_CONTAINERS		:=		containers
 PATH_LOGS			:=		logs
 
 # List of sources
 SRCS				:=		$(shell find $(PATH_SRC) -name *.cpp)
-OBJS				:=		$(SRCS:%.cpp=$(PATH_BUILD)/%.o)
-DEPS				:=		$(OBJS:.o=.d)
-INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
+OBJS_FT				:=		$(SRCS:%.cpp=$(PATH_BUILD_FT)/%.o)
+OBJS_STL			:=		$(SRCS:%.cpp=$(PATH_BUILD_STL)/%.o)
+DEPS_FT				:=		$(OBJS_FT:.o=.d)
+DEPS_STL			:=		$(OBJS_STL:.o=.d)
+INC_DIRS_SRC		:=		$(shell find $(PATH_SRC) -type d)
+INC_DIRS_CONTAINERS	:=		$(shell find $(PATH_CONTAINERS) -type d)
 
 # Compiler
 CC					:=		clang++
 
 # Flags - compilation
 FLAG_WARNING		:=		-Wall -Wextra -Werror
-FLAG_CPP_VERSION	:=		-std=c++98
-FLAG_INC			:= 		$(addprefix -I, $(INC_DIRS))
+FLAG_INC_SRC		:= 		$(addprefix -I, $(INC_DIRS_SRC))
+FLAG_INC_CONTAINERS	:= 		$(addprefix -I, $(INC_DIRS_CONTAINERS))
 FLAG_MAKEFILE		:=		-MMD -MP
 FLAG_DEBUG			:= 		-g
-FLAGS_COMP			:= 		$(FLAG_WARNING) $(FLAG_CPP_VERSION) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG)
+FLAGS_COMP_FT		:= 		$(FLAG_WARNING) $(FLAG_MAKEFILE) $(FLAG_DEBUG) -std=c++98 $(FLAG_INC_SRC) $(FLAG_INC_CONTAINERS)
+FLAGS_COMP_STL		:= 		$(FLAG_WARNING) $(FLAG_MAKEFILE) $(FLAG_DEBUG) -std=c++20 $(FLAG_INC_SRC) -D IS_TEST=1
 
 # Flags - memory leak check
 FLAG_MEM_LEAK		:= 		-fsanitize=address
@@ -53,22 +60,26 @@ _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
 _FAILURE			:=		[$(_RED)FAILURE$(_RESET)]
 
 # General functions
-all:						init $(FT_NAME) $(STL_NAME)
+all:						init $(NAME_FT) $(NAME_STL)
 							@ printf "$(_SUCCESS) Compilation done\n"
 
 init:
-							@ printf "$(_INFO) Initialize $(FT_NAME)\n"
-							@ printf "$(_INFO) Initialize $(STL_NAME)\n"
+							@ printf "$(_INFO) Initialize $(NAME_FT)\n"
+							@ printf "$(_INFO) Initialize $(NAME_STL)\n"
 
-$(FT_NAME):					$(OBJS)
-							@ $(CC) $(FLAGS_COMP) -o $@ $(OBJS)
+$(NAME_FT):					$(OBJS_FT)
+							@ $(CC) $(FLAGS_COMP_FT) -o $@ $(OBJS_FT)
 
-$(STL_NAME):				fclean
-							@ $(CC) $(FLAG_WARNING) -g -std=c++20 -D IS_TEST=1 $(PATH_SRC)/main.cpp -o $@
+$(NAME_STL):				$(OBJS_STL)
+							@ $(CC) $(FLAGS_COMP_STL) -o $@ $(OBJS_STL)
 
-$(PATH_BUILD)/%.o:			%.cpp
+$(PATH_BUILD_FT)/%.o:		%.cpp
 							@ mkdir -p $(dir $@)
-							@ $(CC) $(FLAGS_COMP) -c $< -o $@
+							@ $(CC) $(FLAGS_COMP_FT) -c $< -o $@
+
+$(PATH_BUILD_STL)/%.o:		%.cpp
+							@ mkdir -p $(dir $@)
+							@ $(CC) $(FLAGS_COMP_STL) -c $< -o $@
 
 bonus:						all
 
@@ -78,7 +89,7 @@ clean:
 							@ printf "$(_INFO) Deleted files and directories\n"
 
 fclean:						clean
-							@ $(RM) $(FT_NAME) $(STL_NAME)
+							@ $(RM) $(NAME_FT) $(NAME_STL)
 							@ printf "$(_INFO) Deleted binaries\n"
 
 re:							fclean all
@@ -86,21 +97,21 @@ re:							fclean all
 test:						debug
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
-							@ /usr/bin/time -o $(PATH_LOGS)/$(FT_NAME).time ./$(FT_NAME) $(SEED) > $(PATH_LOGS)/$(FT_NAME).log
-							@ /usr/bin/time -o $(PATH_LOGS)/$(STL_NAME).time ./$(STL_NAME) $(SEED) > $(PATH_LOGS)/$(STL_NAME).log
-							@ diff -I '^Capacity' $(PATH_LOGS)/$(FT_NAME).log $(PATH_LOGS)/$(STL_NAME).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
+							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log
+							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log
+							@ diff -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
 							@ if [ -s $(PATH_LOGS)/diff.log ]; \
 							then \
 								printf "$(_FAILURE) Failed test. Check the logs:\n"; \
 								cat $(PATH_LOGS)/diff.log; \
 							else \
 								printf "$(_SUCCESS) Test successful\n"; \
-							fi; 
+							fi;
 							@ printf "$(_INFO) Time efficiency:\n"
 							@ printf "ft_containers:  "
-							@ cat $(PATH_LOGS)/$(FT_NAME).time | grep 'elapsed' | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
+							@ cat $(PATH_LOGS)/$(NAME_FT).time | grep 'elapsed' | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
 							@ printf "stl_containers: "
-							@ cat $(PATH_LOGS)/$(STL_NAME).time | grep elapsed | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
+							@ cat $(PATH_LOGS)/$(NAME_STL).time | grep elapsed | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
 							@ rm -f $(PATH_LOGS)/*.time $(PATH_LOGS)/log.diff
 
 # Debugging functions
@@ -112,5 +123,5 @@ debug:						re
 
 -include $(DEPS)
 
-# Source for some pieces of this Makefile: 
+# Source for some pieces of this Makefile:
 # https://makefiletutorial.com/#makefile-cookbook

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator_traits.cpp                                :+:      :+:    :+:   */
+/*   test_iterator_traits.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:36:33 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 10:36:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:40:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ template<
 	typename ref,
 	typename cat
 	>
-void test_single_iterator_traits(void) {
+void
+test_single_iterator_traits()
+{
 	if (!(typeid(typename it::difference_type) == typeid(diff_type))) {
 		std::cout << "difference_type invalid" << std::endl;
 	} else if (!(typeid(typename it::value_type) == typeid(value_types))) {
@@ -36,9 +38,9 @@ void test_single_iterator_traits(void) {
 	}
 }
 
-void test_iterator_traits(void) {
-	std::cout << "*** test_utils_iterator_traits ***" << std::endl;
-
+void
+test_iterator_traits()
+{
 	test_single_iterator_traits<
 		ft::iterator_traits<ft::vector<int>::iterator>,
 		std::ptrdiff_t,
@@ -60,7 +62,5 @@ void test_iterator_traits(void) {
 		char*,
 		char&,
 		std::random_access_iterator_tag>();
-
-	std::cout << std::endl;
 }
 

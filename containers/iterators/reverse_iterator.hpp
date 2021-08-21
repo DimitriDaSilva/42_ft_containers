@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 10:30:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@
 
 # include "iterator_traits.hpp"		// ft::iterator_traits
 
-namespace ft {
+namespace ft
+{
 
 	template<class Iter>
-	class reverse_iterator {
+	class reverse_iterator
+	{
 
 		public:
 /******************************************************************************/
@@ -50,19 +52,20 @@ namespace ft {
 /*                                Constructors                                */
 
 			// Default
-			reverse_iterator(void) : _ptr(NULL) {};
+			reverse_iterator(void) : _ptr(NULL) {}
 
 			// Initialization
-			explicit reverse_iterator(iterator_type it) : _it(it) {};
+			explicit reverse_iterator(iterator_type it) : _it(it) {}
 
 			// Copy
 			reverse_iterator(reverse_iterator const& rhs)
-				: _it(rhs._it) {};
+				: _it(rhs._it) {}
 
 /*                                Destructors                                 */
 
 			// Default
-			virtual ~reverse_iterator(void) {}
+			virtual
+			~reverse_iterator(void) {}
 
 /******************************************************************************/
 /*                   	   OVERLOADING OPERATORS                              */
@@ -70,7 +73,9 @@ namespace ft {
 
 /*                                Assignement                                 */
 
-			reverse_iterator& operator=(reverse_iterator const& rhs) {
+			reverse_iterator&
+			operator=(reverse_iterator const& rhs)
+			{
 				_ptr = rhs._ptr;
 				_it = rhs._it;
 
@@ -79,7 +84,8 @@ namespace ft {
 
 			// Overload called when trying to copy construct a const_iterator
 			// based on an iterator
-			operator reverse_iterator<Iter const>(void) const
+			operator
+			reverse_iterator<Iter const>(void) const
 			{
 				return reverse_iterator<Iter const>(_ptr);
 			}
@@ -88,7 +94,9 @@ namespace ft {
 /*                   	    GETTERS & SETTERS                                 */
 /******************************************************************************/
 
-			iterator_type base() const {
+			iterator_type
+			base() const
+			{
 				return _it;
 			}
 

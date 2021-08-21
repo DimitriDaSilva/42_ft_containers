@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 15:29:24 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/12 18:19:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:56:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@
 // - unsigned long int
 // - unsigned long long int
 
-namespace ft {
+namespace ft
+{
 
 	// The member types, functions and constants are defined in integral_constant.
-	template <class T, T v>
+	template<class T, T v>
 	struct integral_constant {
 		// Member types
 		typedef T value_type;

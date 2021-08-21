@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:41:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 12:09:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 23:01:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 # include "test_is_const.hpp"
 # include "test_is_integral.hpp"
 # include "test_iterator_traits.hpp"
-# include "test_reverse_iterator.hpp"
 
-void test_others(void);
+void test_others();
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:39:53 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 11:40:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include <iostream>	// std::cout
 
-void test_vector_modifiers(void);
+void test_vector_modifiers();
 
 #endif

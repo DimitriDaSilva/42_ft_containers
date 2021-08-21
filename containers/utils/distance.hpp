@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 15:14:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 10:29:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,30 @@
 
 # include "iterator_traits.hpp"	// ft::iterator_traits
 
-namespace ft {
+namespace ft
+{
 
 	template<class InputIterator>
 	static typename ft::iterator_traits<InputIterator>::difference_type
-	distance(InputIterator first, InputIterator last) {
+	distance(InputIterator first, InputIterator last)
+	{
 
 		if (typeid(typename ft::iterator_traits<InputIterator>::iterator_category)
-				== typeid(std::output_iterator_tag)) {
+				== typeid(std::output_iterator_tag))
+		{
 			throw std::exception();
-		} else if (typeid(typename ft::iterator_traits<InputIterator>::iterator_category)
-				== typeid(std::random_access_iterator_tag)) {
+		}
+		else if (typeid(typename ft::iterator_traits<InputIterator>::iterator_category)
+				== typeid(std::random_access_iterator_tag))
+		{
 			return last - first;
-		} else {
+		}
+		else
+		{
 			typename ft::iterator_traits<InputIterator>::difference_type diff = 0;
 
-			for (InputIterator it = first; it != last; it++) {
+			for (InputIterator it = first; it != last; it++)
+			{
 				diff++;
 			}
 

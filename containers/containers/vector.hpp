@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 19:25:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 namespace ft
 {
-	template <class T, class A = std::allocator<T> >
+	template<class T, class A = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -88,11 +88,12 @@ namespace ft
 			}
 
 			// Range
-			template <class InputIterator>
+			template<class InputIterator>
 			vector (InputIterator first,
 					InputIterator last,
 					allocator_type const& alloc = allocator_type(),
-					typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) :
+					typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+											InputIterator>::type* = NULL) :
 				_start(NULL),
 				_allocator(alloc),
 				_size(0),
@@ -184,27 +185,37 @@ namespace ft
 			}
 
 			// Reverse
-			//reverse_iterator rbegin() {
-				//if (empty()) {
-					//return rend();
-				//}
-				//return _start + _size - 1;
-			//}
+			reverse_iterator
+			rbegin()
+			{
+				if (empty())
+				{
+					return rend();
+				}
+				return _start + _size - 1;
+			}
 
-			//const_reverse_iterator rbegin() const {
-				//if (empty()) {
-					//return rend();
-				//}
-				//return _start + _size - 1;
-			//}
+			const_reverse_iterator
+			rbegin() const
+			{
+				if (empty())
+				{
+					return rend();
+				}
+				return _start + _size - 1;
+			}
 
-			//reverse_iterator rend() {
-				//return _start - 1;
-			//}
+			reverse_iterator
+			rend()
+			{
+				return _start - 1;
+			}
 
-			//const_reverse_iterator rend() const {
-				//return _start - 1;
-			//}
+			const_reverse_iterator
+			rend() const
+			{
+				return _start - 1;
+			}
 
 /*                                  Capacity                                  */
 
@@ -243,7 +254,7 @@ namespace ft
 					}
 					for (size_type i = _size; i < n; i++)
 					{
-						_start[i] = val;
+						_allocator.construct(&_start[i], val);
 					}
 					_size = n;
 				}
@@ -281,16 +292,11 @@ namespace ft
 						_allocator.construct(&tmp[i], _start[i]);
 					}
 
-					// We only want to deallocate if there has been previous
-					// allocation
-					if (_capacity != 0)
-					{
-						_allocator.deallocate(_start, _capacity);
-					}
+					_allocator.deallocate(_start, _capacity);
 
 					// Update data
-					_capacity = n;
 					_start = tmp;
+					_capacity = n;
 				}
 			}
 
@@ -488,8 +494,8 @@ namespace ft
 						{
 							_allocator.construct(&*it_new, *it_old);
 							it_old++;
-						// Position found
 						}
+						// Position found
 						else
 						{
 							while (distance--)

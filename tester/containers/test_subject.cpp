@@ -6,13 +6,15 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:09:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 11:52:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test_subject.hpp"
 
-void test_subject(void) {
+void
+test_subject()
+{
 	std::cout << "*** test_subject ***" << std::endl;
 
 	srand(g_seed);
@@ -73,6 +75,5 @@ void test_subject(void) {
 	//{
 		//std::cout << *it;
 	//}
-	//std::cout << std::endl;
 }
 

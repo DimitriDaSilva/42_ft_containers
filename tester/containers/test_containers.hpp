@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:13:02 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 12:00:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include "test_vector.hpp"
 # include "test_wrappers.hpp"
 
-void test_containers(void);
+void test_containers();
 
 #endif

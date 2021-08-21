@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:10:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 12:00:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ struct Buffer
 	//iterator end() { return this->c.end(); }
 //};
 
-void test_subject(void);
+void test_subject();
 
 #endif

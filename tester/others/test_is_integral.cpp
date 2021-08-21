@@ -6,14 +6,16 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:39:08 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 10:39:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 23:00:23 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test_is_integral.hpp"
 
 template<typename T>
-void test_single_is_integral(std::string const& type_tested) {
+void
+test_single_is_integral(std::string const& type_tested)
+{
 	int value = ft::is_integral<T>::value;
 	typedef typename ft::is_integral<T>::value_type value_type;
 	typedef typename ft::is_integral<T>::type type;
@@ -21,16 +23,19 @@ void test_single_is_integral(std::string const& type_tested) {
 	if (value
 			&& typeid(value_type) == typeid(bool)
 			&& typeid(type) == typeid(ft::true_type)
-			&& ft::is_integral<T>() == value) {
+			&& ft::is_integral<T>() == value)
+	{
 		std::cout << type_tested << " is integral" << std::endl;
-	} else {
+	}
+	else
+	{
 		std::cout << type_tested << " is not integral" << std::endl;
 	}
 }
 
-void test_is_integral(void) {
-	std::cout << "*** test_utils_is_integral ***" << std::endl;
-
+void
+test_is_integral()
+{
 	// correct ones
 	test_single_is_integral<bool>("bool");
 	test_single_is_integral<char>("char");
@@ -49,6 +54,4 @@ void test_is_integral(void) {
 	test_single_is_integral<int *>("int *");
 	test_single_is_integral<std::string>("std::string");
 	test_single_is_integral<char *>("char *");
-
-	std::cout << std::endl;
 }

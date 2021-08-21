@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 11:00:54 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 11:10:41 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 23:00:23 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include <cstddef>     // std::ptrdiff_t, std::size_t
 # include <limits>      // std::numeric_limits
 
-template <class T> class custom_allocator;
+template<class T> class custom_allocator;
 
-template <>
+template<>
 class custom_allocator<void>
 {
     public:
@@ -28,14 +28,14 @@ class custom_allocator<void>
         typedef std::size_t       size_type;
         typedef std::ptrdiff_t    difference_type;
 
-        template <class U>
+        template<class U>
         struct rebind
         {
             typedef custom_allocator<U> other;
         };
     };
 
-template <class T>
+template<class T>
 class custom_allocator
 {
 public:
@@ -47,14 +47,14 @@ public:
     typedef std::size_t       size_type;
     typedef std::ptrdiff_t    difference_type;
 
-    template <class U>
+    template<class U>
     struct rebind
     {
         typedef custom_allocator<U> other;
     };
 
     custom_allocator() throw() {}  // not required, unless used
-    template <class U> custom_allocator(custom_allocator<U> const&) throw() {}
+    template<class U> custom_allocator(custom_allocator<U> const&) throw() {}
 
     pointer
     allocate(size_type n, custom_allocator<void>::const_pointer = 0)
@@ -99,14 +99,14 @@ public:
     }
 };
 
-template <class T, class U>
+template<class T, class U>
 bool
 operator==(custom_allocator<T> const&, custom_allocator<U> const&)
 {
     return true;
 }
 
-template <class T, class U>
+template<class T, class U>
 bool
 operator!=(custom_allocator<T> const& x, custom_allocator<U> const& y)
 {

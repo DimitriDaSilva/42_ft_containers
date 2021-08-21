@@ -6,14 +6,15 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 10:33:42 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/14 16:01:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENABLE_IF_HPP
 # define ENABLE_IF_HPP
 
-namespace ft {
+namespace ft
+{
 	template<bool B, class T = void> struct enable_if {};
 	template<class T> struct enable_if<true, T> { typedef T type; };
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 11:29:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 17:06:57 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include "is_integral.hpp"	// ft::false_type, ft::true_type
 
-namespace ft {
+namespace ft
+{
 	template<class T> struct is_const : ft::false_type {};
 	template<class T> struct is_const<const T> : ft::true_type {};
 }

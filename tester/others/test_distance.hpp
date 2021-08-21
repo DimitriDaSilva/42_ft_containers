@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 12:04:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 12:04:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:36:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 
 # include "containers.hpp"
 
-void test_distance(void);
+void test_distance();
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 11:06:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/16 20:59:18 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 # include <iterator>	// std::random_access_iterator_tag
 
-namespace ft {
-	
+namespace ft
+{
 	template<class Iterator>
-	class iterator_traits {
+	class iterator_traits
+	{
 		public:
 			typedef typename Iterator::iterator_category	iterator_category; 
 			typedef typename Iterator::value_type			value_type; 
@@ -28,7 +29,8 @@ namespace ft {
 	};
 
 	template<class T>
-	class iterator_traits<T*> {
+	class iterator_traits<T*>
+	{
 		public:
 			typedef std::random_access_iterator_tag iterator_category;
 			typedef T				value_type;
@@ -38,7 +40,8 @@ namespace ft {
 	};
 
 	template<class T>
-	class iterator_traits<T const*> {
+	class iterator_traits<T const*>
+	{
 		public:
 			typedef std::random_access_iterator_tag iterator_category;
 			typedef T				value_type;

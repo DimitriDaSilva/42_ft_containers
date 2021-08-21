@@ -6,14 +6,15 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 10:41:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:41:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.hpp"
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 
 	if (argc != 2)
 	{

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:04:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 19:27:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 22:09:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,19 @@ test_vector_constructors_strings_custom_allocator()
 }
 
 void
+test_vector_constructors_copy_const()
+{
+	ft::vector<int> vec(6, 42);
+	print_vec_info(vec);
+
+	ft::vector<int> const const_vec1(vec);
+	print_vec_info(const_vec1);
+
+	ft::vector<int> const const_vec2 = vec;
+	print_vec_info(const_vec2);
+}
+
+void
 test_vector_constructors()
 {
 	test_wrapper(test_vector_constructors_empty, "empty");
@@ -105,4 +118,5 @@ test_vector_constructors()
 	test_wrapper(test_vector_constructors_deepness, "deepness");
 	test_wrapper(test_vector_constructors_strings, "strings");
 	test_wrapper(test_vector_constructors_strings_custom_allocator, "strings_custom_allocator");
+	test_wrapper(test_vector_constructors_copy_const, "copy const");
 }

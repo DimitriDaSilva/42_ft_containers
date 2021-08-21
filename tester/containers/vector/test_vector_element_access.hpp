@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_vector.hpp                                    :+:      :+:    :+:   */
+/*   test_vector_element_access.hpp                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:20:56 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 23:11:41 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/21 23:09:41 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/21 23:57:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_VECTOR_HPP
-# define TEST_VECTOR_HPP
+#ifndef TEST_VECTOR_ELEMENT_ACCESS_HPP
+# define TEST_VECTOR_ELEMENT_ACCESS_HPP
 
-# include <string>		// std::string
+# include <iostream>	// std::cout, std::endl
 
-# include "test_vector_capacity.hpp"
-# include "test_vector_constructors.hpp"
-# include "test_vector_iterators.hpp"
-# include "test_vector_element_access.hpp"
-# include "test_vector_modifiers.hpp"
+# include "containers.hpp"
 # include "test_wrappers.hpp"
+# include "print_vec_info.hpp"
 
-void test_vector();
+void test_vector_element_access();
 
 #endif

@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/21 11:14:51 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/21 23:39:22 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,7 @@ test:						debug
 							@ mkdir -p $(PATH_LOGS)
 							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log
 							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log
-							@ diff -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
+							@ diff -I '::' -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
 							@ if [ -s $(PATH_LOGS)/diff.log ]; \
 							then \
 								printf "$(_FAILURE) Failed test. Check the logs:\n"; \

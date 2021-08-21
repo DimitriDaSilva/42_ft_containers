@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/22 00:02:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 # define VECTOR_HPP
 
 # include <limits>		// std::numeric_limits
-# include <stdexcept>	// std::lenght_error
-# include <iterator>	// std::distance
+# include <stdexcept>	// std::lenght_error, std::out_of_range
 
 # include "random_access_iterator.hpp"	// ft::random_access_iterator
 # include "distance.hpp"				// ft::distance
 # include "enable_if.hpp"				// ft::enable_if
 # include "is_integral.hpp"				// ft::is_integral
-//# include "is_const.hpp"				// ft::is_const
 
 namespace ft
 {
@@ -279,7 +277,7 @@ namespace ft
 				// We need to throw we try to allocate more than max_size
 				if (n > _max_size)
 				{
-					throw std::length_error("vector::reserve");
+					throw std::length_error("reserve:: cannot increase capacity beyond max_size");
 				}
 				else if (n > _capacity)
 				{
@@ -298,6 +296,64 @@ namespace ft
 					_start = tmp;
 					_capacity = n;
 				}
+			}
+
+/*                               Element access                               */
+
+			reference
+			operator[] (size_type n)
+			{
+				return *(_start + n);
+			}
+
+			const_reference
+			operator[] (size_type n) const
+			{
+				return *(_start + n);
+			}
+
+			reference
+			at (size_type n)
+			{
+				if (_size <= n)
+				{
+					throw std::out_of_range("at:: out of range index");
+				}
+				return *(_start + n);
+			}
+
+			const_reference
+			at (size_type n) const
+			{
+				if (_size <= n)
+				{
+					throw std::out_of_range("at:: out of range index");
+				}
+				return *(_start + n);
+			}
+
+			reference
+			front()
+			{
+				return *_start;
+			}
+
+			const_reference
+			front() const
+			{
+				return *_start;
+			}
+
+			reference
+			back()
+			{
+				return *(_start + _size - 1);
+			}
+
+			const_reference
+			back() const
+			{
+				return *(_start + _size - 1);
 			}
 
 /*                                  Modifiers                                 */
@@ -339,7 +395,7 @@ namespace ft
 				{
 					reserve(_capacity * 2);
 				}
-				_start[_size] = val;
+				_allocator.construct(&_start[_size], val);
 				_size++;
 			}
 
@@ -506,8 +562,8 @@ namespace ft
 					}
 
 					this->~vector();
+
 					// Update private data of vector
-					//_allocator.deallocate(_start, _capacity);
 					_start = tmp;
 					_size = new_size;
 					_capacity = new_size;

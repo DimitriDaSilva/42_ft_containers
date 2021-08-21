@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:04:41 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 11:27:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 19:27:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ test_vector_constructors()
 	test_wrapper(test_vector_constructors_copy, "copy");
 	test_wrapper(test_vector_constructors_deepness, "deepness");
 	test_wrapper(test_vector_constructors_strings, "strings");
-	//test_wrapper(test_vector_constructors_strings_custom_allocator, "strings_custom_allocator");
+	test_wrapper(test_vector_constructors_strings_custom_allocator, "strings_custom_allocator");
 }

@@ -3,6 +3,7 @@
 *.o
 *.a
 *.sh
+compile_commands.json
 a.out
 build/
 class_template/

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 11:06:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/20 11:42:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/21 10:41:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ int main(int argc, char* argv[]) {
 
 	section_wrapper(test_containers, "containers");
 	section_wrapper(test_others, "others");
-	
+
 	return 0;
 }

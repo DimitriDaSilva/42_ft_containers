@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:39:53 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/22 09:54:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define TEST_VECTOR_MODIFIERS_HPP
 
 # include <iostream>	// std::cout
+# include <string>		// std::string
+
+# include "containers.hpp"
+# include "test_wrappers.hpp"
+# include "print_vec_info.hpp"
 
 void test_vector_modifiers();
 

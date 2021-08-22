@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/22 00:02:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/22 12:02:23 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,57 +463,63 @@ namespace ft
 			void
 			insert(iterator position, size_type n, const value_type& val)
 			{
-				value_type*	tmp;;
+				value_type*	tmp;
 				iterator 	it_old;
 				iterator 	it_new;
+				size_type	new_size = _size + n;
 
 				// New element requires reallocation because vector is full
-				if (_size + n > _capacity)
+				if (new_size > _capacity)
 				{
 					// Reallocate new
-					tmp = _allocator.allocate(_capacity + n);
+					tmp = _allocator.allocate(new_size);
 
 					// Copy sequence to new array
 					it_old = begin();
 					it_new = tmp;
-					while (it_old != end())
+					int i = n;
+					while (it_old != end() || i > 0)
 					{
-						// Copy old to new
-						if (it_old != position)
-						{
-							*it_new = *it_old;
 						// Position found
-						}
-						else
+						if (it_old == position)
 						{
-							for (int i = n; i > 0; i--)
+							while (i--)
 							{
-								*it_new = val;
+								_allocator.construct(&*it_new, val);
 								it_new++;
 							}
 						}
-						it_old++;
-						it_new++;
+						// Copy old to new
+						else
+						{
+							_allocator.construct(&*it_new, *it_old);
+							it_new++;
+							it_old++;
+						}
 					}
 
+					this->~vector();
+
 					// Update private data of vector
-					_allocator.deallocate(_start, _capacity);
 					_start = tmp;
-					_size += n;
-					_capacity += n;
+					_size = new_size;
+					_capacity = new_size;
 				}
 				else
 				{
 					// Offset existing values
-					for (iterator it = end(), pos = position + n; it != end() - n; it--, pos--)
+					if (!empty())
 					{
-						*it = *pos;
+						for (iterator it = end(), pos = position + n; it != end() - n; it--, pos--)
+						{
+							*it = *pos;
+						}
 					}
 
 					// Setting the new values before position
 					for (iterator it = position; it != position + n; it++)
 					{
-						*it = val;
+						_allocator.construct(&*it, val);
 					}
 
 					//Update private data of vector
@@ -545,19 +551,22 @@ namespace ft
 					it_new = tmp;
 					while (it_old != end() || distance > 0)
 					{
-						// Copy old to new
-						if (it_old != position)
-						{
-							_allocator.construct(&*it_new, *it_old);
-							it_old++;
-						}
 						// Position found
-						else
+						if (it_old == position)
 						{
 							while (distance--)
 							{
-								_allocator.construct(&*(it_new++), *first++);
+								_allocator.construct(&*it_new, *first);
+								it_new++;
+								first++;
 							}
+						}
+						// Copy old to new
+						else
+						{
+							_allocator.construct(&*it_new, *it_old);
+							it_new++;
+							it_old++;
 						}
 					}
 
@@ -568,6 +577,7 @@ namespace ft
 					_size = new_size;
 					_capacity = new_size;
 				}
+				// No reallocation
 				else
 				{
 					// Offset existing values (if there are any)
@@ -582,11 +592,12 @@ namespace ft
 					// Setting the new values before position
 					for (iterator it = position; it != position + new_size; it++)
 					{
-						*it = *first++;
+						_allocator.construct(&*it, *first);
+						first++;
 					}
 
-					//Update private data of vector
-					_size += new_size;
+					// Update private data of vector
+					_size += distance;
 				}
 			}
 

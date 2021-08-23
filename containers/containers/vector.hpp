@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 22:35:15 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 23:14:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <limits>		// std::numeric_limits
 # include <stdexcept>	// std::lenght_error, std::out_of_range
+# include <memory>		// std::allocator
 
 # include "random_access_iterator.hpp"
 # include "reverse_iterator.hpp"
@@ -611,6 +612,14 @@ namespace ft
 			}
 
 			_size = 0;
+		}
+
+/*                                  Allocator                                 */
+
+		allocator_type
+		get_allocator() const
+		{
+			return _allocator;
 		}
 
 /******************************************************************************/

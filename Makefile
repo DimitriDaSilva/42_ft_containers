@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/21 23:39:22 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/23 23:18:33 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ FLAG_INC_CONTAINERS	:= 		$(addprefix -I, $(INC_DIRS_CONTAINERS))
 FLAG_MAKEFILE		:=		-MMD -MP
 FLAG_DEBUG			:= 		-g
 FLAGS_COMP_FT		:= 		$(FLAG_WARNING) $(FLAG_MAKEFILE) $(FLAG_DEBUG) -std=c++98 $(FLAG_INC_SRC) $(FLAG_INC_CONTAINERS)
-FLAGS_COMP_STL		:= 		$(FLAG_WARNING) $(FLAG_MAKEFILE) $(FLAG_DEBUG) -std=c++20 $(FLAG_INC_SRC) -D IS_TEST=1
+FLAGS_COMP_STL		:= 		$(FLAG_WARNING) $(FLAG_MAKEFILE) $(FLAG_DEBUG) -std=c++11 $(FLAG_INC_SRC) -D IS_TEST=1
 
 # Flags - memory leak check
 FLAG_MEM_LEAK		:= 		-fsanitize=address

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:20:56 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 09:51:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 22:50:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "test_vector_reverse_iterators.hpp"
 # include "test_vector_element_access.hpp"
 # include "test_vector_modifiers.hpp"
+# include "test_vector_allocator.hpp"
 # include "test_wrappers.hpp"
 
 void test_vector();

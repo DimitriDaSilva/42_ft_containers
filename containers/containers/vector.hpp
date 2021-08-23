@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/22 12:02:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 11:33:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 # include <limits>		// std::numeric_limits
 # include <stdexcept>	// std::lenght_error, std::out_of_range
 
-# include "random_access_iterator.hpp"	// ft::random_access_iterator
-# include "distance.hpp"				// ft::distance
-# include "enable_if.hpp"				// ft::enable_if
-# include "is_integral.hpp"				// ft::is_integral
+# include "random_access_iterator.hpp"
+# include "reverse_iterator.hpp"
+# include "distance.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 
 namespace ft
 {
@@ -42,8 +43,8 @@ namespace ft
 
 			typedef ft::random_access_iterator<value_type> iterator;
 			typedef ft::random_access_iterator<value_type const> const_iterator;
-			typedef std::reverse_iterator<iterator> reverse_iterator;
-			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -190,7 +191,7 @@ namespace ft
 				{
 					return rend();
 				}
-				return _start + _size - 1;
+				return reverse_iterator(_start + _size - 1);
 			}
 
 			const_reverse_iterator
@@ -200,19 +201,19 @@ namespace ft
 				{
 					return rend();
 				}
-				return _start + _size - 1;
+				return const_reverse_iterator(_start + _size - 1);
 			}
 
 			reverse_iterator
 			rend()
 			{
-				return _start - 1;
+				return reverse_iterator(_start - 1);
 			}
 
 			const_reverse_iterator
 			rend() const
 			{
-				return _start - 1;
+				return const_reverse_iterator(_start - 1);
 			}
 
 /*                                  Capacity                                  */

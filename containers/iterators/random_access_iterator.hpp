@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 22:58:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 10:02:31 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ namespace ft
 				return random_access_iterator<value_type const>(_ptr);
 			}
 
-/*                                Comparison                                  */
+/*                            Relational operators                            */
 
 			bool
 			operator==(random_access_iterator const& rhs) const

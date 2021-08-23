@@ -6,32 +6,32 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 10:02:31 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 22:36:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 # define RANDOM_ACCESS_ITERATOR_HPP
 
+# include <iostream>
+
 # include <iterator>	// std::random_access_iterator_tag
 
 namespace ft
 {
-
 	template<class T>
 	class random_access_iterator
 	{
-
-		public:
+	public:
 /******************************************************************************/
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-			typedef T value_type;
-			typedef typename std::ptrdiff_t difference_type;
-			typedef value_type& reference;
-			typedef value_type* pointer;
-			typedef std::random_access_iterator_tag iterator_category;
+		typedef T value_type;
+		typedef typename std::ptrdiff_t difference_type;
+		typedef value_type& reference;
+		typedef value_type* pointer;
+		typedef std::random_access_iterator_tag iterator_category;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */
@@ -39,21 +39,21 @@ namespace ft
 
 /*                                Constructors                                */
 
-			// Default
-			random_access_iterator() : _ptr(NULL) {}
+		// Default
+		random_access_iterator() : _ptr(NULL) {}
 
-			// Type specific
-			random_access_iterator(pointer ptr) : _ptr(ptr) {}
+		// Type specific
+		random_access_iterator(pointer ptr) : _ptr(ptr) {}
 
-			// Copy
-			random_access_iterator(random_access_iterator const& rhs)
-				: _ptr(rhs._ptr) {}
+		// Copy
+		random_access_iterator(random_access_iterator const& rhs)
+			: _ptr(rhs._ptr) {}
 
 /*                                Destructors                                 */
 
-			// Default
-			virtual
-			~random_access_iterator() {}
+		// Default
+		virtual
+		~random_access_iterator() {}
 
 /******************************************************************************/
 /*                   	   OVERLOADING OPERATORS                              */
@@ -61,170 +61,184 @@ namespace ft
 
 /*                                Assignement                                 */
 
-			random_access_iterator&
-			operator=(random_access_iterator const& rhs)
-			{
-				_ptr = rhs._ptr;
+		random_access_iterator&
+		operator=(random_access_iterator const& rhs)
+		{
+			_ptr = rhs._ptr;
 
-				return *this;
-			}
+			return *this;
+		}
 
-			// Overload called when trying to copy construct a const_iterator
-			// based on an iterator
-			operator random_access_iterator<value_type const>() const
-			{
-				return random_access_iterator<value_type const>(_ptr);
-			}
+		// Overload called when trying to copy construct a const_iterator
+		// based on an iterator
+		operator random_access_iterator<value_type const>() const
+		{
+			return random_access_iterator<value_type const>(_ptr);
+		}
 
 /*                            Relational operators                            */
 
-			bool
-			operator==(random_access_iterator const& rhs) const
-			{
-				return _ptr == rhs._ptr;
-			}
+		bool
+		operator==(random_access_iterator const& rhs) const
+		{
+			return _ptr == rhs._ptr;
+		}
 
-			bool
-			operator!=(random_access_iterator const& rhs) const
-			{
-				return _ptr != rhs._ptr;
-			}
+		bool
+		operator!=(random_access_iterator const& rhs) const
+		{
+			return _ptr != rhs._ptr;
+		}
 
-			bool
-			operator<(random_access_iterator const& rhs) const
-			{
-				return _ptr < rhs._ptr;
-			}
+		bool
+		operator<(random_access_iterator const& rhs) const
+		{
+			return _ptr < rhs._ptr;
+		}
 
-			bool
-			operator>(random_access_iterator const& rhs) const
-			{
-				return _ptr > rhs._ptr;
-			}
+		bool
+		operator>(random_access_iterator const& rhs) const
+		{
+			return _ptr > rhs._ptr;
+		}
 
-			bool
-			operator<=(random_access_iterator const& rhs) const
-			{
-				return _ptr <= rhs._ptr;
-			}
+		bool
+		operator<=(random_access_iterator const& rhs) const
+		{
+			return _ptr <= rhs._ptr;
+		}
 
-			bool
-			operator>=(random_access_iterator const& rhs) const
-			{
-				return _ptr >= rhs._ptr;
-			}
+		bool
+		operator>=(random_access_iterator const& rhs) const
+		{
+			return _ptr >= rhs._ptr;
+		}
 
 /*                        Increment / decrement                               */
 
-			// Pre-increment
-			random_access_iterator&
-			operator++()
-			{
-				_ptr++;
+		// Pre-increment
+		random_access_iterator&
+		operator++()
+		{
+			_ptr++;
 
-				return *this;
-			}
+			return *this;
+		}
 
-			// Post-increment
-			random_access_iterator
-			operator++(int)
-			{
-				random_access_iterator<T> tmp(*this);
+		// Post-increment
+		random_access_iterator
+		operator++(int)
+		{
+			random_access_iterator<T> tmp(*this);
 
-				_ptr++;
+			_ptr++;
 
-				return tmp;
-			}
+			return tmp;
+		}
 
-			// Pre-decrement
-			random_access_iterator&
-			operator--()
-			{
-				_ptr--;
+		// Pre-decrement
+		random_access_iterator&
+		operator--()
+		{
+			_ptr--;
 
-				return *this;
-			}
+			return *this;
+		}
 
-			// Post-decrement
-			random_access_iterator
-			operator--(int)
-			{
-				random_access_iterator<T> tmp(*this);
+		// Post-decrement
+		random_access_iterator
+		operator--(int)
+		{
+			random_access_iterator<T> tmp(*this);
 
-				_ptr--;
+			_ptr--;
 
-				return tmp;
-			}
+			return tmp;
+		}
 
 /*                                Arithmetic                                  */
 
-			random_access_iterator
-			operator+(difference_type val) const
-			{
-				return random_access_iterator<T>(_ptr + val);
-			}
+		random_access_iterator
+		operator+(difference_type val) const
+		{
+			return random_access_iterator<T>(_ptr + val);
+		}
 
-			difference_type
-			operator+(random_access_iterator const& rhs) const
-			{
-				return _ptr + rhs._ptr;
-			}
+		difference_type
+		operator+(random_access_iterator const& rhs) const
+		{
+			return _ptr + rhs._ptr;
+		}
 
-			random_access_iterator
-			operator-(difference_type val) const
-			{
-				return random_access_iterator<T>(_ptr - val);
-			}
+		random_access_iterator
+		operator-(difference_type val) const
+		{
+			return random_access_iterator<T>(_ptr - val);
+		}
 
-			difference_type
-			operator-(random_access_iterator const& rhs) const
-			{
-				return _ptr - rhs._ptr;
-			}
+		difference_type
+		operator-(random_access_iterator const& rhs) const
+		{
+			return _ptr - rhs._ptr;
+		}
 
-			random_access_iterator&
-			operator+=(difference_type val)
-			{
-				_ptr += val;
+		random_access_iterator&
+		operator+=(difference_type val)
+		{
+			_ptr += val;
 
-				return *this;
-			}
+			return *this;
+		}
 
-			random_access_iterator&
-			operator-=(difference_type val)
-			{
-				_ptr -= val;
+		random_access_iterator&
+		operator-=(difference_type val)
+		{
+			_ptr -= val;
 
-				return *this;
-			}
+			return *this;
+		}
 
 /*                                 Access                                     */
 
-			reference
-			operator*() const
-			{
-				return *_ptr;
-			}
+		reference
+		operator*() const
+		{
+			return *_ptr;
+		}
 
-			pointer
-			operator->() const
-			{
-				return _ptr;
-			}
+		pointer
+		operator->() const
+		{
+			return _ptr;
+		}
 
-			reference
-			operator[](difference_type val) const
-			{
-				return *(_ptr + val);
-			}
+		reference
+		operator[](difference_type val) const
+		{
+			return *(_ptr + val);
+		}
 
-		private:
+	private:
 /******************************************************************************/
 /*                   	        PRIVATE DATA                                  */
 /******************************************************************************/
 
-			pointer _ptr;
+		pointer _ptr;
 	};
+
+/******************************************************************************/
+/*                          NON-CLASS FUNCTIONS		                          */
+/******************************************************************************/
+
+/*                                Arithmetic                                  */
+
+	template<class T>
+	ft::random_access_iterator<T>
+	operator+(typename ft::random_access_iterator<T>::difference_type n,
+				ft::random_access_iterator<T> const& rhs)
+	{
+		return rhs + n;
+	}
 }
 
 #endif

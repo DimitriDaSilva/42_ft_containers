@@ -6,11 +6,177 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:32:33 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 21:50:51 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 22:26:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test_vector_iterators.hpp"
+
+void
+test_vector_iterators_constructors_base()
+{
+	ft::vector<int> myvector;
+
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type from(myvector.begin());
+	iter_type cpy(from);
+
+	if (from == cpy)
+	{
+		std::cout << "valid" << std::endl;
+	}
+}
+
+void
+test_vector_iterators_operator_star()
+{
+	ft::vector<int> myvector;
+
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type from(myvector.begin());
+
+	std::cout << *from << std::endl;
+}
+
+void
+test_vector_iterators_operator_brackets()
+{
+	ft::vector<int> myvector;
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type it = myvector.begin();
+
+	std::cout << "The fourth element from the begin is: " << it[3] << std::endl;
+}
+
+void
+test_vector_iterators_operator_plus()
+{
+	ft::vector<int> myvector;
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type it = 3 + myvector.begin();
+
+	std::cout << "The fourth element from the begin is: " << *it << std::endl;
+
+	it = myvector.begin() + 3;
+
+	std::cout << "The fourth element from the begin is: " << *it << std::endl;
+}
+
+void
+test_vector_iterators_operator_minus()
+{
+	ft::vector<int> myvector;
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type it = myvector.end() - 3;
+
+	std::cout << "myvector.end() - 3 points to: " << *it << std::endl;
+
+	iter_type const from = myvector.begin();
+	iter_type until = myvector.end();
+
+	std::cout << "myvector has " << (until - from) << " elements." << std::endl;
+}
+
+void
+test_vector_iterators_operator_increment()
+{
+	ft::vector<int> myvector;
+
+	for (int i  = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type from(myvector.begin());
+	iter_type until(myvector.end());
+
+	std::cout << "myvector:";
+	while (from != until) {
+		std::cout << ' ' << *from;
+		++from;
+	}
+
+	std::cout << std::endl;
+}
+
+void
+test_vector_iterators_operator_decrement()
+{
+	ft::vector<int> myvector;
+
+	for (int i = 0 ; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type begin (myvector.begin());
+	iter_type end (myvector.end());
+
+	iter_type it(begin);
+	while (it != end)
+		std::cout << *it++ << ' ';
+	std::cout << std::endl;
+
+	while (it != begin)
+		std::cout << *(--it) << ' ';
+	std::cout << std::endl;
+
+}
+
+void
+test_vector_iterators_operator_plus_equal()
+{
+	ft::vector<int> myvector;
+
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type it = myvector.begin();
+
+	it += 2;
+
+	std::cout << "The third element from the begin is: " << *it << std::endl;
+}
+
+
+void
+test_vector_iterators_operator_minus_equal()
+{
+	ft::vector<int> myvector;
+
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+
+	typedef ft::vector<int>::iterator iter_type;
+
+	iter_type it = myvector.end();
+
+	it -= 4;
+
+	std::cout <<  "rev_iterator now points to: " << *it << std::endl;
+}
 
 void
 test_vector_iterators_empty_vectors()
@@ -81,6 +247,15 @@ test_vector_iterators_copy()
 void
 test_vector_iterators()
 {
+	test_wrapper(test_vector_iterators_constructors_base, "constructors base");
+	test_wrapper(test_vector_iterators_operator_star, "operator*()");
+	test_wrapper(test_vector_iterators_operator_brackets, "operator[]()");
+	test_wrapper(test_vector_iterators_operator_plus, "operator+()");
+	test_wrapper(test_vector_iterators_operator_minus, "operator-()");
+	test_wrapper(test_vector_iterators_operator_increment, "operator++()");
+	test_wrapper(test_vector_iterators_operator_decrement, "operator--()");
+	test_wrapper(test_vector_iterators_operator_plus_equal, "operator+=()");
+	test_wrapper(test_vector_iterators_operator_minus_equal, "operator-=()");
 	test_wrapper(test_vector_iterators_empty_vectors, "empty vectors");
 	test_wrapper(test_vector_iterators_100_size_vector, "100 size vector");
 	test_wrapper(test_vector_iterators_100_size_const_vector, "100 size const vector");

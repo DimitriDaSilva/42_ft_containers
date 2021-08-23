@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:32:33 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 11:27:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/23 22:18:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,10 @@ test_vector_reverse_iterators_operator_star()
 	typedef ft::vector<int>::iterator iter_type;
 	typedef ft::vector<int>::reverse_iterator rev_iter_type;
 
-	iter_type from(myvector.begin());
 	iter_type until(myvector.end());
 
-	rev_iter_type rev_until(from);
 	rev_iter_type rev_from(until);
 
-	std::cout << *rev_until << std::endl;
 	std::cout << *rev_from << std::endl;
 }
 
@@ -161,7 +158,7 @@ test_vector_reverse_iterators_operator_decrement()
 		std::cout << *rev_iterator++ << ' ';
 	std::cout << std::endl;
 
-	while ( rev_iterator != rev_begin )
+	while (rev_iterator != rev_begin)
 		std::cout << *(--rev_iterator) << ' ';
 	std::cout << std::endl;
 

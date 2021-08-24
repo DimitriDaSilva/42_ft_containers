@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 23:14:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 11:06:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,6 +401,13 @@ namespace ft
 			_size++;
 		}
 
+		void
+		pop_back()
+		{
+			_allocator.destroy(&_start[_size - 1]);
+			_size--;
+		}
+
 		// Single element
 		iterator
 		insert(iterator position, const value_type& val)
@@ -606,12 +613,10 @@ namespace ft
 		void
 		clear()
 		{
-			for (size_type i = 0; i < _size; i++)
+			while (!empty())
 			{
-				_allocator.destroy(&_start[i]);
+				pop_back();
 			}
-
-			_size = 0;
 		}
 
 /*                                  Allocator                                 */

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/24 11:04:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 13:41:58 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ test_vector_modifiers_push_back()
 
 	srand(g_seed);
 
-	for (int i = 1; i < 10000; i *= 10)
+	for (int i = 1; i < 100; i *= 10)
 	{
 		for (int j = 0; j < i; j++)
 		{
@@ -291,6 +291,59 @@ test_vector_modifiers_pop_back()
 }
 
 void
+test_vector_modifiers_insert_single_before()
+{
+	ft::vector<std::string> vec(100, "test");
+	ft::vector<std::string>::iterator it = vec.begin();
+	ft::vector<std::string>::iterator tmp;
+
+	print_vec_info(vec);
+	tmp = vec.insert(it, "42");
+	print_vec_info(vec);
+	if (vec.begin() == tmp)
+		std::cout << "valid" << std::endl;
+
+	ft::vector<std::string> empty;
+
+	print_vec_info(empty);
+	tmp = empty.insert(empty.begin(), "42");
+	print_vec_info(empty);
+	if (empty.begin() == tmp)
+		std::cout << "valid" << std::endl;
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+		ft::vector<std::string> cpy2 = empty;
+	}
+}
+
+void
+test_vector_modifiers_insert_cplusplus()
+{
+	ft::vector<int> myvector (3, 100);
+	ft::vector<int>::iterator it;
+
+	it = myvector.begin();
+	it = myvector.insert(it, 200);
+
+	myvector.insert(it, 2, 300);
+
+	// "it" no longer valid, get a new one:
+	it = myvector.begin();
+
+	ft::vector<int> anothervector(2, 400);
+	myvector.insert(it + 2, anothervector.begin(), anothervector.end());
+
+	int myarray[] = {501, 502, 503};
+	myvector.insert(myvector.begin(), myarray, myarray + 3);
+
+	std::cout << "myvector contains:";
+	for (it = myvector.begin(); it < myvector.end(); it++)
+		std::cout << ' ' << *it;
+	std::cout << std::endl;
+}
+
+void
 test_vector_modifiers()
 {
 	test_wrapper(test_vector_modifiers_assign_range_empty_dest, "assign range empty dest");
@@ -305,4 +358,7 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_assign_fill3, "assign fill3");
 	test_wrapper(test_vector_modifiers_assign_cplusplus, "assign cplusplus");
 	test_wrapper(test_vector_modifiers_push_back, "push back");
+	test_wrapper(test_vector_modifiers_pop_back, "pop back");
+	test_wrapper(test_vector_modifiers_insert_single_before, "insert single before");
+	//test_wrapper(test_vector_modifiers_insert_cplusplus, "insert cplusplus");
 }

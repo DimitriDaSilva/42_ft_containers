@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/24 11:06:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 13:46:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,47 +416,42 @@ namespace ft
 			value_type*	tmp;;
 			iterator 	it_old;
 			iterator 	it_new;
+			size_type	new_size = _size + 1;
+			bool		is_position_found = false;
 
 			// New element requires reallocation because vector is full
-			if (_size == _capacity)
+			if (new_size > _capacity)
 			{
-				// Reallocate new
-				tmp = _allocator.allocate(_capacity * 2);
+				// Reallocate new. If empty, size 2, otherwise *2
+				tmp = _allocator.allocate(_capacity == 0 ? 2 : _capacity * 2);
 
 				// Copy sequence to new array
 				it_old = begin();
 				it_new = tmp;
-				while (it_old != end())
+				while (it_old != end() || !is_position_found)
 				{
-					// Copy old to new
-					if (it_old != position)
-					{
-						*it_new = *it_old;
 					// Position found
-					}
-					else
+					if (it_old == position)
 					{
-						*it_new = val;
+						_allocator.construct(&*it_new, val);
 
 						ret_position = it_new;
-
-						// For the position found we only want to increment
-						// the new iterator
 						it_new++;
-						continue;
+
+						is_position_found = true;
 					}
-					it_old++;
-					it_new++;
+					// Copy old to new
+					if (it_old != end())
+						_allocator.construct(&*it_new++, *it_old++);
 				}
+				this->~vector();
 
 				// Update private data of vector
-				_allocator.deallocate(_start, _capacity);
 				_start = tmp;
-				_size += 1;
-				_capacity *= 2;
-
-			// No need to reallocate so iterator position will still be valid
+				_size = new_size;
+				_capacity = _capacity == 0 ? 2 : _capacity * 2;
 			}
+			// No need to reallocate so iterator position will still be valid
 			else
 			{
 				// Val inserted right before position

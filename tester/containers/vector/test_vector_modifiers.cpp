@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/24 13:41:58 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 13:55:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,38 @@ test_vector_modifiers_insert_single_before()
 }
 
 void
+test_vector_modifiers_insert_single_middle()
+{
+	ft::vector<std::string> vec(100, "test");
+	ft::vector<std::string>::iterator it = vec.begin();
+	ft::vector<std::string>::iterator tmp;
+
+	print_vec_info(vec);
+	tmp = vec.insert(it + 50, "42");
+	print_vec_info(vec);
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+	}
+}
+
+void
+test_vector_modifiers_insert_single_end()
+{
+	ft::vector<std::string> vec(100, "test");
+	ft::vector<std::string>::iterator it = vec.end();
+	ft::vector<std::string>::iterator tmp;
+
+	print_vec_info(vec);
+	tmp = vec.insert(it, "42");
+	print_vec_info(vec);
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+	}
+}
+
+void
 test_vector_modifiers_insert_cplusplus()
 {
 	ft::vector<int> myvector (3, 100);
@@ -360,5 +392,7 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_push_back, "push back");
 	test_wrapper(test_vector_modifiers_pop_back, "pop back");
 	test_wrapper(test_vector_modifiers_insert_single_before, "insert single before");
+	test_wrapper(test_vector_modifiers_insert_single_middle, "insert single middle");
+	test_wrapper(test_vector_modifiers_insert_single_end, "insert single end");
 	//test_wrapper(test_vector_modifiers_insert_cplusplus, "insert cplusplus");
 }

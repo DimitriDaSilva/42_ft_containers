@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/24 13:46:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 13:59:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,43 +413,40 @@ namespace ft
 		insert(iterator position, const value_type& val)
 		{
 			iterator	ret_position;
-			value_type*	tmp;;
+			value_type*	new_vec;
 			iterator 	it_old;
 			iterator 	it_new;
 			size_type	new_size = _size + 1;
+			size_type	new_capacity = _capacity == 0 ? 2 : _capacity * 2;
 			bool		is_position_found = false;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
-				// Reallocate new. If empty, size 2, otherwise *2
-				tmp = _allocator.allocate(_capacity == 0 ? 2 : _capacity * 2);
+				// Reallocate new. If empty, size 2, otherwise * 2
+				new_vec = _allocator.allocate(new_capacity);
 
 				// Copy sequence to new array
 				it_old = begin();
-				it_new = tmp;
+				it_new = new_vec;
 				while (it_old != end() || !is_position_found)
 				{
 					// Position found
 					if (it_old == position)
 					{
-						_allocator.construct(&*it_new, val);
-
 						ret_position = it_new;
-						it_new++;
-
+						_allocator.construct(&*it_new++, val);
 						is_position_found = true;
 					}
 					// Copy old to new
 					if (it_old != end())
 						_allocator.construct(&*it_new++, *it_old++);
 				}
-				this->~vector();
-
 				// Update private data of vector
-				_start = tmp;
+				this->~vector();
+				_start = new_vec;
 				_size = new_size;
-				_capacity = _capacity == 0 ? 2 : _capacity * 2;
+				_capacity = new_capacity;
 			}
 			// No need to reallocate so iterator position will still be valid
 			else

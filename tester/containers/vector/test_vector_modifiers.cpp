@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/22 11:57:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 10:21:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,6 @@ test_vector_modifiers_assign_fill3()
 void
 test_vector_modifiers_assign_cplusplus()
 {
-
 	ft::vector<int> first;
 	ft::vector<int> second;
 	ft::vector<int> third;
@@ -245,6 +244,41 @@ test_vector_modifiers_assign_cplusplus()
 }
 
 void
+test_vector_modifiers_push_back1()
+{
+	srand(g_seed);
+
+	ft::vector<int> vec;
+	int const size = 1;
+
+	vec.push_back(rand() % size - size / 2);
+	print_vec_info(vec);
+}
+
+void
+test_vector_modifiers_push_back()
+{
+	srand(g_seed);
+
+	ft::vector<int> vec;
+
+	for (int i = 1; i < 10000; i *= 10)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			vec.push_back(rand() % i - i / 2);
+			std::cout << "Size: " << vec.size() << std::endl;
+			std::cout << "Capacity: " << vec.capacity() << std::endl;
+			std::cout << "Values: ";
+			for (ft::vector<int>::iterator it = vec.begin(); it != vec.end(); it++) {
+				std::cout << *it << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+}
+
+void
 test_vector_modifiers()
 {
 	test_wrapper(test_vector_modifiers_assign_range_empty_dest, "assign range empty dest");
@@ -258,4 +292,5 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_assign_fill2, "assign fill2");
 	test_wrapper(test_vector_modifiers_assign_fill3, "assign fill3");
 	test_wrapper(test_vector_modifiers_assign_cplusplus, "assign cplusplus");
+	test_wrapper(test_vector_modifiers_push_back, "push back");
 }

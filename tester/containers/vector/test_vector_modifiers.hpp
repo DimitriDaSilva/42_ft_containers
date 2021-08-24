@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:39:53 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/22 09:54:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/24 08:51:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include <iostream>	// std::cout
 # include <string>		// std::string
+# include <cmath>		// std::pow
 
+# include "main.hpp"
 # include "containers.hpp"
 # include "test_wrappers.hpp"
 # include "print_vec_info.hpp"

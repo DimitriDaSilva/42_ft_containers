@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 10:44:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 11:08:40 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,13 +412,12 @@ namespace ft
 		iterator
 		insert(iterator position, const value_type& val)
 		{
-			iterator	ret_position;
+			iterator	ret_position = NULL;
 			value_type*	new_vec;
 			iterator 	it_old;
 			iterator 	it_new;
 			size_type	new_size = _size + 1;
 			size_type	new_capacity = _capacity == 0 ? 2 : _capacity * 2;
-			bool		is_position_found = false;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
@@ -431,16 +430,16 @@ namespace ft
 				it_new = new_vec;
 				// We need to parse until we didn't reach the end AND we haven't
 				// found the position
-				while (it_old != end() || !is_position_found)
+				while (it_old != end() || ret_position == NULL)
 				{
 					// Position found
 					if (it_old == position)
 					{
 						ret_position = it_new;
 						_allocator.construct(&*it_new++, val);
-						is_position_found = true;
 					}
-					// Copy old to new
+					// In the case the position is the last element, we need to
+					// make sure we won't be constructing beyond the sequence
 					if (it_old != end())
 						_allocator.construct(&*it_new++, *it_old++);
 				}
@@ -453,17 +452,8 @@ namespace ft
 			// No need to reallocate so iterator position will still be valid
 			else
 			{
-				// Val inserted right before position
-				bool is_begin = false;
-				if (position == begin())
-					is_begin = true;
-
 				insert(position, 1, val);
-
-				if (is_begin)
-					ret_position = begin();
-				else
-					ret_position = position;
+				ret_position = position;
 			}
 
 			return ret_position;

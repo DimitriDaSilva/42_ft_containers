@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 10:12:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 10:47:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,8 +330,6 @@ test_vector_modifiers_insert_single_before_wo_realloc()
 	tmp = vec.insert(vec.begin(), "42");
 	print_vec_info(vec);
 
-	std::cout << *vec.begin() << std::endl;
-	std::cout << *tmp << std::endl;
 	if (vec.begin() == tmp)
 		std::cout << "valid" << std::endl;
 

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 11:08:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 12:17:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,24 +278,21 @@ namespace ft
 		{
 			// We need to throw we try to allocate more than max_size
 			if (n > _max_size)
-			{
 				throw std::length_error("reserve:: cannot increase capacity beyond max_size");
-			}
 			else if (n > _capacity)
 			{
 				// Allocate for n size
-				value_type* tmp = _allocator.allocate(n);
+				value_type* new_vec = _allocator.allocate(n);
+				size_type	tmp = _size;
 
 				// Copy existing sequence
 				for (size_type i = 0; i < _size; i++)
-				{
-					_allocator.construct(&tmp[i], _start[i]);
-				}
-
-				_allocator.deallocate(_start, _capacity);
+					_allocator.construct(&new_vec[i], _start[i]);
 
 				// Update data
-				_start = tmp;
+				this->~vector();
+				_start = new_vec;
+				_size = tmp;
 				_capacity = n;
 			}
 		}
@@ -318,9 +315,7 @@ namespace ft
 		at (size_type n)
 		{
 			if (_size <= n)
-			{
 				throw std::out_of_range("at:: out of range index");
-			}
 			return *(_start + n);
 		}
 
@@ -328,9 +323,7 @@ namespace ft
 		at (size_type n) const
 		{
 			if (_size <= n)
-			{
 				throw std::out_of_range("at:: out of range index");
-			}
 			return *(_start + n);
 		}
 
@@ -390,13 +383,10 @@ namespace ft
 		push_back(value_type const& val)
 		{
 			if (empty())
-			{
 				reserve(2);
-			}
 			else if (_size == _capacity)
-			{
 				reserve(_capacity * 2);
-			}
+
 			_allocator.construct(&_start[_size], val);
 			_size++;
 		}
@@ -414,10 +404,10 @@ namespace ft
 		{
 			iterator	ret_position = NULL;
 			value_type*	new_vec;
-			iterator 	it_old;
-			iterator 	it_new;
 			size_type	new_size = _size + 1;
 			size_type	new_capacity = _capacity == 0 ? 2 : _capacity * 2;
+			iterator 	it_old;
+			iterator 	it_new;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
@@ -463,21 +453,28 @@ namespace ft
 		void
 		insert(iterator position, size_type n, const value_type& val)
 		{
-			value_type*	tmp;
+			value_type*	new_vec;
+			size_type	new_size = _size + n;
+			size_type	new_capacity = _capacity == 0 ? 2 : _capacity;
 			iterator 	it_old;
 			iterator 	it_new;
-			size_type	new_size = _size + n;
+			int 		i;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
+				// Get new capacity
+				while (new_size > new_capacity)
+					new_capacity *= 2;
+				//new_capacity = new_size;
+
 				// Reallocate new
-				tmp = _allocator.allocate(new_size);
+				new_vec = _allocator.allocate(new_capacity);
 
 				// Copy sequence to new array
 				it_old = begin();
-				it_new = tmp;
-				int i = n;
+				it_new = new_vec;
+				i = n;
 				while (it_old != end() || i > 0)
 				{
 					// Position found
@@ -499,9 +496,9 @@ namespace ft
 				}
 				// Update private data of vector
 				this->~vector();
-				_start = tmp;
+				_start = new_vec;
 				_size = new_size;
-				_capacity = new_size;
+				_capacity = new_capacity;
 			}
 			else
 			{

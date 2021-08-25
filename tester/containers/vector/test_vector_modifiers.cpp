@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 10:47:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 12:12:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ test_vector_modifiers_assign_range_not_empty_dest1()
 
 	print_vec_info(new_vec);
 	new_vec.assign(vec.begin(), vec.end());
-	std::cout << "Size: " << new_vec.size() << std::endl;
-	std::cout << "Capacity: " << new_vec.capacity() << std::endl;
 	print_vec_info(vec);
 	print_vec_info(new_vec);
 
@@ -74,8 +72,6 @@ test_vector_modifiers_assign_range_not_empty_dest2()
 
 	print_vec_info(new_vec);
 	new_vec.assign(vec.begin(), vec.end());
-	std::cout << "Size: " << new_vec.size() << std::endl;
-	std::cout << "Capacity: " << new_vec.capacity() << std::endl;
 	print_vec_info(vec);
 	print_vec_info(new_vec);
 
@@ -102,8 +98,6 @@ test_vector_modifiers_assign_range_not_empty_dest3()
 
 	print_vec_info(new_vec);
 	new_vec.assign(vec.begin(), vec.end());
-	std::cout << "Size: " << new_vec.size() << std::endl;
-	std::cout << "Capacity: " << new_vec.capacity() << std::endl;
 	print_vec_info(vec);
 	print_vec_info(new_vec);
 
@@ -163,14 +157,8 @@ test_vector_modifiers_assign_fill_empty()
 	ft::vector<std::string> vec;
 
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
-
 	vec.assign(5, "42");
-
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
 }
 
 void
@@ -179,14 +167,8 @@ test_vector_modifiers_assign_fill1()
 	ft::vector<std::string> vec(5, "test");
 
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
-
 	vec.assign(0, "42");
-
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
 }
 
 void
@@ -195,14 +177,8 @@ test_vector_modifiers_assign_fill2()
 	ft::vector<std::string> vec(10, "test");
 
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
-
 	vec.assign(10, "42");
-
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
 }
 
 void
@@ -211,14 +187,8 @@ test_vector_modifiers_assign_fill3()
 	ft::vector<std::string> vec(10, "test");
 
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
-
 	vec.assign(20, "42");
-
 	print_vec_info(vec);
-	std::cout << "Size: " << vec.size() << std::endl;
-	std::cout << "Capacity: " << vec.capacity() << std::endl;
 }
 
 void
@@ -258,22 +228,17 @@ test_vector_modifiers_push_back1()
 void
 test_vector_modifiers_push_back()
 {
-	ft::vector<int> vec;
 
 	srand(g_seed);
 
 	for (int i = 1; i < 100; i *= 10)
 	{
+		ft::vector<int> vec;
+
 		for (int j = 0; j < i; j++)
 		{
-			vec.push_back(rand() % i - i / 2);
-			std::cout << "Size: " << vec.size() << std::endl;
-			std::cout << "Capacity: " << vec.capacity() << std::endl;
-			std::cout << "Values: ";
-			for (ft::vector<int>::iterator it = vec.begin(); it != vec.end(); it++) {
-				std::cout << *it << " ";
-			}
-			std::cout << std::endl;
+			vec.push_back(rand() % 100 - 100 / 2);
+			print_vec_info(vec);
 		}
 	}
 }
@@ -291,7 +256,7 @@ test_vector_modifiers_pop_back()
 }
 
 void
-test_vector_modifiers_insert_single_before_w_realloc()
+test_vector_modifiers_insert_single_begin_w_realloc()
 {
 	ft::vector<std::string> vec(100, "test");
 	ft::vector<std::string>::iterator tmp;
@@ -319,7 +284,7 @@ test_vector_modifiers_insert_single_before_w_realloc()
 }
 
 void
-test_vector_modifiers_insert_single_before_wo_realloc()
+test_vector_modifiers_insert_single_begin_wo_realloc()
 {
 	ft::vector<std::string> vec(100, "test");
 	ft::vector<std::string>::iterator tmp;
@@ -402,8 +367,9 @@ test_vector_modifiers_insert_single_end_w_realloc()
 
 	print_vec_info(vec);
 	tmp = vec.insert(it, "42");
-	it = vec.begin();
 	print_vec_info(vec);
+
+	it = vec.begin();
 	if (tmp == it + 100)
 		std::cout << "valid" << std::endl;
 
@@ -432,6 +398,27 @@ test_vector_modifiers_insert_single_end_wo_realloc()
 
 	{
 		ft::vector<std::string> cpy1 = vec;
+	}
+}
+
+void
+test_vector_modifiers_insert_fill_begin_w_realloc()
+{
+	ft::vector<std::string> vec(100, "test");
+
+	print_vec_info(vec);
+	vec.insert(vec.begin(), 5, "42");
+	print_vec_info(vec);
+
+	ft::vector<std::string> empty;
+
+	print_vec_info(empty);
+	empty.insert(empty.begin(), 5, "42");
+	print_vec_info(empty);
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+		ft::vector<std::string> cpy2 = empty;
 	}
 }
 
@@ -475,13 +462,15 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_assign_fill2, "assign fill2");
 	test_wrapper(test_vector_modifiers_assign_fill3, "assign fill3");
 	test_wrapper(test_vector_modifiers_assign_cplusplus, "assign cplusplus");
+	test_wrapper(test_vector_modifiers_push_back1, "push back size 1");
 	test_wrapper(test_vector_modifiers_push_back, "push back");
 	test_wrapper(test_vector_modifiers_pop_back, "pop back");
-	test_wrapper(test_vector_modifiers_insert_single_before_w_realloc, "insert single before with realloc");
-	test_wrapper(test_vector_modifiers_insert_single_before_wo_realloc, "insert single before without realloc");
+	test_wrapper(test_vector_modifiers_insert_single_begin_w_realloc, "insert single begin with realloc");
+	test_wrapper(test_vector_modifiers_insert_single_begin_wo_realloc, "insert single begin without realloc");
 	test_wrapper(test_vector_modifiers_insert_single_middle_w_realloc, "insert single middle with realloc");
 	test_wrapper(test_vector_modifiers_insert_single_middle_wo_realloc, "insert single middle without realloc");
 	test_wrapper(test_vector_modifiers_insert_single_end_w_realloc, "insert single end with realloc");
 	test_wrapper(test_vector_modifiers_insert_single_end_wo_realloc, "insert single end without realloc");
+	test_wrapper(test_vector_modifiers_insert_fill_begin_w_realloc, "insert fill begin with realloc");
 	//test_wrapper(test_vector_modifiers_insert_cplusplus, "insert cplusplus");
 }

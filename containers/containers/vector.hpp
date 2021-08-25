@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 12:17:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 17:36:10 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ namespace ft
 			reserve(n);
 
 			for (size_type i = 0; i < n; i++)
-			{
 				_allocator.construct(_start + i, val);
-			}
 
 			_size = n;
 		}
@@ -168,9 +166,7 @@ namespace ft
 		end()
 		{
 			if (empty())
-			{
 				return begin();
-			}
 			return _start + _size;
 		}
 
@@ -178,9 +174,7 @@ namespace ft
 		end() const
 		{
 			if (empty())
-			{
 				return begin();
-			}
 			return _start + _size;
 		}
 
@@ -189,9 +183,7 @@ namespace ft
 		rbegin()
 		{
 			if (empty())
-			{
 				return rend();
-			}
 			return reverse_iterator(_start + _size);
 		}
 
@@ -199,9 +191,7 @@ namespace ft
 		rbegin() const
 		{
 			if (empty())
-			{
 				return rend();
-			}
 			return const_reverse_iterator(_start + _size);
 		}
 
@@ -241,21 +231,15 @@ namespace ft
 				// Destroy doesn't deallocate item so we don't need to
 				// change _capacity (or destroy beyond _size)
 				for (size_type i = n; i < _size; i++)
-				{
 					_allocator.destroy(&_start[i]);
-				}
 				_size = n;
 			}
 			else if (n > _size)
 			{
 				if (n > _capacity)
-				{
 					reserve(n);
-				}
 				for (size_type i = _size; i < n; i++)
-				{
 					_allocator.construct(&_start[i], val);
-				}
 				_size = n;
 			}
 		}
@@ -466,7 +450,6 @@ namespace ft
 				// Get new capacity
 				while (new_size > new_capacity)
 					new_capacity *= 2;
-				//new_capacity = new_size;
 
 				// Reallocate new
 				new_vec = _allocator.allocate(new_capacity);
@@ -481,18 +464,12 @@ namespace ft
 					if (it_old == position)
 					{
 						while (i--)
-						{
-							_allocator.construct(&*it_new, val);
-							it_new++;
-						}
+							_allocator.construct(&*it_new++, val);
 					}
+
 					// Copy old to new
-					else
-					{
-						_allocator.construct(&*it_new, *it_old);
-						it_new++;
-						it_old++;
-					}
+					if (it_old != end())
+						_allocator.construct(&*it_new++, *it_old++);
 				}
 				// Update private data of vector
 				this->~vector();
@@ -502,12 +479,12 @@ namespace ft
 			}
 			else
 			{
-				// Offset existing values
-				if (!empty())
-				{
-					for (reverse_iterator it = rbegin() - 1; it != reverse_iterator(position + n); it++)
-						*it = *(it + 1);
-				}
+				// We offset the whole vector by n one item at a time
+				// We need to start by the end to avoid overwritting values
+				for (reverse_iterator it = rbegin() - n;
+						it != reverse_iterator(position) - n;
+						it++)
+					*it = *(it + n);
 
 				// Setting the new values before position
 				for (iterator it = position; it != position + n; it++)
@@ -525,80 +502,106 @@ namespace ft
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value,
 					InputIterator>::type* = NULL)
 		{
-			value_type*		tmp;
-			iterator 		it_old;
-			iterator 		it_new;
+			value_type*		new_vec;
 			difference_type	distance = ft::distance(first, last);
 			size_type		new_size = _size + distance;
+			size_type		new_capacity = _capacity == 0 ? 2 : _capacity;
+			iterator 		it_old;
+			iterator 		it_new;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
+				// Get new capacity
+				while (new_size > new_capacity)
+					new_capacity *= 2;
+
 				// Reallocate new
-				tmp = _allocator.allocate(new_size);
+				new_vec = _allocator.allocate(new_size);
 
 				// Copy sequence to new array
 				it_old = begin();
-				it_new = tmp;
+				it_new = new_vec;
 				while (it_old != end() || distance > 0)
 				{
 					// Position found
 					if (it_old == position)
 					{
 						while (distance--)
-						{
-							_allocator.construct(&*it_new, *first);
-							it_new++;
-							first++;
-						}
+							_allocator.construct(&*it_new++, *first++);
 					}
+
 					// Copy old to new
-					else
-					{
-						_allocator.construct(&*it_new, *it_old);
-						it_new++;
-						it_old++;
-					}
+					if (it_old != end())
+						_allocator.construct(&*it_new++, *it_old++);
 				}
 
-				this->~vector();
-
 				// Update private data of vector
-				_start = tmp;
+				this->~vector();
+				_start = new_vec;
 				_size = new_size;
-				_capacity = new_size;
+				_capacity = new_capacity;
 			}
 			// No reallocation
 			else
 			{
-				// Offset existing values (if there are any)
-				if (!empty())
-				{
-					for (iterator it = end(), pos = position + new_size; it != end() - new_size; it--, pos--)
-					{
-						*it = *pos;
-					}
-				}
+				// We offset the whole vector by distance one item at a time
+				// We need to start by the end to avoid overwritting values
+				for (reverse_iterator it = rbegin() - distance;
+						it != reverse_iterator(position) - distance;
+						it++)
+					*it = *(it + distance);
 
 				// Setting the new values before position
-				for (iterator it = position; it != position + new_size; it++)
-				{
+				for (iterator it = position; it != position + distance; it++, first++)
 					_allocator.construct(&*it, *first);
-					first++;
-				}
 
 				// Update private data of vector
 				_size += distance;
 			}
 		}
 
+		// Erase a single element
+		iterator
+		erase(iterator position)
+		{
+			// Destroy the element at position
+			_allocator.destroy(&*position);
+
+			// Offset all the elements by one to fill the gap
+			for (iterator it = position; it + 1 != end(); it++)
+				*it = *(it + 1);
+
+			_size--;
+
+			return position;
+		}
+
+		// Erase a range of elements
+		iterator
+		erase(iterator first, iterator last)
+		{
+			difference_type	distance = ft::distance(first, last);
+			iterator save_first = first;
+
+			// Destroy the range of elements
+			while (first != last)
+				_allocator.destroy(&*first++);
+
+			// Offset all the elements by distance to fill the gap
+			for (iterator it = save_first; it + distance != end(); it++)
+				*it = *(it + distance);
+
+			_size -= distance;
+
+			return save_first;
+		}
+
 		void
 		clear()
 		{
 			while (!empty())
-			{
 				pop_back();
-			}
 		}
 
 /*                                  Allocator                                 */

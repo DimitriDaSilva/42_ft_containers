@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_vector.hpp                                    :+:      :+:    :+:   */
+/*   test_vector_non_member_overloads.hpp               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:20:56 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 18:04:51 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/25 17:59:58 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/25 18:05:09 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_VECTOR_HPP
-# define TEST_VECTOR_HPP
+#ifndef TEST_VECTOR_NON_MEMBER_OVERLOADS_HPP
+# define TEST_VECTOR_NON_MEMBER_OVERLOADS_HPP
 
+# include <iostream>	// std::cout
 # include <string>		// std::string
 
-# include "test_vector_capacity.hpp"
-# include "test_vector_constructors.hpp"
-# include "test_vector_iterators.hpp"
-# include "test_vector_reverse_iterators.hpp"
-# include "test_vector_element_access.hpp"
-# include "test_vector_modifiers.hpp"
-# include "test_vector_allocator.hpp"
-# include "test_vector_non_member_overloads.hpp"
+# include "containers.hpp"
 # include "test_wrappers.hpp"
+# include "print_vec_info.hpp"
 
-void test_vector();
+void test_vector_non_member_overloads();
 
 #endif

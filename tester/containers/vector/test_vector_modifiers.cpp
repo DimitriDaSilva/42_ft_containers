@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 17:39:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 17:51:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -891,6 +891,64 @@ test_vector_modifiers_erase_cplusplus()
 }
 
 void
+test_vector_modifiers_swap_ints()
+{
+	ft::vector<int> v1(5, 42), v2(100, -42);
+
+	print_vec_info(v1);
+	print_vec_info(v2);
+
+	v1.swap(v2);
+
+	print_vec_info(v1);
+	print_vec_info(v2);
+}
+
+void
+test_vector_modifiers_swap_strings()
+{
+	ft::vector<std::string> v1(5, "42"), v2(100, "-42");
+
+	print_vec_info(v1);
+	print_vec_info(v2);
+
+	v1.swap(v2);
+
+	print_vec_info(v1);
+	print_vec_info(v2);
+}
+
+void
+test_vector_modifiers_clear_ints()
+{
+	ft::vector<int> vec(100, 42);
+
+	print_vec_info(vec);
+
+	vec.clear();
+
+	vec.push_back(1101);
+	vec.push_back(2202);
+
+	print_vec_info(vec);
+}
+
+void
+test_vector_modifiers_clear_strings()
+{
+	ft::vector<std::string> vec(100, "42");
+
+	print_vec_info(vec);
+
+	vec.clear();
+
+	vec.push_back("test");
+	vec.push_back("test");
+
+	print_vec_info(vec);
+}
+
+void
 test_vector_modifiers()
 {
 	test_wrapper(test_vector_modifiers_assign_range_empty_dest, "assign range empty dest");
@@ -938,4 +996,8 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_erase_range_end, "erase range end");
 	test_wrapper(test_vector_modifiers_erase_range_string, "erase range string");
 	test_wrapper(test_vector_modifiers_erase_cplusplus, "erase cplusplus");
+	test_wrapper(test_vector_modifiers_swap_ints, "swap ints");
+	test_wrapper(test_vector_modifiers_swap_strings, "swap strings");
+	test_wrapper(test_vector_modifiers_clear_ints, "clear ints");
+	test_wrapper(test_vector_modifiers_clear_strings, "clear strings");
 }

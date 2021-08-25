@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 17:36:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 17:58:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ namespace ft
 
 		// Range
 		template<class InputIterator>
-		vector (InputIterator first,
+		vector(InputIterator first,
 				InputIterator last,
 				allocator_type const& alloc = allocator_type(),
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value,
@@ -284,19 +284,19 @@ namespace ft
 /*                               Element access                               */
 
 		reference
-		operator[] (size_type n)
+		operator[](size_type n)
 		{
 			return *(_start + n);
 		}
 
 		const_reference
-		operator[] (size_type n) const
+		operator[](size_type n) const
 		{
 			return *(_start + n);
 		}
 
 		reference
-		at (size_type n)
+		at(size_type n)
 		{
 			if (_size <= n)
 				throw std::out_of_range("at:: out of range index");
@@ -304,7 +304,7 @@ namespace ft
 		}
 
 		const_reference
-		at (size_type n) const
+		at(size_type n) const
 		{
 			if (_size <= n)
 				throw std::out_of_range("at:: out of range index");
@@ -598,6 +598,14 @@ namespace ft
 		}
 
 		void
+		swap(vector& rhs)
+		{
+			vector tmp(rhs);
+			rhs = *this;
+			*this = tmp;
+		}
+
+		void
 		clear()
 		{
 			while (!empty())
@@ -641,9 +649,17 @@ namespace ft
 	};
 
 /******************************************************************************/
-/*                          NON-CLASS FUNCTIONS		                          */
+/*                        NON-MEMBER FUNCTION OVERLOADS                       */
 /******************************************************************************/
 
+/*                                  Swap                                      */
+
+	template <class T, class A>
+	void
+	swap(vector<T, A>& lhs, vector<T, A>& rhs)
+	{
+		lhs.swap(rhs);
+	}
 }
 
 #endif

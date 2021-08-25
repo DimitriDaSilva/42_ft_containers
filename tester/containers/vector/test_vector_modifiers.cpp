@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/24 13:55:29 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 10:12:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,15 +291,15 @@ test_vector_modifiers_pop_back()
 }
 
 void
-test_vector_modifiers_insert_single_before()
+test_vector_modifiers_insert_single_before_w_realloc()
 {
 	ft::vector<std::string> vec(100, "test");
-	ft::vector<std::string>::iterator it = vec.begin();
 	ft::vector<std::string>::iterator tmp;
 
 	print_vec_info(vec);
-	tmp = vec.insert(it, "42");
+	tmp = vec.insert(vec.begin(), "42");
 	print_vec_info(vec);
+
 	if (vec.begin() == tmp)
 		std::cout << "valid" << std::endl;
 
@@ -308,7 +308,8 @@ test_vector_modifiers_insert_single_before()
 	print_vec_info(empty);
 	tmp = empty.insert(empty.begin(), "42");
 	print_vec_info(empty);
-	if (empty.begin() == tmp)
+
+	if (tmp == empty.begin())
 		std::cout << "valid" << std::endl;
 
 	{
@@ -318,7 +319,41 @@ test_vector_modifiers_insert_single_before()
 }
 
 void
-test_vector_modifiers_insert_single_middle()
+test_vector_modifiers_insert_single_before_wo_realloc()
+{
+	ft::vector<std::string> vec(100, "test");
+	ft::vector<std::string>::iterator tmp;
+
+	vec.reserve(101);
+
+	print_vec_info(vec);
+	tmp = vec.insert(vec.begin(), "42");
+	print_vec_info(vec);
+
+	std::cout << *vec.begin() << std::endl;
+	std::cout << *tmp << std::endl;
+	if (vec.begin() == tmp)
+		std::cout << "valid" << std::endl;
+
+	ft::vector<std::string> empty;
+
+	vec.reserve(1);
+
+	print_vec_info(empty);
+	tmp = empty.insert(empty.begin(), "42");
+	print_vec_info(empty);
+
+	if (tmp == empty.begin())
+		std::cout << "valid" << std::endl;
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+		ft::vector<std::string> cpy2 = empty;
+	}
+}
+
+void
+test_vector_modifiers_insert_single_middle_w_realloc()
 {
 	ft::vector<std::string> vec(100, "test");
 	ft::vector<std::string>::iterator it = vec.begin();
@@ -328,13 +363,40 @@ test_vector_modifiers_insert_single_middle()
 	tmp = vec.insert(it + 50, "42");
 	print_vec_info(vec);
 
+	it = vec.begin();
+	if (tmp == it + 50)
+		std::cout << "valid" << std::endl;
+
 	{
 		ft::vector<std::string> cpy1 = vec;
 	}
 }
 
 void
-test_vector_modifiers_insert_single_end()
+test_vector_modifiers_insert_single_middle_wo_realloc()
+{
+	ft::vector<std::string> vec(100, "test");
+	ft::vector<std::string>::iterator it = vec.begin();
+	ft::vector<std::string>::iterator tmp;
+
+	vec.reserve(101);
+
+	print_vec_info(vec);
+	it = vec.begin();
+	tmp = vec.insert(it + 50, "42");
+	print_vec_info(vec);
+
+	it = vec.begin();
+	if (tmp == it + 50)
+		std::cout << "valid" << std::endl;
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+	}
+}
+
+void
+test_vector_modifiers_insert_single_end_w_realloc()
 {
 	ft::vector<std::string> vec(100, "test");
 	ft::vector<std::string>::iterator it = vec.end();
@@ -342,7 +404,33 @@ test_vector_modifiers_insert_single_end()
 
 	print_vec_info(vec);
 	tmp = vec.insert(it, "42");
+	it = vec.begin();
 	print_vec_info(vec);
+	if (tmp == it + 100)
+		std::cout << "valid" << std::endl;
+
+	{
+		ft::vector<std::string> cpy1 = vec;
+	}
+}
+
+void
+test_vector_modifiers_insert_single_end_wo_realloc()
+{
+	ft::vector<std::string> vec(100, "test");
+	ft::vector<std::string>::iterator it;
+	ft::vector<std::string>::iterator tmp;
+
+	vec.reserve(101);
+
+	print_vec_info(vec);
+	it = vec.end();
+	tmp = vec.insert(it, "42");
+	print_vec_info(vec);
+
+	it = vec.end();
+	if (tmp == it)
+		std::cout << "valid" << std::endl;
 
 	{
 		ft::vector<std::string> cpy1 = vec;
@@ -391,8 +479,11 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_assign_cplusplus, "assign cplusplus");
 	test_wrapper(test_vector_modifiers_push_back, "push back");
 	test_wrapper(test_vector_modifiers_pop_back, "pop back");
-	test_wrapper(test_vector_modifiers_insert_single_before, "insert single before");
-	test_wrapper(test_vector_modifiers_insert_single_middle, "insert single middle");
-	test_wrapper(test_vector_modifiers_insert_single_end, "insert single end");
+	test_wrapper(test_vector_modifiers_insert_single_before_w_realloc, "insert single before with realloc");
+	test_wrapper(test_vector_modifiers_insert_single_before_wo_realloc, "insert single before without realloc");
+	test_wrapper(test_vector_modifiers_insert_single_middle_w_realloc, "insert single middle with realloc");
+	test_wrapper(test_vector_modifiers_insert_single_middle_wo_realloc, "insert single middle without realloc");
+	test_wrapper(test_vector_modifiers_insert_single_end_w_realloc, "insert single end with realloc");
+	test_wrapper(test_vector_modifiers_insert_single_end_wo_realloc, "insert single end without realloc");
 	//test_wrapper(test_vector_modifiers_insert_cplusplus, "insert cplusplus");
 }

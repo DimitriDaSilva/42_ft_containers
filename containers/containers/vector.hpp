@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/24 13:59:39 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/25 10:44:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,6 +429,8 @@ namespace ft
 				// Copy sequence to new array
 				it_old = begin();
 				it_new = new_vec;
+				// We need to parse until we didn't reach the end AND we haven't
+				// found the position
 				while (it_old != end() || !is_position_found)
 				{
 					// Position found
@@ -452,9 +454,16 @@ namespace ft
 			else
 			{
 				// Val inserted right before position
+				bool is_begin = false;
+				if (position == begin())
+					is_begin = true;
+
 				insert(position, 1, val);
-				// Position now points to the new val
-				ret_position = position;
+
+				if (is_begin)
+					ret_position = begin();
+				else
+					ret_position = position;
 			}
 
 			return ret_position;
@@ -498,10 +507,8 @@ namespace ft
 						it_old++;
 					}
 				}
-
-				this->~vector();
-
 				// Update private data of vector
+				this->~vector();
 				_start = tmp;
 				_size = new_size;
 				_capacity = new_size;
@@ -511,17 +518,13 @@ namespace ft
 				// Offset existing values
 				if (!empty())
 				{
-					for (iterator it = end(), pos = position + n; it != end() - n; it--, pos--)
-					{
-						*it = *pos;
-					}
+					for (reverse_iterator it = rbegin() - 1; it != reverse_iterator(position + n); it++)
+						*it = *(it + 1);
 				}
 
 				// Setting the new values before position
 				for (iterator it = position; it != position + n; it++)
-				{
 					_allocator.construct(&*it, val);
-				}
 
 				//Update private data of vector
 				_size += n;

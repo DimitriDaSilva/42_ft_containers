@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/23 23:18:33 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/25 10:03:32 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,8 +97,8 @@ re:							fclean all
 test:						debug
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
-							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log
 							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log
+							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log
 							@ diff -I '::' -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
 							@ if [ -s $(PATH_LOGS)/diff.log ]; \
 							then \

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 17:58:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/26 09:48:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include "distance.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+# include "lexicographical_compare.hpp"
+# include "equal.hpp"
 
 namespace ft
 {
@@ -654,7 +656,58 @@ namespace ft
 
 /*                                  Swap                                      */
 
-	template <class T, class A>
+	template<class T, class A>
+	bool
+	operator==(vector<T, A> const& lhs, vector<T, A> const& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+
+		return equal(lhs.begin(), lhs.begin(), rhs.begin());
+	}
+
+	template<class T, class A>
+	bool
+	operator!=(vector<T, A> const& lhs, vector<T, A> const& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template<class T, class A>
+	bool
+	operator<(vector<T, A> const& lhs, vector<T, A> const& rhs)
+	{
+		return lexicographical_compare(lhs.begin(),
+										lhs.end(),
+										rhs.begin(),
+										rhs.end());
+
+	}
+
+	template<class T, class A>
+	bool
+	operator<=(vector<T, A> const& lhs, vector<T, A> const& rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	template<class T, class A>
+	bool
+	operator>(vector<T, A> const& lhs, vector<T, A> const& rhs)
+	{
+		return (rhs < lhs);
+	}
+
+	template<class T, class A>
+	bool
+	operator>=(vector<T, A> const& lhs, vector<T, A> const& rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+/*                                  Swap                                      */
+
+	template<class T, class A>
 	void
 	swap(vector<T, A>& lhs, vector<T, A>& rhs)
 	{

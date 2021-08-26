@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_others.hpp                                    :+:      :+:    :+:   */
+/*   test_lexicographical_compare.hpp                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:41:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/26 09:58:05 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/26 09:30:16 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/26 09:36:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_OTHERS_HPP
-# define TEST_OTHERS_HPP
+#ifndef TEST_LEXICOGRAPHICAL_COMPARE_HPP
+# define TEST_LEXICOGRAPHICAL_COMPARE_HPP
 
-# include <string>		// std::string
+# include <iostream>     // std::cout, std::boolalpha
+# include <algorithm>    // std::lexicographical_compare
+# include <cctype>       // std::tolower
 
-# include "test_wrappers.hpp"
-# include "test_distance.hpp"
-# include "test_is_const.hpp"
-# include "test_is_integral.hpp"
-# include "test_iterator_traits.hpp"
-# include "test_lexicographical_compare.hpp"
-# include "test_equal.hpp"
-
-void test_others();
+void test_lexicographical_compare();
 
 #endif

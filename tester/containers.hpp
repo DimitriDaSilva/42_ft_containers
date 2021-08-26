@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 22:39:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/26 09:55:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 	#  include <stack>			// std::stack
 	#  include <vector>			// std::vector
 	#  include <iterator>		// std::iterator_traits, std::reverse_iterator
+	#  include <algorithm>		// std::equal, std::lexicographical_compare
 	namespace ft = std;
 # else
 	//#  include "map.hpp"
@@ -34,6 +35,8 @@
 	#  include "enable_if.hpp"
 	#  include "is_integral.hpp"
 	#  include "is_const.hpp"
+	#  include "equal.hpp"
+	#  include "lexicographical_compare.hpp"
 # endif
 
 #endif

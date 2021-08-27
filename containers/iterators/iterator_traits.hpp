@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 11:06:17 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 22:36:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/27 15:40:07 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ITERATOR_TRAITS_HPP
 
 # include <iterator>	// std::random_access_iterator_tag
+# include <cstddef>		// std::ptrdiff_t
 
 namespace ft
 {

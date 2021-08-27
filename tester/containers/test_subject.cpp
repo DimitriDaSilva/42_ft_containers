@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:09:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 22:58:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/27 19:33:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ test_subject()
 
 	ft::vector<std::string> vector_str;
 	ft::vector<int> vector_int;
-	//ft::stack<int> stack_int;
+	ft::stack<int> stack_int;
 	ft::vector<Buffer> vector_buffer;
-	//ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
+	ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
 	//ft::map<int, int> map_int;
 
 	for (int i = 0; i < COUNT; i++)
@@ -31,26 +31,26 @@ test_subject()
 		vector_buffer.push_back(Buffer());
 	}
 
-	//for (int i = 0; i < COUNT; i++)
-	//{
-		//const int idx = rand() % COUNT;
-		//vector_buffer[idx].idx = 5;
-	//}
-	//ft::vector<Buffer>().swap(vector_buffer);
+	for (int i = 0; i < COUNT; i++)
+	{
+		const int idx = rand() % COUNT;
+		vector_buffer[idx].idx = 5;
+	}
+	ft::vector<Buffer>().swap(vector_buffer);
 
-	//try
-	//{
-		//for (int i = 0; i < COUNT; i++)
-		//{
-			//const int idx = rand() % COUNT;
-			//vector_buffer.at(idx);
-			//std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
-		//}
-	//}
-	//catch(const std::exception& e)
-	//{
-		////NORMAL ! :P
-	//}
+	try
+	{
+		for (int i = 0; i < COUNT; i++)
+		{
+			const int idx = rand() % COUNT;
+			vector_buffer.at(idx);
+			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+		}
+	}
+	catch(const std::exception& e)
+	{
+		//NORMAL ! :P
+	}
 
 	//for (int i = 0; i < COUNT; ++i)
 	//{

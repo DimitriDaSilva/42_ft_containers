@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_containers.cpp                                :+:      :+:    :+:   */
+/*   test_stack.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:11:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/27 15:22:59 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/27 15:22:31 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/27 17:23:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test_containers.hpp"
+#ifndef TEST_STACK_HPP
+# define TEST_STACK_HPP
 
-void
-test_containers()
-{
-	test_wrapper(test_subject, "subject");
-	subsection_wrapper(test_vector, "vector");
-	subsection_wrapper(test_stack, "stack");
-}
+# include <string>	// std::string
+
+# include "containers.hpp"
+# include "test_wrappers.hpp"
+
+void test_stack();
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 23:10:01 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/22 10:24:22 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/28 09:59:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ test_vector_element_access_brackets_out_of_range()
 	ft::vector<int> const vec(10, 42);
 	print_vec_info(vec);
 
-	std::cout << vec[10] << std::endl;
+	//std::cout << vec[10] << std::endl;
 }
 
 void

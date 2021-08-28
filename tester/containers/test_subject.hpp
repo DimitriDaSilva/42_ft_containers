@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:10:15 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/21 22:58:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/28 09:48:29 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,24 @@ struct Buffer
 
 # define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
-//template<typename T>
-//class MutantStack : public ft::stack<T>
-//{
-//public:
-	//MutantStack() {}
-	//MutantStack(const MutantStack<T>& src) { *this = src; }
-	//MutantStack<T>& operator=(const MutantStack<T>& rhs)
-	//{
-		//this->c = rhs.c;
-		//return *this;
-	//}
-	//~MutantStack() {}
+template<typename T>
+class MutantStack : public ft::stack<T>
+{
+public:
+	MutantStack() {}
+	MutantStack(const MutantStack<T>& src) { *this = src; }
+	MutantStack<T>& operator=(const MutantStack<T>& rhs)
+	{
+		this->c = rhs.c;
+		return *this;
+	}
+	~MutantStack() {}
 
-	//typedef typename ft::stack<T>::container_type::iterator iterator;
+	typedef typename ft::stack<T>::container_type::iterator iterator;
 
-	//iterator begin() { return this->c.begin(); }
-	//iterator end() { return this->c.end(); }
-//};
+	iterator begin() { return this->c.begin(); }
+	iterator end() { return this->c.end(); }
+};
 
 void test_subject();
 

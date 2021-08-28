@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/27 16:36:59 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/08/28 09:53:28 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -116,7 +116,8 @@ test:						debug
 
 # Debugging functions
 
-debug:						FLAGS_COMP += $(FLAG_MEM_LEAK)
+debug:						FLAGS_COMP_FT += $(FLAG_MEM_LEAK)
+debug:						FLAGS_COMP_STL += $(FLAG_MEM_LEAK)
 debug:						re
 
 .PHONY:						all clean fclean re

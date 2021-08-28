@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/27 15:36:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/27 19:31:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/28 09:51:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,42 +41,42 @@ namespace ft
 
 		explicit
 		stack(container_type const& ctnr = container_type()) :
-			_ctnr(ctnr) {}
+			c(ctnr) {}
 
 		bool
 		empty() const
 		{
-			return _ctnr.empty();
+			return c.empty();
 		}
 
 		size_type
 		size() const
 		{
-			return _ctnr.size();
+			return c.size();
 		}
 
 		value_type&
 		top()
 		{
-			return _ctnr.back();
+			return c.back();
 		}
 
 		value_type const&
 		top() const
 		{
-			return _ctnr.back();
+			return c.back();
 		}
 
 		void
 		push(value_type const& val)
 		{
-			_ctnr.push_back(val);
+			c.push_back(val);
 		}
 
 		void
 		pop()
 		{
-			_ctnr.pop_back();
+			c.pop_back();
 		}
 
 		template<class U, class Ctnr>
@@ -97,12 +97,12 @@ namespace ft
 		template<class U, class Ctnr>
 		friend bool operator>=(stack<U, Ctnr> const& lhs, stack<U, Ctnr> const& rhs);
 
-	private:
+	protected:
 /******************************************************************************/
 /*                   	        PRIVATE DATA                                  */
 /******************************************************************************/
 
-		container_type	_ctnr;
+		container_type	c;
 	};
 
 /******************************************************************************/
@@ -113,42 +113,42 @@ namespace ft
 	bool
 	operator==(ft::stack<T, Container> const& lhs, ft::stack<T, Container> const& rhs)
 	{
-		return (lhs._ctnr == rhs._ctnr);
+		return (lhs.c == rhs.c);
 	}
 
 	template<class T, class Container>
 	bool
 	operator!=(ft::stack<T, Container> const& lhs, ft::stack<T, Container> const& rhs)
 	{
-		return (lhs._ctnr != rhs._ctnr);
+		return (lhs.c != rhs.c);
 	}
 
 	template<class T, class Container>
 	bool
 	operator<(ft::stack<T, Container> const& lhs, ft::stack<T, Container> const& rhs)
 	{
-		return (lhs._ctnr < rhs._ctnr);
+		return (lhs.c < rhs.c);
 	}
 
 	template<class T, class Container>
 	bool
 	operator<=(ft::stack<T, Container> const& lhs, ft::stack<T, Container> const& rhs)
 	{
-		return (lhs._ctnr <= rhs._ctnr);
+		return (lhs.c <= rhs.c);
 	}
 
 	template<class T, class Container>
 	bool
 	operator>(ft::stack<T, Container> const& lhs, ft::stack<T, Container> const& rhs)
 	{
-		return (lhs._ctnr > rhs._ctnr);
+		return (lhs.c > rhs.c);
 	}
 
 	template<class T, class Container>
 	bool
 	operator>=(ft::stack<T, Container> const& lhs, ft::stack<T, Container> const& rhs)
 	{
-		return (lhs._ctnr >= rhs._ctnr);
+		return (lhs.c >= rhs.c);
 	}
 }
 

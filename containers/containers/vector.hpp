@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/27 15:45:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/28 11:06:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -486,7 +486,10 @@ namespace ft
 				for (reverse_iterator it = rbegin() - n;
 						it != reverse_iterator(position) - n;
 						it++)
-					*it = *(it + n);
+				{
+					_allocator.construct(&*it, *(it + n));
+					_allocator.destroy(&*(it + n));
+				}
 
 				// Setting the new values before position
 				for (iterator it = position; it != position + n; it++)
@@ -519,7 +522,7 @@ namespace ft
 					new_capacity *= 2;
 
 				// Reallocate new
-				new_vec = _allocator.allocate(new_size);
+				new_vec = _allocator.allocate(new_capacity);
 
 				// Copy sequence to new array
 				it_old = begin();
@@ -552,7 +555,10 @@ namespace ft
 				for (reverse_iterator it = rbegin() - distance;
 						it != reverse_iterator(position) - distance;
 						it++)
-					*it = *(it + distance);
+				{
+					_allocator.construct(&*it, *(it + distance));
+					_allocator.destroy(&*(it + distance));
+				}
 
 				// Setting the new values before position
 				for (iterator it = position; it != position + distance; it++, first++)
@@ -572,7 +578,10 @@ namespace ft
 
 			// Offset all the elements by one to fill the gap
 			for (iterator it = position; it + 1 != end(); it++)
-				*it = *(it + 1);
+			{
+				_allocator.construct(&*it, *(it + 1));
+				_allocator.destroy(&*(it + 1));
+			}
 
 			_size--;
 
@@ -592,7 +601,10 @@ namespace ft
 
 			// Offset all the elements by distance to fill the gap
 			for (iterator it = save_first; it + distance != end(); it++)
-				*it = *(it + distance);
+			{
+				_allocator.construct(&*it, *(it + distance));
+				_allocator.destroy(&*(it + distance));
+			}
 
 			_size -= distance;
 

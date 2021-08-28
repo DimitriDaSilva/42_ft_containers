@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:09:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/27 19:33:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/28 09:56:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ test_subject()
 	//{
 		//ft::map<int, int> copy = map_int;
 	//}
-	//MutantStack<char> iterable_stack;
-	//for (char letter = 'a'; letter <= 'z'; letter++)
-		//iterable_stack.push(letter);
-	//for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
-	//{
-		//std::cout << *it;
-	//}
+	MutantStack<char> iterable_stack;
+	for (char letter = 'a'; letter <= 'z'; letter++)
+		iterable_stack.push(letter);
+	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
+	{
+		std::cout << *it;
+	}
 }
 

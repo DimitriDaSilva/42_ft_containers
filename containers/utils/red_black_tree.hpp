@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 10:35:54 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/30 12:01:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <functional>	// std::less
 # include <memory>		// std::allocator
 # include <utility>		// std::pair
+
+# include "pair.hpp"
+# include "less.hpp"
 
 namespace ft
 {
@@ -53,15 +56,14 @@ namespace ft
 	};
 
 	template<class T,
-		class Compare = std::less<T>,
-		class Alloc = std::allocator<std::pair<T const, T> >
+		class Compare = ft::less<T>,
+		class Alloc = std::allocator<ft::pair<T const, T> >
 		>
 	class rbt
 	{
 	public:
 
 	};
-
 }
 
 #endif

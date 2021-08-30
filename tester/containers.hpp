@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 10:52:45 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/30 12:06:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 	#  include <vector>			// std::vector
 	#  include <iterator>		// std::iterator_traits, std::reverse_iterator
 	#  include <algorithm>		// std::equal, std::lexicographical_compare
-	# include <utility>			// std::pair, std::make_pair
+	#  include <utility>		// std::pair, std::make_pair
 	namespace ft = std;
 # else
 	//#  include "map.hpp"
@@ -40,6 +40,7 @@
 	#  include "is_const.hpp"
 	#  include "equal.hpp"
 	#  include "pair.hpp"
+	#  include "less.hpp"
 	#  include "lexicographical_compare.hpp"
 # endif
 

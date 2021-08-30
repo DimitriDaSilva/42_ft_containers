@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_others.cpp                                    :+:      :+:    :+:   */
+/*   test_pair.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:41:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 10:53:22 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/30 10:49:20 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/30 10:58:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test_others.hpp"
+#ifndef TEST_PAIR_HPP
+# define TEST_PAIR_HPP
 
-void
-test_others()
-{
-	test_wrapper(test_distance, "distance");
-	test_wrapper(test_is_const, "is_const");
-	test_wrapper(test_is_integral, "is_integral");
-	test_wrapper(test_iterator_traits, "iterator_traits");
-	test_wrapper(test_lexicographical_compare, "lexicographical_compare");
-	test_wrapper(test_equal, "equal");
-	subsection_wrapper(test_pair, "pair && make_pair");
-}
+# include <string>		// std::string
+
+# include "containers.hpp"
+# include "test_wrappers.hpp"
+
+void test_pair();
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/28 11:06:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/30 11:10:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -660,7 +660,7 @@ namespace ft
 /*                        NON-MEMBER FUNCTION OVERLOADS                       */
 /******************************************************************************/
 
-/*                                  Swap                                      */
+/*                              Relational operators                          */
 
 	template<class T, class A>
 	bool

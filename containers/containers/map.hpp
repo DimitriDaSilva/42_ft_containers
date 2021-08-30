@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_others.cpp                                    :+:      :+:    :+:   */
+/*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:41:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 10:53:22 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/08/30 10:36:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test_others.hpp"
+#ifndef MAP_HPP
+# define MAP_HPP
 
-void
-test_others()
+# include <functional>	// std::less
+# include <memory>		// std::allocator
+# include <utility>		// std::pair
+
+# include "red_black_tree.hpp"
+
+namespace ft
 {
-	test_wrapper(test_distance, "distance");
-	test_wrapper(test_is_const, "is_const");
-	test_wrapper(test_is_integral, "is_integral");
-	test_wrapper(test_iterator_traits, "iterator_traits");
-	test_wrapper(test_lexicographical_compare, "lexicographical_compare");
-	test_wrapper(test_equal, "equal");
-	subsection_wrapper(test_pair, "pair && make_pair");
+	template<class Key,
+	   class T,
+	   class Compare = std::less<Key>,
+	   class Alloc = std::allocator<std::pair<Key const, T> >
+	   >
+	class map
+	{
+
+	};
 }
+
+#endif

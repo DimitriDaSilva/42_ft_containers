@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 11:22:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 14:52:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ namespace ft
 					rotate_left(parent);
 					recolor(parent->color);
 					recolor(parent->left->color);
+					return;
 				}
 				else if (parent->right == node)
 					rotate_left(node);
@@ -187,6 +188,7 @@ namespace ft
 					rotate_right(parent);
 					recolor(parent->color);
 					recolor(parent->right->color);
+					return;
 				}
 				else
 					rotate_right(node);
@@ -203,7 +205,7 @@ namespace ft
 					recolor(node->left->color);
 				}
 			}
-			else
+			else if (uncle->color == red)
 			{
 				// Recolor parent and uncle
 				recolor(parent->color);
@@ -233,20 +235,33 @@ namespace ft
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
+			node_pointer tmp = _nil;
 
 			// Update grandparent
-			if (grandparent->left == parent)
+			if (grandparent == NULL)
+				_root = node;
+			else if (grandparent->left == parent)
 				grandparent->left = node;
 			else
 				grandparent->right = node;
 
+			// Save node to the left of node before overwritting it
+			if (node->left != _nil)
+				tmp = node->left;
+
 			// Update node itself
 			node->left = parent;
-			node->parent = grandparent;
+			if (node == _root)
+				node->parent = NULL;
+			else
+				node->parent = grandparent;
 
 			// Update parent 
 			parent->parent = node;
-			parent->right = _nil;
+			if (tmp != _nil)
+				parent->right = tmp;
+			else
+				parent->right = _nil;
 		}
 
 		void
@@ -254,20 +269,33 @@ namespace ft
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
+			node_pointer tmp = _nil;
 
 			// Update grandparent
-			if (grandparent->left == parent)
+			if (grandparent == NULL)
+				_root = node;
+			else if (grandparent->left == parent)
 				grandparent->left = node;
 			else
 				grandparent->right = node;
 
+			// Save node to the right of node before overwritting it
+			if (node->right != _nil)
+				tmp = node->right;
+
 			// Update node itself
 			node->right = parent;
-			node->parent = grandparent;
+			if (node == _root)
+				node->parent = NULL;
+			else
+				node->parent = grandparent;
 
 			// Update parent 
 			parent->parent = node;
-			parent->left = _nil;
+			if (tmp != _nil)
+				parent->left = tmp;
+			else
+				parent->left = _nil;
 		}
 
 		void print_inorder_helper(node_pointer node)

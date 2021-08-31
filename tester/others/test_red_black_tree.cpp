@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 16:16:32 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:10:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ test_red_black_tree_insertion_jenny()
 	rbt.insert(70);
 	rbt.print_inorder();
 	std::cout << std::endl;
+
+	rbt.clear();
 }
 
 void
@@ -78,6 +80,8 @@ test_red_black_tree_insertion_string()
 	rbt.insert("hello");
 	rbt.print_inorder();
 	std::cout << std::endl;
+
+	rbt.clear();
 }
 
 void
@@ -96,6 +100,8 @@ test_red_black_tree_find()
 	}
 
 	rbt.print_inorder();
+
+	rbt.clear();
 }
 
 void test_red_black_tree()

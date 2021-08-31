@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:02:13 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:09:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ namespace ft
 		clear()
 		{
 			clear_helper(_root);
+			//_alloc.destroy(_nil);
+			_alloc.deallocate(_nil, 1);
 		}
 
 	private:
@@ -335,7 +337,17 @@ namespace ft
 		void
 		clear_helper(node_pointer const& node)
 		{
+			// Base case of recursion
+			if (node == _nil)
+				return;
 
+			// Clear all nodes to the left and right of it
+			clear_helper(node->left);
+			clear_helper(node->right);
+
+			// Clear the node itself
+			_alloc.destroy(node);
+			_alloc.deallocate(node, 1);
 		}
 
 /******************************************************************************/

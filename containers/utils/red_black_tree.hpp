@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 15:02:08 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 16:15:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,9 @@ namespace ft
 			else
 				check_insert(new_node);
 		}
+
+		node_pointer
+		find(value_type const& val)	{return find_helper(val, _root);}
 
 		void
 		print_inorder() {print_inorder_helper(_root);}
@@ -290,10 +293,28 @@ namespace ft
 				parent->left = _nil;
 		}
 
-		void print_inorder_helper(node_pointer node)
+		node_pointer
+		find_helper(value_type const& val, node_pointer node)
 		{
+			// Base case of recursion
+			if (node == _nil)
+				return NULL;
+			else if (node->data == val)
+				return node;
+
+			if (_comp(val, node->data))
+				return find_helper(val, node->left);
+			else
+				return find_helper(val, node->right);
+		}
+
+		void
+		print_inorder_helper(node_pointer node)
+		{
+			// Base case of recursion
 			if (node == _nil)
 				return;
+
 			print_inorder_helper(node->left);
 			std::cout << node->data << " "
 				<< (node->color == black ? "black" : "red")

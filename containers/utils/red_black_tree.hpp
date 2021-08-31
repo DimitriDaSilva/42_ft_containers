@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:56:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 19:29:37 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,20 @@ namespace ft
 		{
 			// All leaf nodes will point to _nil. This will allow us to
 			// check if _nil
-			rbt_node<value_type> nil_node;
-
-			nil_node.data = value_type();
-			nil_node.parent = NULL;
-			nil_node.left = NULL;
-			nil_node.right = NULL;
-			nil_node.color = black;
-
-			_nil = _alloc.allocate(1);
-			_alloc.construct(_nil, nil_node);
+			_nil.data = value_type();
+			_nil.parent = NULL;
+			_nil.left = NULL;
+			_nil.right = NULL;
+			_nil.color = black;
 
 			// Set root pointing to _nil. Empty tree
-			_root = _nil;
+			_root = &_nil;
 		}
 
 		// Copy
 		rbt(rbt const& rhs) :
 			_root(NULL),
+			_nil(rhs._nil),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
 		{
@@ -113,10 +109,10 @@ namespace ft
 			// Clear current
 			if (_root != NULL)
 				clear();
+			copy_helper(_root, rhs._root, NULL, rhs._nil);
 
 			return *this;
 		}
-
 
 /******************************************************************************/
 /*                   	    OTHER MEMBER FUNCTIONS                            */
@@ -131,11 +127,11 @@ namespace ft
 
 			// Allocate new node on the base of _nil
 			node_pointer new_node = _alloc.allocate(1);
-			_alloc.construct(new_node, *_nil);
+			_alloc.construct(new_node, _nil);
 			new_node->parent = NULL;
 			new_node->data = val;
-			new_node->left = _nil;
-			new_node->right = _nil;
+			new_node->left = &_nil;
+			new_node->right = &_nil;
 
 			// New node always are red
 			new_node->color = red;
@@ -144,7 +140,7 @@ namespace ft
 			node_pointer child = _root;
 
 			// Find right position for the new node
-			while (child != _nil)
+			while (child != &_nil)
 			{
 				parent = child;
 				if (_comp(new_node->data, child->data))
@@ -195,7 +191,12 @@ namespace ft
 		void
 		erase(value_type const& val)
 		{
-			erase_helper(val);
+			node_pointer position = find(val);
+
+			// Don't do nothing if val not found
+			if (!position)
+				return;
+			erase_helper(position);
 		}
 
 		void
@@ -208,6 +209,28 @@ namespace ft
 /******************************************************************************/
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
+
+		void
+		copy_helper(node_pointer& lhs,
+				node_pointer rhs,
+				node_pointer parent,
+				node_t const& nil_rhs)
+		{
+			// Base case of the recursion
+			if (rhs == &nil_rhs)
+			{
+				lhs = &_nil;
+				return;
+			}
+
+			lhs = _alloc.allocate(1);
+			_alloc.construct(lhs, *rhs);
+			// Parent is the previously created node pased as argument
+			lhs->parent = parent;
+
+			copy_helper(lhs->left, rhs->left, lhs, nil_rhs);
+			copy_helper(lhs->right, rhs->right, lhs, nil_rhs);
+		}
 
 		void
 		check_insert(node_pointer& node)
@@ -288,7 +311,7 @@ namespace ft
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
-			node_pointer tmp = _nil;
+			node_pointer tmp = &_nil;
 
 			// Update grandparent
 			if (grandparent == NULL)
@@ -299,7 +322,7 @@ namespace ft
 				grandparent->right = node;
 
 			// Save node to the left of node before overwritting it
-			if (node->left != _nil)
+			if (node->left != &_nil)
 				tmp = node->left;
 
 			// Update node itself
@@ -311,10 +334,10 @@ namespace ft
 
 			// Update parent 
 			parent->parent = node;
-			if (tmp != _nil)
+			if (tmp != &_nil)
 				parent->right = tmp;
 			else
-				parent->right = _nil;
+				parent->right = &_nil;
 		}
 
 		void
@@ -322,7 +345,7 @@ namespace ft
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
-			node_pointer tmp = _nil;
+			node_pointer tmp = &_nil;
 
 			// Update grandparent
 			if (grandparent == NULL)
@@ -333,7 +356,7 @@ namespace ft
 				grandparent->right = node;
 
 			// Save node to the right of node before overwritting it
-			if (node->right != _nil)
+			if (node->right != &_nil)
 				tmp = node->right;
 
 			// Update node itself
@@ -345,17 +368,17 @@ namespace ft
 
 			// Update parent 
 			parent->parent = node;
-			if (tmp != _nil)
+			if (tmp != &_nil)
 				parent->left = tmp;
 			else
-				parent->left = _nil;
+				parent->left = &_nil;
 		}
 
 		node_pointer
 		find_helper(value_type const& val, node_pointer const& node) const
 		{
 			// Base case of recursion
-			if (node == _nil)
+			if (node == &_nil)
 				return NULL;
 			else if (node->data == val)
 				return node;
@@ -370,7 +393,7 @@ namespace ft
 		print_inorder_helper(node_pointer const& node) const
 		{
 			// Base case of recursion
-			if (node == _nil)
+			if (node == &_nil)
 				return;
 
 			print_inorder_helper(node->left);
@@ -382,10 +405,16 @@ namespace ft
 		}
 
 		void
+		erase_helper(node_pointer node)
+		{
+			(void)node;
+		}
+
+		void
 		clear_helper(node_pointer const& node)
 		{
 			// Base case of recursion
-			if (node == _nil)
+			if (node == &_nil)
 				return;
 
 			// Clear all nodes to the left and right of it
@@ -402,7 +431,7 @@ namespace ft
 /******************************************************************************/
 
 		node_pointer	_root;
-		node_pointer	_nil;
+		node_t			_nil;
 		value_compare	_comp;
 		allocator_type	_alloc;
 	};

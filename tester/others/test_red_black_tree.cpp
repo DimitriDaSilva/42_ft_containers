@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:35:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 19:24:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ test_red_black_tree_insertion_jenny()
 	rbt.print_inorder();
 	std::cout << std::endl;
 
+	{
+		ft::rbt<int> cpy = rbt;
+		cpy.print_inorder();
+		cpy.clear();
+	}
+
 	rbt.clear();
 }
 
@@ -90,7 +96,9 @@ test_red_black_tree_insertion_string()
 	std::cout << std::endl;
 
 	{
-
+		ft::rbt<std::string> cpy = rbt;
+		cpy.print_inorder();
+		cpy.clear();
 	}
 
 	rbt.clear();
@@ -112,6 +120,12 @@ test_red_black_tree_find()
 	}
 
 	rbt.print_inorder();
+
+	{
+		ft::rbt<int> cpy = rbt;
+		cpy.print_inorder();
+		cpy.clear();
+	}
 
 	rbt.clear();
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 12:06:39 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 09:57:01 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 	#  include <utility>		// std::pair, std::make_pair
 	namespace ft = std;
 # else
-	//#  include "map.hpp"
+	#  include "map.hpp"
 	#  include "stack.hpp"
 	#  include "vector.hpp"
 	#  include "iterator_traits.hpp"

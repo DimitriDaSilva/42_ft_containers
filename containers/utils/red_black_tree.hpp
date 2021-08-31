@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 18:51:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 11:22:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stddef.h>	// NULL
 # include <memory>		// std::allocator
+# include <iostream>	// std::cout
 
 # include "pair.hpp"
 # include "less.hpp"
@@ -35,7 +36,8 @@ namespace ft
 
 	template<class T,
 		class Compare = ft::less<T>,
-		class Alloc = std::allocator<T>	>
+		class Alloc = std::allocator<rbt_node<T> >
+			>
 	class rbt
 	{
 	public:
@@ -84,7 +86,8 @@ namespace ft
 			// Allocate new node
 			// New node always are red
 			node_pointer new_node = _alloc.allocate(1);
-			_alloc.construct(new_node, _nil);
+			_alloc.construct(new_node, *_nil);
+			new_node->parent = NULL;
 			new_node->data = val;
 			new_node->color = red;
 
@@ -117,15 +120,18 @@ namespace ft
 			else
 				parent->right = new_node;
 
-			// If parent's parent is NULL then we are at level 1 of the tree
+			// If parent is _root then we are at level 1 of the tree
 			// so we can't be unbalancing the tree
-			if (new_node->parent->parent == NULL)
+			if (parent == _root)
 				return;
 			// Else the new node could have unbalanced the red-black tree
 			// so we need to check after each insert
 			else
 				check_insert(new_node);
-			}
+		}
+
+		void
+		print_inorder() {print_inorder_helper(_root);}
 
 	private:
 /******************************************************************************/
@@ -146,7 +152,7 @@ namespace ft
 		get_uncle(node_pointer node)
 		{
 			node_pointer grandparent = node->parent->parent;
-			node_pointer parent = node>parent;
+			node_pointer parent = node->parent;
 
 			if (grandparent->left == parent)
 				return grandparent->right;
@@ -157,57 +163,123 @@ namespace ft
 		void
 		check_insert(node_pointer node)
 		{
-			node_pointer parent;
-			node_pointer uncle;
-
+			// Base case of recursion
 			if (node->parent->color == black)
 				return;
-			else
-			{
-				parent = node->parent;
-				uncle = get_uncle(node);
-				if (uncle->color == black)
-				{
-					// Rotate && recolor
-					if (parent->right == node)
-					{
-						// left rotation
 
-					}
-					else
-					{
-						// right rotation
-					}
+			node_pointer grandparent = node->parent->parent;
+			node_pointer parent = node->parent;
+			node_pointer uncle = get_uncle(node);
+
+			if (uncle->color == black)
+			{
+				// Rotate && recolor
+				if (parent->right == node && grandparent->right == parent)
+				{
+					rotate_left(parent);
+					recolor(parent->color);
+					recolor(parent->left->color);
+				}
+				else if (parent->right == node)
+					rotate_left(node);
+				else if (parent->left == node && grandparent->left == parent)
+				{
+					rotate_right(parent);
+					recolor(parent->color);
+					recolor(parent->right->color);
+				}
+				else
+					rotate_right(node);
+				if (grandparent->left == node)
+				{
+					rotate_right(node);
+					recolor(node->color);
+					recolor(node->right->color);
 				}
 				else
 				{
-					// Recolor parent and uncle
-					parent->color = black;
-					uncle->color = black;
-					// If parent's parent of new_node is not root node
-					// recolor it and recheck
-					if (parent->parent != NULL)
-					{
-						// recolor
-						// recheck
-					}
+					rotate_left(node);
+					recolor(node->color);
+					recolor(node->left->color);
+				}
+			}
+			else
+			{
+				// Recolor parent and uncle
+				recolor(parent->color);
+				recolor(uncle->color);
 
+				// If grandparent of new_node is not root node
+				// recolor it and recheck
+				if (grandparent != _root)
+				{
+					// Recolor
+					recolor(grandparent->color);
+					// Recheck with grandparent as node
+					check_insert(grandparent);
 				}
 			}
 		}
 
 		void
+		recolor(color& color)
+		{
+			color = color == red ? black : red;
+		}
+
+
+		void
 		rotate_left(node_pointer node)
 		{
+			node_pointer grandparent = node->parent->parent;
+			node_pointer parent = node->parent;
 
+			// Update grandparent
+			if (grandparent->left == parent)
+				grandparent->left = node;
+			else
+				grandparent->right = node;
+
+			// Update node itself
+			node->left = parent;
+			node->parent = grandparent;
+
+			// Update parent 
+			parent->parent = node;
+			parent->right = _nil;
 		}
 
 		void
 		rotate_right(node_pointer node)
 		{
+			node_pointer grandparent = node->parent->parent;
+			node_pointer parent = node->parent;
 
+			// Update grandparent
+			if (grandparent->left == parent)
+				grandparent->left = node;
+			else
+				grandparent->right = node;
+
+			// Update node itself
+			node->right = parent;
+			node->parent = grandparent;
+
+			// Update parent 
+			parent->parent = node;
+			parent->left = _nil;
 		}
 
+		void print_inorder_helper(node_pointer node)
+		{
+			if (node == _nil)
+				return;
+			print_inorder_helper(node->left);
+			std::cout << node->data << " "
+				<< (node->color == black ? "black" : "red")
+				<< std::endl;
+			print_inorder_helper(node->right);
+		}
 	};
 }
 

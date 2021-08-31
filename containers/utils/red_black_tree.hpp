@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 14:52:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 15:02:08 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,59 +147,51 @@ namespace ft
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
 
-		
-		node_pointer
-		get_uncle(node_pointer node)
-		{
-			node_pointer grandparent = node->parent->parent;
-			node_pointer parent = node->parent;
-
-			if (grandparent->left == parent)
-				return grandparent->right;
-			else
-				return grandparent->left;
-		}
-
 		void
 		check_insert(node_pointer node)
 		{
+			node_pointer parent = node->parent;
+			node_pointer grandparent;
+			node_pointer uncle;
+
 			// Base case of recursion
-			if (node->parent->color == black)
+			if (parent->color == black)
 				return;
 
-			node_pointer grandparent = node->parent->parent;
-			node_pointer parent = node->parent;
-			node_pointer uncle = get_uncle(node);
+			grandparent = parent->parent;
+			uncle = grandparent->left == parent ?
+					grandparent->right :
+					grandparent->left;
 
 			if (uncle->color == black)
 			{
 				// Rotate && recolor
+				// Right - right situation
 				if (parent->right == node && grandparent->right == parent)
 				{
 					rotate_left(parent);
 					recolor(parent->color);
 					recolor(parent->left->color);
-					return;
 				}
-				else if (parent->right == node)
+				// Right - left situation
+				else if (parent->right == node && grandparent->left == parent)
+				{
 					rotate_left(node);
+					rotate_right(node);
+					recolor(node->color);
+					recolor(node->right->color);
+				}
+				// Left - left situation
 				else if (parent->left == node && grandparent->left == parent)
 				{
 					rotate_right(parent);
 					recolor(parent->color);
 					recolor(parent->right->color);
-					return;
 				}
-				else
-					rotate_right(node);
-				if (grandparent->left == node)
+				// Left - right situation
+				else if (parent->left == node && grandparent->right == parent)
 				{
 					rotate_right(node);
-					recolor(node->color);
-					recolor(node->right->color);
-				}
-				else
-				{
 					rotate_left(node);
 					recolor(node->color);
 					recolor(node->left->color);

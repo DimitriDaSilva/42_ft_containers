@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 16:15:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:02:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,27 +131,37 @@ namespace ft
 		}
 
 		node_pointer
-		find(value_type const& val)	{return find_helper(val, _root);}
+		find(value_type const& val) const
+		{
+			return find_helper(val, _root);
+		}
 
 		void
-		print_inorder() {print_inorder_helper(_root);}
+		print_inorder() const
+		{
+			print_inorder_helper(_root);
+			std::cout << std::endl;
+		}
+
+		//void
+		//erase(value_type const& val)
+		//{
+			//erase_helper(val);
+		//}
+
+		void
+		clear()
+		{
+			clear_helper(_root);
+		}
 
 	private:
-/******************************************************************************/
-/*                   	        PRIVATE DATA                                  */
-/******************************************************************************/
-
-		node_pointer	_root;
-		node_pointer	_nil;
-		value_compare	_comp;
-		allocator_type	_alloc;
-
 /******************************************************************************/
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
 
 		void
-		check_insert(node_pointer node)
+		check_insert(node_pointer& node)
 		{
 			node_pointer parent = node->parent;
 			node_pointer grandparent;
@@ -224,9 +234,8 @@ namespace ft
 			color = color == red ? black : red;
 		}
 
-
 		void
-		rotate_left(node_pointer node)
+		rotate_left(node_pointer& node)
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
@@ -260,7 +269,7 @@ namespace ft
 		}
 
 		void
-		rotate_right(node_pointer node)
+		rotate_right(node_pointer& node)
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
@@ -294,7 +303,7 @@ namespace ft
 		}
 
 		node_pointer
-		find_helper(value_type const& val, node_pointer node)
+		find_helper(value_type const& val, node_pointer const& node) const
 		{
 			// Base case of recursion
 			if (node == _nil)
@@ -309,7 +318,7 @@ namespace ft
 		}
 
 		void
-		print_inorder_helper(node_pointer node)
+		print_inorder_helper(node_pointer const& node) const
 		{
 			// Base case of recursion
 			if (node == _nil)
@@ -317,10 +326,27 @@ namespace ft
 
 			print_inorder_helper(node->left);
 			std::cout << node->data << " "
-				<< (node->color == black ? "black" : "red")
-				<< std::endl;
+				<< "[" << (node->color == black ?
+						"\033[1;32mB\033[0m" :
+						"\033[1;31mR\033[0m") << "] ";
 			print_inorder_helper(node->right);
 		}
+
+		void
+		clear_helper(node_pointer const& node)
+		{
+
+		}
+
+/******************************************************************************/
+/*                   	        PRIVATE DATA                                  */
+/******************************************************************************/
+
+		node_pointer	_root;
+		node_pointer	_nil;
+		value_compare	_comp;
+		allocator_type	_alloc;
+
 	};
 }
 

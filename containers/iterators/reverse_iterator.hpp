@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 18:06:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:45:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ namespace ft
 		reverse_iterator&
 		operator=(reverse_iterator const& rhs)
 		{
+			// Self-assignement check
+			if (this == &rhs)
+				return *this;
+
 			_it = rhs._it;
 
 			return *this;

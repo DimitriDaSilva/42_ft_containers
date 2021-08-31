@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 11:10:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:46:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ namespace ft
 		}
 
 		// Copy
-		vector(vector const& other) :
+		vector(vector const& rhs) :
 			_start(NULL),
-			_allocator(other._allocator),
+			_allocator(rhs._allocator),
 			_size(0),
 			_capacity(0),
 			_max_size(std::numeric_limits<long>::max() / sizeof(value_type))
 		{
-			*this = other;
+			*this = rhs;
 		}
 
 /*                                Destructors                                 */
@@ -137,10 +137,14 @@ namespace ft
 /*                                Assignement                                 */
 
 		vector&
-		operator=(vector const& other)
+		operator=(vector const& rhs)
 		{
-			// Deep copy of the other sequence
-			assign(other.begin(), other.end());
+			// Self-assignement check
+			if (this == &rhs)
+				return *this;
+
+			// Deep copy of the rhs sequence
+			assign(rhs.begin(), rhs.end());
 
 			return *this;
 		}

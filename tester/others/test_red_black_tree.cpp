@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:10:22 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:35:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ test_red_black_tree_insertion_string()
 	rbt.print_inorder();
 	std::cout << std::endl;
 
+	rbt.insert("marc");
+	rbt.print_inorder();
+	std::cout << std::endl;
+
+	rbt.insert("zebra");
+	rbt.print_inorder();
+	std::cout << std::endl;
+
+	{
+
+	}
+
 	rbt.clear();
 }
 
@@ -107,6 +119,6 @@ test_red_black_tree_find()
 void test_red_black_tree()
 {
 	test_wrapper(test_red_black_tree_insertion_jenny, "insertion jenny");
-	//test_wrapper(test_red_black_tree_insertion_string, "insertion string");
+	test_wrapper(test_red_black_tree_insertion_string, "insertion string");
 	test_wrapper(test_red_black_tree_find, "find");
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/25 17:56:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:46:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ namespace ft
 		random_access_iterator&
 		operator=(random_access_iterator const& rhs)
 		{
+			// Self-assignement check
+			if (this == &rhs)
+				return *this;
+
 			_ptr = rhs._ptr;
 
 			return *this;

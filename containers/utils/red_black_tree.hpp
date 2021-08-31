@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:09:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/08/31 18:56:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,8 @@ namespace ft
 		typedef T value_type;
 		typedef Compare value_compare;
 		typedef Alloc allocator_type;
+		typedef rbt_node<value_type> node_t;
 		typedef rbt_node<value_type>* node_pointer;
-		//typedef typename A::reference reference;
-		//typedef typename A::const_reference const_reference;
-		//typedef typename A::pointer pointer;
-		//typedef typename A::const_pointer const_pointer;
-		//typedef typename A::difference_type difference_type;
-		//typedef typename A::size_type size_type;
-
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -65,30 +59,85 @@ namespace ft
 /******************************************************************************/
 
 /*                                Constructors                                */
+
 		explicit rbt(value_compare const& comp = value_compare(),
 				allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
 			_comp(comp),
 			_alloc(alloc)
 		{
+			// All leaf nodes will point to _nil. This will allow us to
+			// check if _nil
+			rbt_node<value_type> nil_node;
+
+			nil_node.data = value_type();
+			nil_node.parent = NULL;
+			nil_node.left = NULL;
+			nil_node.right = NULL;
+			nil_node.color = black;
+
 			_nil = _alloc.allocate(1);
-			_nil->data = value_type();
-			_nil->parent = NULL;
-			_nil->left = _nil;
-			_nil->right = _nil;
-			_nil->color = black;
+			_alloc.construct(_nil, nil_node);
+
+			// Set root pointing to _nil. Empty tree
 			_root = _nil;
 		}
+
+		// Copy
+		rbt(rbt const& rhs) :
+			_root(NULL),
+			_comp(rhs._comp),
+			_alloc(rhs._alloc)
+		{
+			*this = rhs;
+		}
+
+/*                                Destructors                                 */
+		
+		virtual
+		~rbt() {}
+
+/******************************************************************************/
+/*                   	   OVERLOADING OPERATORS                              */
+/******************************************************************************/
+
+/*                                Assignement                                 */
+
+		rbt&
+		operator=(rbt const& rhs)
+		{
+			// Self-assignement check
+			if (this == &rhs)
+				return *this;
+
+			// Clear current
+			if (_root != NULL)
+				clear();
+
+			return *this;
+		}
+
+
+/******************************************************************************/
+/*                   	    OTHER MEMBER FUNCTIONS                            */
+/******************************************************************************/
 
 		void
 		insert(value_type const& val)
 		{
-			// Allocate new node
-			// New node always are red
+			// Ignore duplicates
+			if (find(val))
+				return;
+
+			// Allocate new node on the base of _nil
 			node_pointer new_node = _alloc.allocate(1);
 			_alloc.construct(new_node, *_nil);
 			new_node->parent = NULL;
 			new_node->data = val;
+			new_node->left = _nil;
+			new_node->right = _nil;
+
+			// New node always are red
 			new_node->color = red;
 
 			node_pointer parent = NULL;
@@ -143,18 +192,16 @@ namespace ft
 			std::cout << std::endl;
 		}
 
-		//void
-		//erase(value_type const& val)
-		//{
-			//erase_helper(val);
-		//}
+		void
+		erase(value_type const& val)
+		{
+			erase_helper(val);
+		}
 
 		void
 		clear()
 		{
 			clear_helper(_root);
-			//_alloc.destroy(_nil);
-			_alloc.deallocate(_nil, 1);
 		}
 
 	private:
@@ -358,7 +405,6 @@ namespace ft
 		node_pointer	_nil;
 		value_compare	_comp;
 		allocator_type	_alloc;
-
 	};
 }
 

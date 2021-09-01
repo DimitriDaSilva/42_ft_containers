@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 19:29:37 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/01 17:50:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef T value_type;
-		typedef Compare value_compare;
-		typedef Alloc allocator_type;
-		typedef rbt_node<value_type> node_t;
-		typedef rbt_node<value_type>* node_pointer;
+		typedef T						value_type;
+		typedef Compare					value_compare;
+		typedef Alloc					allocator_type;
+		typedef rbt_node<value_type>	node_t;
+		typedef rbt_node<value_type>*	node_pointer;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -89,7 +89,7 @@ namespace ft
 		}
 
 /*                                Destructors                                 */
-		
+
 		virtual
 		~rbt() {}
 
@@ -191,18 +191,161 @@ namespace ft
 		void
 		erase(value_type const& val)
 		{
-			node_pointer position = find(val);
+			node_pointer node = find(val);
+			node_pointer parent;
+			node_pointer tmp;
 
 			// Don't do nothing if val not found
-			if (!position)
+			if (!node)
 				return;
-			erase_helper(position);
+
+			parent = node->parent;
+
+			// Case: red leaf node
+			if (node->color == red && node->left == &_nil && node->right == &_nil)
+			{
+				// Update parent
+				if (parent->left == node)
+					parent->left = &_nil;
+				else
+					parent->right = &_nil;
+
+				_alloc.destroy(node);
+				_alloc.deallocate(node, 1);
+			}
+			// Case: red node one child
+			else if (node->color == red && (node->left == &_nil || node->right == &_nil))
+			{
+				if (node->left != &_nil)
+				{
+					tmp = node->left;
+					*node = *node->left;
+
+					_alloc.destroy(tmp);
+					_alloc.deallocate(tmp, 1);
+				}
+				else
+				{
+					tmp = node->right;
+					*node = *node->right;
+
+					_alloc.destroy(tmp);
+					_alloc.deallocate(tmp, 1);
+				}
+			}
+			// Case: red node two childs
+			else if (node->color == red && node->left != &_nil && node->right != &_nil)
+			{
+				if (!(tmp = successor(node)))
+					tmp = predecessor(node);
+
+				// Only copy data. The color stays the same
+				node->data = tmp->data;
+
+				// Set parent's of leaf node pointing to _nil
+				if (tmp->parent->left == tmp)
+					tmp->parent->left = &_nil;
+				else
+					tmp->parent->right = &_nil;
+
+				// Destroy leaf node
+				_alloc.destroy(tmp);
+				_alloc.deallocate(tmp, 1);
+			}
+			// Case: black node one child
+			else if (node->color == black && (node->left == &_nil || node->right == &_nil))
+			{
+				// Find predecessor or successor
+				if (node->left != &_nil)
+					tmp = predecessor(node);
+				else
+					tmp = successor(node);
+
+				// Only copy data. The color stays the same
+				node->data = tmp->data;
+
+				// Set parent's of leaf node pointing to _nil
+				if (tmp->parent->left == tmp)
+					tmp->parent->left = &_nil;
+				else
+					tmp->parent->right = &_nil;
+
+				// Destroy leaf node
+				_alloc.destroy(tmp);
+				_alloc.deallocate(tmp, 1);
+			}
 		}
 
 		void
 		clear()
 		{
 			clear_helper(_root);
+		}
+
+		node_pointer
+		maximum(node_pointer node)
+		{
+			while (node->right != &_nil)
+				node = node->right;
+
+			return node;
+		}
+
+		node_pointer
+		minimum(node_pointer node)
+		{
+			while (node->left != &_nil)
+				node = node->left;
+
+			return node;
+		}
+
+		node_pointer
+		predecessor(node_pointer node)
+		{
+			node_pointer predecessor;
+
+			// If node has a left child, it's predecessor is the maximum
+			// of its left subtree
+			if (node->left != &_nil)
+				return maximum(node->left);
+
+			// If not, we need to go look for it in it's parent left side
+			// The predecessor will be the first node that has its
+			// left child that isn't also an ancestor of the base node
+			predecessor = node->parent;
+			while (node != _root && node == predecessor->left)
+			{
+				node = predecessor;
+				predecessor = predecessor->parent;
+			}
+
+			// If node is _root then successor is NULL
+			return predecessor;
+		}
+
+		node_pointer
+		successor(node_pointer node)
+		{
+			node_pointer successor;
+
+			// If node has a right child, it's successor is the minimum
+			// of its right subtree
+			if (node->right != &_nil)
+				return minimum(node->right);
+
+			// If not, we need to go look for it in it's parent right side
+			// The successor will be the first node that has its
+			// right child that isn't also an ancestor of the base node
+			successor = node->parent;
+			while (node != _root && node == successor->right)
+			{
+				node = successor;
+				successor = successor->parent;
+			}
+
+			// If node is _root then successor is NULL
+			return successor;
 		}
 
 	private:
@@ -332,7 +475,7 @@ namespace ft
 			else
 				node->parent = grandparent;
 
-			// Update parent 
+			// Update parent
 			parent->parent = node;
 			if (tmp != &_nil)
 				parent->right = tmp;
@@ -366,7 +509,7 @@ namespace ft
 			else
 				node->parent = grandparent;
 
-			// Update parent 
+			// Update parent
 			parent->parent = node;
 			if (tmp != &_nil)
 				parent->left = tmp;
@@ -407,7 +550,14 @@ namespace ft
 		void
 		erase_helper(node_pointer node)
 		{
-			(void)node;
+			if (node->color == red)
+			{
+
+			}
+			else if (node->color == black)
+			{
+
+			}
 		}
 
 		void

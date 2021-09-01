@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/08/31 18:34:24 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/09/01 14:06:41 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ FLAG_MEM_LEAK		:= 		-fsanitize=address
 # Others commands
 RM					:=		rm -rf
 SEED				:=		$(shell echo $$RANDOM)
+UNAME				:=		$(shell uname)
 
 # Color Code and template code
 _YELLOW				:=		\e[38;5;184m
@@ -97,15 +98,17 @@ re:							fclean all
 test:						debug
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
-							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log
-							@ /usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log
+							@ ifeq ($(UNAME), Linux)																			\
+							/usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log	\
+							/usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log	\
+							fi;
 							@ diff -I '::' -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
-							@ if [ -s $(PATH_LOGS)/diff.log ]; \
-							then \
-								printf "$(_FAILURE) Failed test. Check the logs:\n"; \
-								cat $(PATH_LOGS)/diff.log; \
-							else \
-								printf "$(_SUCCESS) Test successful\n"; \
+							@ if [ -s $(PATH_LOGS)/diff.log ];							\
+							then														\
+								printf "$(_FAILURE) Failed test. Check the logs:\n";	\
+								cat $(PATH_LOGS)/diff.log;								\
+							else														\
+								printf "$(_SUCCESS) Test successful\n";					\
 							fi;
 							@ printf "$(_INFO) Time efficiency:\n"
 							@ printf "ft_containers:  "
@@ -123,6 +126,3 @@ debug:						re
 .PHONY:						all clean fclean re
 
 -include $(DEPS)
-
-# Source for some pieces of this Makefile:
-# https://makefiletutorial.com/#makefile-cookbook

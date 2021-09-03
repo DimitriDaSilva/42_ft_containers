@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/03 12:12:45 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/03 19:35:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ namespace ft
 			{
 				_root = new_node;
 				_root->color = black;
-				return ;
+				return;
 			}
 			else if (_comp(new_node->data, parent->data))
 				parent->left = new_node;
@@ -406,7 +406,10 @@ namespace ft
 
 			// Save node to the left of node before overwritting it
 			if (node->left != &_nil)
+			{
 				tmp = node->left;
+				tmp->parent = parent;
+			}
 
 			// Update node itself
 			node->left = parent;
@@ -417,10 +420,7 @@ namespace ft
 
 			// Update parent
 			parent->parent = node;
-			if (tmp != &_nil)
-				parent->right = tmp;
-			else
-				parent->right = &_nil;
+			parent->right = tmp;
 		}
 
 		void
@@ -439,8 +439,12 @@ namespace ft
 				grandparent->right = node;
 
 			// Save node to the right of node before overwritting it
+			// and set its new parent
 			if (node->right != &_nil)
+			{
 				tmp = node->right;
+				tmp->parent = parent;
+			}
 
 			// Update node itself
 			node->right = parent;
@@ -451,10 +455,7 @@ namespace ft
 
 			// Update parent
 			parent->parent = node;
-			if (tmp != &_nil)
-				parent->left = tmp;
-			else
-				parent->left = &_nil;
+			parent->left = tmp;
 		}
 
 		node_pointer
@@ -531,32 +532,27 @@ namespace ft
 		void
 		erase_helper(node_pointer node)
 		{
-			node_pointer	parent;
 			node_pointer	tmp;
-			color			leaf_color;
 
 			// Case: leaf node (base case of the recursion)
 			// We only delete leaf nodes. Internal nodes are replaced
 			if (node->left == &_nil && node->right == &_nil)
 			{
-				parent = node->parent;
+				// Fix double black case. If we delete a black leaf node
+				// we are violating the rule that states that all paths
+				// in a red-black tree have the same number of black nodes
+				if (node->color == black)
+					fix_double_black(node);
 
 				// Update parent
-				if (parent->left == node)
-					parent->left = &_nil;
+				if (node->parent->left == node)
+					node->parent->left = &_nil;
 				else
-					parent->right = &_nil;
-
-				leaf_color = node->color;
+					node->parent->right = &_nil;
 
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
 
-				// Fix double black case. If we delete a black leaf node
-				// we are violating the rule that states that all paths
-				// in a red-black tree have the same number of black nodes
-				if (leaf_color == black)
-					check_erase(parent);
 			}
 			// Case: node one or two childs
 			// If two childs, we get successor
@@ -577,19 +573,22 @@ namespace ft
 		}
 
 		void
-		check_erase(node_pointer parent)
+		fix_double_black(node_pointer node)
 		{
+			node_pointer parent;
 			node_pointer sibling;
 
 			// Base case of recursion: if DB is root, nothing to do
-			if (parent == _root)
+			if (node == _root)
 				return;
 
+			parent = node->parent;
+
 			// Get double black's sibling if it exists
-			if (parent->left != &_nil)
-				sibling = parent->left;
-			else if (parent->right != &_nil)
+			if (parent->left == node && parent->right != &_nil)
 				sibling = parent->right;
+			else if (parent->right == node && parent->left != &_nil)
+				sibling = parent->left;
 			else
 				sibling = NULL;
 
@@ -598,7 +597,7 @@ namespace ft
 			{
 			}
 			// Case: DB's sibling is black and its children are black
-			if (sibling->color == black
+			else if (sibling->color == black
 					&& sibling->left->color == black
 					&& sibling->right->color == black)
 			{
@@ -609,50 +608,86 @@ namespace ft
 					parent->color = black;
 					sibling->color = red;
 				}
-				else
+				else if (parent->color == black)
 				{
 					sibling->color = red;
-					// Parent carries double-blackness
-					check_erase(parent);
+					// If parent is already black it carries double-blackness
+					fix_double_black(parent);
 				}
 			}
-			// Case: DB's sibling is black and nearest sibling's child is red
-			// and far from DB is black
-			else if (sibling->color == black
-					&& ((sibling == parent->right
-						&& sibling->left->color == red
-						&& sibling->right->color == black) ||
-						(sibling == parent->left
-							&& sibling->right->color == red
-							&& sibling->left->color == black)))
-			{
-				sibling->color = red;
-
-				if (sibling->left->color == red)
-				{
-					sibling->left->color = black;
-					rotate_right(sibling->left);
-				}
-				else
-				{
-					sibling->right->color = black;
-					rotate_left(sibling->right);
-				}
-			}
-			else if (sibling && sibling->color == red)
+			// Case: DB's sibling is red
+			else if (sibling->color == red)
 			{
 				parent->color = red;
 				sibling->color = black;
 
-				// Rotate towards the direction of the node we just deleted
-				if (parent->left == &_nil)
+				// Rotate towards the direction of the node we want to delete
+				if (parent->left == node)
 					rotate_left(sibling);
 				else
 					rotate_right(sibling);
 
-				// Reassess the situation
-				check_erase(parent);
+				// Double black case still exists but the sibling of the node
+				// we want to delete has changed
+				fix_double_black(node);
 			}
+			// Case: DB's sibling is black and nearest sibling's child is red
+			// and furthest from DB is black
+			else if (sibling->color == black
+					&& ((sibling == parent->right
+						&& sibling->left->color == red
+						&& sibling->right->color == black)
+						|| (sibling == parent->left
+							&& sibling->left->color == black
+							&& sibling->right->color == red)))
+			{
+				if (sibling == parent->right)
+				{
+					swap_color(sibling, sibling->left);
+					rotate_right(sibling->left);
+				}
+				else
+				{
+					swap_color(sibling, sibling->right);
+					rotate_left(sibling->right);
+				}
+
+				// Double black case still exists but the sibling of the node
+				// we want to delete has changed
+				fix_double_black(node);
+			}
+			// Case: DB's sibling is black and furthest sibling's child is red
+			// and nearest from DB is black
+			else if (sibling->color == black
+					&& ((sibling == parent->right
+						&& sibling->left->color == black
+						&& sibling->right->color == red)
+						|| (sibling == parent->left
+							&& sibling->left->color == red
+							&& sibling->right->color == black)))
+			{
+				swap_color(parent, sibling);
+
+				// Rotate parent towards DB
+				if (sibling == parent->right)
+				{
+					rotate_left(sibling);
+					sibling->right->color = black;
+				}
+				else
+				{
+					rotate_right(sibling);
+					sibling->left->color = black;
+				}
+			}
+		}
+
+		void
+		swap_color(node_pointer a, node_pointer b)
+		{
+			color tmp = b->color;
+			b->color = a->color;
+			a->color = tmp;
 		}
 
 		void

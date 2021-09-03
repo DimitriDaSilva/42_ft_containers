@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/03 12:08:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/03 19:38:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,6 +367,55 @@ test_red_black_tree_erase_db_sibling_black_children_black_red()
 	rbt.clear();
 }
 
+void
+test_red_black_tree_erase_complete_example()
+{
+	ft::rbt<int> rbt;
+
+	rbt.insert(50);
+	rbt.insert(20);
+	rbt.insert(65);
+	rbt.insert(15);
+	rbt.insert(35);
+	rbt.insert(55);
+	rbt.insert(70);
+	rbt.insert(68);
+	rbt.insert(80);
+	rbt.insert(90);
+
+	rbt.print_tree();
+
+	std::cout << "Deleting 55..." << std::endl;
+	rbt.erase(55);
+	rbt.print_tree();
+
+	std::cout << "Deleting 30..." << std::endl;
+	rbt.erase(30);
+	rbt.print_tree();
+
+	std::cout << "Deleting 90..." << std::endl;
+	rbt.erase(90);
+	rbt.print_tree();
+
+	std::cout << "Deleting 80..." << std::endl;
+	rbt.erase(80);
+	rbt.print_tree();
+
+	std::cout << "Deleting 50..." << std::endl;
+	rbt.erase(50);
+	rbt.print_tree();
+
+	std::cout << "Deleting 35..." << std::endl;
+	rbt.erase(35);
+	rbt.print_tree();
+
+	std::cout << "Deleting 15..." << std::endl;
+	rbt.erase(15);
+	rbt.print_tree();
+
+	rbt.clear();
+}
+
 void test_red_black_tree()
 {
 	test_wrapper(test_red_black_tree_insertion_jenny, "insertion jenny");
@@ -382,4 +431,5 @@ void test_red_black_tree()
 	test_wrapper(test_red_black_tree_erase_black_node_two_children, "erase black node two children");
 	test_wrapper(test_red_black_tree_erase_db_sibling_black_children_black, "erase_db_sibling_black_children_black");
 	test_wrapper(test_red_black_tree_erase_db_sibling_black_children_black_red, "erase_db_sibling_black_children_black_red");
+	test_wrapper(test_red_black_tree_erase_complete_example, "erase_complete_example");
 }

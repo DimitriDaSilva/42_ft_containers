@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/01 17:45:22 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/03 12:08:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,18 +195,32 @@ test_red_black_tree_erase_red_leaf_node()
 	rbt.insert(100);
 	rbt.insert(42);
 
-	rbt.print_inorder();
+	rbt.print_tree();
 
 	rbt.erase(10);
-	rbt.erase(100);
 
-	rbt.print_inorder();
+	rbt.print_tree();
 
-	{
-		ft::rbt<int> cpy = rbt;
-		cpy.print_inorder();
-		cpy.clear();
-	}
+	rbt.clear();
+}
+
+void
+test_red_black_tree_erase_black_leaf_node()
+{
+	ft::rbt<int> rbt;
+
+	rbt.insert(10);
+	rbt.insert(7);
+	rbt.insert(20);
+	rbt.insert(30);
+	rbt.insert(42);
+	rbt.insert(100);
+
+	rbt.print_tree();
+
+	rbt.erase(20);
+
+	rbt.print_tree();
 
 	rbt.clear();
 }
@@ -218,22 +232,18 @@ test_red_black_tree_erase_red_node_one_child()
 
 	rbt.insert(10);
 	rbt.insert(7);
-	rbt.insert(15);
-	rbt.insert(12);
 	rbt.insert(20);
-	rbt.insert(9);
+	rbt.insert(30);
+	rbt.insert(42);
+	rbt.insert(100);
+	rbt.insert(40);
+	rbt.insert(80);
 
-	rbt.print_inorder();
+	rbt.print_tree();
 
-	rbt.erase(9);
+	rbt.erase(100);
 
-	rbt.print_inorder();
-
-	{
-		ft::rbt<int> cpy = rbt;
-		cpy.print_inorder();
-		cpy.clear();
-	}
+	rbt.print_tree();
 
 	rbt.clear();
 }
@@ -248,23 +258,111 @@ test_red_black_tree_erase_black_node_one_child()
 	rbt.insert(20);
 	rbt.insert(30);
 
-	rbt.print_inorder();
+	rbt.print_tree();
 
 	rbt.erase(20);
 
-	rbt.print_inorder();
+	rbt.print_tree();
 
+	rbt.clear();
+}
+
+void
+test_red_black_tree_erase_red_node_two_children()
+{
+	ft::rbt<int> rbt;
+
+	rbt.insert(10);
+	rbt.insert(7);
+	rbt.insert(20);
+	rbt.insert(30);
+	rbt.erase(20);
 	rbt.insert(2);
 	rbt.insert(25);
 	rbt.insert(9);
 	rbt.insert(40);
 	rbt.insert(38);
 
-	rbt.print_inorder();
+	rbt.print_tree();
 
 	rbt.erase(30);
 
-	rbt.print_inorder();
+	rbt.print_tree();
+
+	rbt.clear();
+}
+
+void
+test_red_black_tree_erase_black_node_two_children()
+{
+	ft::rbt<int> rbt;
+
+	rbt.insert(10);
+	rbt.insert(7);
+	rbt.insert(20);
+	rbt.insert(30);
+	rbt.erase(20);
+	rbt.insert(2);
+	rbt.insert(25);
+	rbt.insert(9);
+	rbt.insert(40);
+	rbt.insert(38);
+
+	rbt.print_tree();
+
+	rbt.erase(7);
+
+	rbt.print_tree();
+
+	rbt.clear();
+}
+
+void
+test_red_black_tree_erase_db_sibling_black_children_black()
+{
+	ft::rbt<int> rbt;
+
+	rbt.insert(10);
+	rbt.insert(7);
+	rbt.insert(20);
+	rbt.insert(30);
+	rbt.insert(42);
+	rbt.insert(100);
+	rbt.insert(40);
+	rbt.insert(80);
+	rbt.erase(100);
+
+	rbt.print_tree();
+
+	rbt.erase(40);
+
+	rbt.print_tree();
+
+	rbt.clear();
+}
+
+void
+test_red_black_tree_erase_db_sibling_black_children_black_red()
+{
+	ft::rbt<int> rbt;
+
+	rbt.insert(10);
+	rbt.insert(5);
+	rbt.insert(30);
+	rbt.insert(1);
+	rbt.insert(7);
+	rbt.insert(25);
+	rbt.insert(40);
+	rbt.insert(20);
+	rbt.insert(28);
+	rbt.insert(24);
+	rbt.insert(8);
+
+	rbt.print_tree();
+
+	rbt.erase(40);
+
+	rbt.print_tree();
 
 	rbt.clear();
 }
@@ -277,6 +375,11 @@ void test_red_black_tree()
 	test_wrapper(test_red_black_tree_predecessor, "predecessor");
 	test_wrapper(test_red_black_tree_successor, "successor");
 	test_wrapper(test_red_black_tree_erase_red_leaf_node, "erase red leaf node");
-	test_wrapper(test_red_black_tree_erase_red_node_one_child, "erase red one child");
-	test_wrapper(test_red_black_tree_erase_black_node_one_child, "erase black one child");
+	test_wrapper(test_red_black_tree_erase_black_leaf_node, "erase black leaf node");
+	test_wrapper(test_red_black_tree_erase_red_node_one_child, "erase red node one child");
+	test_wrapper(test_red_black_tree_erase_black_node_one_child, "erase black node one child");
+	test_wrapper(test_red_black_tree_erase_red_node_two_children, "erase red node two children");
+	test_wrapper(test_red_black_tree_erase_black_node_two_children, "erase black node two children");
+	test_wrapper(test_red_black_tree_erase_db_sibling_black_children_black, "erase_db_sibling_black_children_black");
+	test_wrapper(test_red_black_tree_erase_db_sibling_black_children_black_red, "erase_db_sibling_black_children_black_red");
 }

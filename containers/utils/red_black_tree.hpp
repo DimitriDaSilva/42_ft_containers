@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/01 17:50:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/03 12:12:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,22 @@ namespace ft
 		}
 
 		void
+		print_tree() const
+		{
+			if (_root == NULL)
+				return;
+
+			std::cout
+				<< (_root->color == red ? "\033[1;31m" : "")
+				<< _root->data
+				<< "\033[0m"
+				<< std::endl;
+			print_tree_helper(_root, "");
+			std::cout << std::endl;
+
+		}
+
+		void
 		print_inorder() const
 		{
 			print_inorder_helper(_root);
@@ -192,88 +208,12 @@ namespace ft
 		erase(value_type const& val)
 		{
 			node_pointer node = find(val);
-			node_pointer parent;
-			node_pointer tmp;
 
 			// Don't do nothing if val not found
 			if (!node)
 				return;
 
-			parent = node->parent;
-
-			// Case: red leaf node
-			if (node->color == red && node->left == &_nil && node->right == &_nil)
-			{
-				// Update parent
-				if (parent->left == node)
-					parent->left = &_nil;
-				else
-					parent->right = &_nil;
-
-				_alloc.destroy(node);
-				_alloc.deallocate(node, 1);
-			}
-			// Case: red node one child
-			else if (node->color == red && (node->left == &_nil || node->right == &_nil))
-			{
-				if (node->left != &_nil)
-				{
-					tmp = node->left;
-					*node = *node->left;
-
-					_alloc.destroy(tmp);
-					_alloc.deallocate(tmp, 1);
-				}
-				else
-				{
-					tmp = node->right;
-					*node = *node->right;
-
-					_alloc.destroy(tmp);
-					_alloc.deallocate(tmp, 1);
-				}
-			}
-			// Case: red node two childs
-			else if (node->color == red && node->left != &_nil && node->right != &_nil)
-			{
-				if (!(tmp = successor(node)))
-					tmp = predecessor(node);
-
-				// Only copy data. The color stays the same
-				node->data = tmp->data;
-
-				// Set parent's of leaf node pointing to _nil
-				if (tmp->parent->left == tmp)
-					tmp->parent->left = &_nil;
-				else
-					tmp->parent->right = &_nil;
-
-				// Destroy leaf node
-				_alloc.destroy(tmp);
-				_alloc.deallocate(tmp, 1);
-			}
-			// Case: black node one child
-			else if (node->color == black && (node->left == &_nil || node->right == &_nil))
-			{
-				// Find predecessor or successor
-				if (node->left != &_nil)
-					tmp = predecessor(node);
-				else
-					tmp = successor(node);
-
-				// Only copy data. The color stays the same
-				node->data = tmp->data;
-
-				// Set parent's of leaf node pointing to _nil
-				if (tmp->parent->left == tmp)
-					tmp->parent->left = &_nil;
-				else
-					tmp->parent->right = &_nil;
-
-				// Destroy leaf node
-				_alloc.destroy(tmp);
-				_alloc.deallocate(tmp, 1);
-			}
+			erase_helper(node);
 		}
 
 		void
@@ -533,6 +473,47 @@ namespace ft
 		}
 
 		void
+		print_tree_helper(node_pointer node, std::string prefix) const
+		{
+			// Base of recursion
+			if (node == &_nil)
+				return;
+
+			bool has_left = (node->left != &_nil);
+			bool has_right = (node->right != &_nil);
+
+			if (!has_left && !has_right)
+				return;
+
+			std::cout << prefix;
+			std::cout << ((has_left && has_right) ? "├── " : "");
+			std::cout << ((!has_left && has_right) ? "└── " : "");
+
+			if (has_right)
+			{
+				bool print_strand = (has_left && has_right
+						&& (node->right->right != NULL || node->right->left != NULL));
+				std::string new_prefix = prefix + (print_strand ? "│   " : "    ");
+				std::cout
+					<< (node->right->color == red ? "\033[0;31m" : "")
+					<< node->right->data
+					<< "\033[0m"
+					<< std::endl;
+				print_tree_helper(node->right, new_prefix);
+			}
+
+			if (has_left)
+			{
+				std::cout << (has_right ? prefix : "") << "└── "
+					<< (node->left->color == red ? "\033[0;31m" : "")
+					<< node->left->data
+					<< "\033[0m"
+					<< std::endl;
+				print_tree_helper(node->left, prefix + "    ");
+			}
+		}
+
+		void
 		print_inorder_helper(node_pointer const& node) const
 		{
 			// Base case of recursion
@@ -542,21 +523,135 @@ namespace ft
 			print_inorder_helper(node->left);
 			std::cout << node->data << " "
 				<< "[" << (node->color == black ?
-						"\033[1;32mB\033[0m" :
-						"\033[1;31mR\033[0m") << "] ";
+						"B" :
+						"\033[0;31mR\033[0m") << "] ";
 			print_inorder_helper(node->right);
 		}
 
 		void
 		erase_helper(node_pointer node)
 		{
-			if (node->color == red)
-			{
+			node_pointer	parent;
+			node_pointer	tmp;
+			color			leaf_color;
 
+			// Case: leaf node (base case of the recursion)
+			// We only delete leaf nodes. Internal nodes are replaced
+			if (node->left == &_nil && node->right == &_nil)
+			{
+				parent = node->parent;
+
+				// Update parent
+				if (parent->left == node)
+					parent->left = &_nil;
+				else
+					parent->right = &_nil;
+
+				leaf_color = node->color;
+
+				_alloc.destroy(node);
+				_alloc.deallocate(node, 1);
+
+				// Fix double black case. If we delete a black leaf node
+				// we are violating the rule that states that all paths
+				// in a red-black tree have the same number of black nodes
+				if (leaf_color == black)
+					check_erase(parent);
 			}
-			else if (node->color == black)
+			// Case: node one or two childs
+			// If two childs, we get successor
+			else
 			{
+				// Find predecessor or successor
+				if (node->right != &_nil)
+					tmp = successor(node);
+				else
+					tmp = predecessor(node);
 
+				// Only copy data. The color stays the same
+				node->data = tmp->data;
+
+				// Recursively replace and delete node
+				erase_helper(tmp);
+			}
+		}
+
+		void
+		check_erase(node_pointer parent)
+		{
+			node_pointer sibling;
+
+			// Base case of recursion: if DB is root, nothing to do
+			if (parent == _root)
+				return;
+
+			// Get double black's sibling if it exists
+			if (parent->left != &_nil)
+				sibling = parent->left;
+			else if (parent->right != &_nil)
+				sibling = parent->right;
+			else
+				sibling = NULL;
+
+			// Case: DB's doesn't have sibling
+			if (!sibling)
+			{
+			}
+			// Case: DB's sibling is black and its children are black
+			if (sibling->color == black
+					&& sibling->left->color == black
+					&& sibling->right->color == black)
+			{
+				// DB gives blackness to parent and sibling
+				// gets mad (ie becomes red)
+				if (parent->color == red)
+				{
+					parent->color = black;
+					sibling->color = red;
+				}
+				else
+				{
+					sibling->color = red;
+					// Parent carries double-blackness
+					check_erase(parent);
+				}
+			}
+			// Case: DB's sibling is black and nearest sibling's child is red
+			// and far from DB is black
+			else if (sibling->color == black
+					&& ((sibling == parent->right
+						&& sibling->left->color == red
+						&& sibling->right->color == black) ||
+						(sibling == parent->left
+							&& sibling->right->color == red
+							&& sibling->left->color == black)))
+			{
+				sibling->color = red;
+
+				if (sibling->left->color == red)
+				{
+					sibling->left->color = black;
+					rotate_right(sibling->left);
+				}
+				else
+				{
+					sibling->right->color = black;
+					rotate_left(sibling->right);
+				}
+			}
+			else if (sibling && sibling->color == red)
+			{
+				parent->color = red;
+				sibling->color = black;
+
+				// Rotate towards the direction of the node we just deleted
+				if (parent->left == &_nil)
+					rotate_left(sibling);
+				else
+					rotate_right(sibling);
+
+				// Reassess the situation
+				check_erase(parent);
 			}
 		}
 

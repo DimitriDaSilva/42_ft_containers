@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/03 19:38:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/03 22:07:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,7 +373,7 @@ test_red_black_tree_erase_complete_example()
 	ft::rbt<int> rbt;
 
 	rbt.insert(50);
-	rbt.insert(20);
+	rbt.insert(30);
 	rbt.insert(65);
 	rbt.insert(15);
 	rbt.insert(35);
@@ -411,6 +411,18 @@ test_red_black_tree_erase_complete_example()
 
 	std::cout << "Deleting 15..." << std::endl;
 	rbt.erase(15);
+	rbt.print_tree();
+
+	std::cout << "Deleting 70..." << std::endl;
+	rbt.erase(70);
+	rbt.print_tree();
+
+	std::cout << "Deleting 65..." << std::endl;
+	rbt.erase(65);
+	rbt.print_tree();
+
+	std::cout << "Deleting 68..." << std::endl;
+	rbt.erase(68);
 	rbt.print_tree();
 
 	rbt.clear();

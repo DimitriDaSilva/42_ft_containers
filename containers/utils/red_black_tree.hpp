@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/03 19:35:18 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/03 22:12:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ namespace ft
 		void
 		print_tree() const
 		{
-			if (_root == NULL)
+			if (_root == &_nil)
 				return;
 
 			std::cout
@@ -545,7 +545,9 @@ namespace ft
 					fix_double_black(node);
 
 				// Update parent
-				if (node->parent->left == node)
+				if (node == _root)
+					_root = &_nil;
+				else if (node->parent->left == node)
 					node->parent->left = &_nil;
 				else
 					node->parent->right = &_nil;
@@ -584,20 +586,15 @@ namespace ft
 
 			parent = node->parent;
 
-			// Get double black's sibling if it exists
-			if (parent->left == node && parent->right != &_nil)
+			// Get double black's sibling. If it's a double black, it
+			// necessarily has one
+			if (parent->left == node)
 				sibling = parent->right;
-			else if (parent->right == node && parent->left != &_nil)
-				sibling = parent->left;
 			else
-				sibling = NULL;
+				sibling = parent->left;
 
-			// Case: DB's doesn't have sibling
-			if (!sibling)
-			{
-			}
 			// Case: DB's sibling is black and its children are black
-			else if (sibling->color == black
+			if (sibling->color == black
 					&& sibling->left->color == black
 					&& sibling->right->color == black)
 			{
@@ -657,14 +654,11 @@ namespace ft
 				fix_double_black(node);
 			}
 			// Case: DB's sibling is black and furthest sibling's child is red
-			// and nearest from DB is black
 			else if (sibling->color == black
 					&& ((sibling == parent->right
-						&& sibling->left->color == black
 						&& sibling->right->color == red)
 						|| (sibling == parent->left
-							&& sibling->left->color == red
-							&& sibling->right->color == black)))
+							&& sibling->left->color == red)))
 			{
 				swap_color(parent, sibling);
 

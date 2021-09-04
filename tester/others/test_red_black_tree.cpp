@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/04 09:52:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/04 11:02:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void
 test_red_black_tree_insertion_jenny()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.print_inorder();
@@ -66,7 +66,7 @@ test_red_black_tree_insertion_jenny()
 	std::cout << std::endl;
 
 	{
-		ft::rbt<int> cpy = rbt;
+		ft::red_black_tree<int> cpy = rbt;
 		cpy.print_inorder();
 		cpy.clear();
 	}
@@ -77,7 +77,7 @@ test_red_black_tree_insertion_jenny()
 void
 test_red_black_tree_insertion_string()
 {
-	ft::rbt<std::string> rbt;
+	ft::red_black_tree<std::string> rbt;
 
 	rbt.insert("test");
 	rbt.print_inorder();
@@ -96,7 +96,7 @@ test_red_black_tree_insertion_string()
 	std::cout << std::endl;
 
 	{
-		ft::rbt<std::string> cpy = rbt;
+		ft::red_black_tree<std::string> cpy = rbt;
 		cpy.print_inorder();
 		cpy.clear();
 	}
@@ -107,7 +107,7 @@ test_red_black_tree_insertion_string()
 void
 test_red_black_tree_find()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	for (int i = 0; i < 13; i++) rbt.insert(i);
 
@@ -122,7 +122,7 @@ test_red_black_tree_find()
 	rbt.print_inorder();
 
 	{
-		ft::rbt<int> cpy = rbt;
+		ft::red_black_tree<int> cpy = rbt;
 		cpy.print_inorder();
 		cpy.clear();
 	}
@@ -133,8 +133,8 @@ test_red_black_tree_find()
 void
 test_red_black_tree_predecessor()
 {
-	ft::rbt<int> rbt;
-	ft::rbt<int>::node_pointer predecessor;
+	ft::red_black_tree<int> rbt;
+	ft::red_black_tree<int>::node_pointer predecessor;
 
 	rbt.insert(10);
 	rbt.insert(9);
@@ -161,8 +161,8 @@ test_red_black_tree_predecessor()
 void
 test_red_black_tree_successor()
 {
-	ft::rbt<int> rbt;
-	ft::rbt<int>::node_pointer successor;
+	ft::red_black_tree<int> rbt;
+	ft::red_black_tree<int>::node_pointer successor;
 
 	rbt.insert(10);
 	rbt.insert(9);
@@ -189,7 +189,7 @@ test_red_black_tree_successor()
 void
 test_red_black_tree_erase_red_leaf_node()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(100);
@@ -207,7 +207,7 @@ test_red_black_tree_erase_red_leaf_node()
 void
 test_red_black_tree_erase_black_leaf_node()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(7);
@@ -228,7 +228,7 @@ test_red_black_tree_erase_black_leaf_node()
 void
 test_red_black_tree_erase_red_node_one_child()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(7);
@@ -251,7 +251,7 @@ test_red_black_tree_erase_red_node_one_child()
 void
 test_red_black_tree_erase_black_node_one_child()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(7);
@@ -270,7 +270,7 @@ test_red_black_tree_erase_black_node_one_child()
 void
 test_red_black_tree_erase_red_node_two_children()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(7);
@@ -295,7 +295,7 @@ test_red_black_tree_erase_red_node_two_children()
 void
 test_red_black_tree_erase_black_node_two_children()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(7);
@@ -320,7 +320,7 @@ test_red_black_tree_erase_black_node_two_children()
 void
 test_red_black_tree_erase_db_sibling_black_children_black()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(7);
@@ -344,7 +344,7 @@ test_red_black_tree_erase_db_sibling_black_children_black()
 void
 test_red_black_tree_erase_db_sibling_black_children_black_red()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(10);
 	rbt.insert(5);
@@ -370,7 +370,7 @@ test_red_black_tree_erase_db_sibling_black_children_black_red()
 void
 test_red_black_tree_erase_complete_example()
 {
-	ft::rbt<int> rbt;
+	ft::red_black_tree<int> rbt;
 
 	rbt.insert(50);
 	rbt.insert(30);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/04 10:55:52 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/04 11:09:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,21 @@ namespace ft
 	enum color {red, black};
 
 	template<class T>
-	struct rbt_node
+	struct red_black_tree_node
 	{
-		T				data;
-		rbt_node<T>*	parent;
-		rbt_node<T>*	left;
-		rbt_node<T>*	right;
-		color			color;
+		T						data;
+		red_black_tree_node<T>*	parent;
+		red_black_tree_node<T>*	left;
+		red_black_tree_node<T>*	right;
+		color					color;
 	};
 
 	template<class Key,
 		class T = Key,
 		class Compare = ft::less<Key>,
-		class Alloc = std::allocator<rbt_node<ft::pair<Key const, T> > >
+		class Alloc = std::allocator<red_black_tree_node<ft::pair<Key const, T> > >
 			>
-	class rbt
+	class red_black_tree
 	{
 	public:
 /******************************************************************************/
@@ -51,8 +51,8 @@ namespace ft
 		typedef pair<key_type const, mapped_type>	value_type;
 		typedef Compare								key_compare;
 		typedef Alloc								allocator_type;
-		typedef rbt_node<value_type>				node_t;
-		typedef rbt_node<value_type>*				node_pointer;
+		typedef red_black_tree_node<value_type>		node_t;
+		typedef red_black_tree_node<value_type>*	node_pointer;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -63,7 +63,7 @@ namespace ft
 
 /*                                Constructors                                */
 
-		explicit rbt(key_compare const& comp = key_compare(),
+		explicit red_black_tree(key_compare const& comp = key_compare(),
 				allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
 			_comp(comp),
@@ -82,7 +82,7 @@ namespace ft
 		}
 
 		// Copy
-		rbt(rbt const& rhs) :
+		red_black_tree(red_black_tree const& rhs) :
 			_root(NULL),
 			_nil(rhs._nil),
 			_comp(rhs._comp),
@@ -94,7 +94,7 @@ namespace ft
 /*                                Destructors                                 */
 
 		virtual
-		~rbt() {}
+		~red_black_tree() {}
 
 /******************************************************************************/
 /*                   	   OVERLOADING OPERATORS                              */
@@ -102,8 +102,8 @@ namespace ft
 
 /*                                Assignement                                 */
 
-		rbt&
-		operator=(rbt const& rhs)
+		red_black_tree&
+		operator=(red_black_tree const& rhs)
 		{
 			// Self-assignement check
 			if (this == &rhs)
@@ -121,64 +121,7 @@ namespace ft
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
 
-		// By key_type
-		void
-		insert(key_type const& key)
-		{
-			// Ignore duplicates keys
-			if (find(key))
-				return;
-
-			// Allocate new node on the base of _nil
-			node_pointer new_node = _alloc.allocate(1);
-			node_t	tmp = {
-					value_type(key, key),
-					NULL,
-					&_nil,
-					&_nil,
-					red,
-			};
-			_alloc.construct(new_node, tmp);
-
-			// Find right position for the new node
-			node_pointer parent = NULL;
-			node_pointer child = _root;
-			while (child != &_nil)
-			{
-				parent = child;
-				if (_comp(new_node->data.first, child->data.first))
-					child = child->left;
-				else
-					child = child->right;
-			}
-
-			new_node->parent = parent;
-
-			// Set node in the position found. Either left or right
-			// If parent NULL then it means we are at the root of the tree
-			// so we can retrun
-			if (new_node->parent == NULL)
-			{
-				_root = new_node;
-				_root->color = black;
-				return;
-			}
-			else if (_comp(new_node->data.first, parent->data.first))
-				parent->left = new_node;
-			else
-				parent->right = new_node;
-
-			// If parent is _root then we are at level 1 of the tree
-			// so we can't be unbalancing the tree
-			if (parent == _root)
-				return;
-			// Else the new node could have unbalanced the red-black tree
-			// so we need to check after each insert
-			else
-				check_insert(new_node);
-		}
-
-		// By pair
+		// By pair. For ft::map
 		void
 		insert(value_type const& val)
 		{
@@ -197,42 +140,29 @@ namespace ft
 			};
 			_alloc.construct(new_node, tmp);
 
-			// Find right position for the new node
-			node_pointer parent = NULL;
-			node_pointer child = _root;
-			while (child != &_nil)
-			{
-				parent = child;
-				if (_comp(new_node->data.first, child->data.first))
-					child = child->left;
-				else
-					child = child->right;
-			}
+			insert_helper(new_node);
+		}
 
-			new_node->parent = parent;
-
-			// Set node in the position found. Either left or right
-			// If parent NULL then it means we are at the root of the tree
-			// so we can retrun
-			if (new_node->parent == NULL)
-			{
-				_root = new_node;
-				_root->color = black;
+		// By key_type. For ft::set
+		void
+		insert(key_type const& key)
+		{
+			// Ignore duplicates keys
+			if (find(key))
 				return;
-			}
-			else if (_comp(new_node->data.first, parent->data.first))
-				parent->left = new_node;
-			else
-				parent->right = new_node;
 
-			// If parent is _root then we are at level 1 of the tree
-			// so we can't be unbalancing the tree
-			if (parent == _root)
-				return;
-			// Else the new node could have unbalanced the red-black tree
-			// so we need to check after each insert
-			else
-				check_insert(new_node);
+			// Allocate new node on the base of _nil
+			node_pointer node = _alloc.allocate(1);
+			node_t	tmp = {
+					value_type(key, key),
+					NULL,
+					&_nil,
+					&_nil,
+					red,
+			};
+			_alloc.construct(node, tmp);
+
+			insert_helper(node);
 		}
 
 		node_pointer
@@ -391,6 +321,47 @@ namespace ft
 
 			copy_helper(lhs->left, rhs->left, lhs, nil_rhs);
 			copy_helper(lhs->right, rhs->right, lhs, nil_rhs);
+		}
+
+		void
+		insert_helper(node_pointer node)
+		{
+			// Find right position for the new node
+			node_pointer parent = NULL;
+			node_pointer child = _root;
+			while (child != &_nil)
+			{
+				parent = child;
+				if (_comp(node->data.first, child->data.first))
+					child = child->left;
+				else
+					child = child->right;
+			}
+
+			node->parent = parent;
+
+			// Set node in the position found. Either left or right
+			// If parent NULL then it means we are at the root of the tree
+			// so we can retrun
+			if (node->parent == NULL)
+			{
+				_root = node;
+				_root->color = black;
+				return;
+			}
+			else if (_comp(node->data.first, parent->data.first))
+				parent->left = node;
+			else
+				parent->right = node;
+
+			// If parent is _root then we are at level 1 of the tree
+			// so we can't be unbalancing the tree
+			if (parent == _root)
+				return;
+			// Else the new node could have unbalanced the red-black tree
+			// so we need to check after each insert
+			else
+				check_insert(node);
 		}
 
 		void

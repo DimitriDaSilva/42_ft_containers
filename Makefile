@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/09/04 10:59:02 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/09/04 11:33:11 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,24 +98,30 @@ re:							fclean all
 test:						debug
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
-							@ ifeq ($(UNAME), Linux)																			\
-							/usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log	\
-							/usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log	\
+							@ if [ $(UNAME) == "Linux" ]; then																			\
+								/usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log;	\
+								/usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;		\
+							else																										\
+								printf "$(_INFO) Time efficiency:\n";																	\
+								./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log;													\
+								./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;														\
 							fi;
 							@ diff -I '::' -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
-							@ if [ -s $(PATH_LOGS)/diff.log ];							\
-							then														\
+							@ if [ -s $(PATH_LOGS)/diff.log ]; then						\
 								printf "$(_FAILURE) Failed test. Check the logs:\n";	\
 								cat $(PATH_LOGS)/diff.log;								\
 							else														\
 								printf "$(_SUCCESS) Test successful\n";					\
 							fi;
-							@ printf "$(_INFO) Time efficiency:\n"
-							@ printf "ft_containers:  "
-							@ cat $(PATH_LOGS)/$(NAME_FT).time | grep 'elapsed' | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
-							@ printf "stl_containers: "
-							@ cat $(PATH_LOGS)/$(NAME_STL).time | grep elapsed | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1
-							@ rm -f $(PATH_LOGS)/*.time $(PATH_LOGS)/log.diff
+							@ if [ $(UNAME) == "Linux" ]; then																		\
+								printf "$(_INFO) Time efficiency:\n";																\
+								printf "ft_containers:  ";																			\
+								cat $(PATH_LOGS)/$(NAME_FT).time | grep 'elapsed' | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1;	\
+								printf "stl_containers: ";																			\
+								cat $(PATH_LOGS)/$(NAME_STL).time | grep elapsed | awk 'OFS=" " {print $$3}' | cut -d "e" -f 1;		\
+								rm -f $(PATH_LOGS)/*.time;																			\
+							fi;
+							@ rm -f $(PATH_LOGS)/log.diff
 
 # Debugging functions
 

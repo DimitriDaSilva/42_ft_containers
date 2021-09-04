@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 08:53:44 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/03 22:07:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/04 09:52:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,13 +145,13 @@ test_red_black_tree_predecessor()
 	rbt.print_inorder();
 
 	if ((predecessor = rbt.predecessor(rbt.find(10))))
-		std::cout << "Predecessor of 10 is " << predecessor->data << std::endl;
+		std::cout << "Predecessor of 10 is " << predecessor->data.first << std::endl;
 
 	if ((predecessor = rbt.predecessor(rbt.find(12))))
-		std::cout << "Predecessor of 12 is " << predecessor->data << std::endl;
+		std::cout << "Predecessor of 12 is " << predecessor->data.first << std::endl;
 
 	if ((predecessor = rbt.predecessor(rbt.find(9))))
-		std::cout << "Predecessor of 9 is " << predecessor->data << std::endl;
+		std::cout << "Predecessor of 9 is " << predecessor->data.first << std::endl;
 	else
 		std::cout << "9 is the minimum in the tree" << std::endl;
 
@@ -173,13 +173,13 @@ test_red_black_tree_successor()
 	rbt.print_inorder();
 
 	if ((successor = rbt.successor(rbt.find(10))))
-		std::cout << "Successor of 10 is " << successor->data << std::endl;
+		std::cout << "Successor of 10 is " << successor->data.first << std::endl;
 
 	if ((successor = rbt.successor(rbt.find(9))))
-		std::cout << "Successor of 9 is " << successor->data << std::endl;
+		std::cout << "Successor of 9 is " << successor->data.first << std::endl;
 
 	if ((successor = rbt.successor(rbt.find(20))))
-		std::cout << "Successor of 20 is " << successor->data << std::endl;
+		std::cout << "Successor of 20 is " << successor->data.first << std::endl;
 	else
 		std::cout << "20 is the maximum in the tree" << std::endl;
 

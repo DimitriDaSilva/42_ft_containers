@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/03 22:12:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/04 10:55:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 namespace ft
 {
-	enum color { red, black };
+	enum color {red, black};
 
 	template<class T>
 	struct rbt_node
@@ -34,9 +34,10 @@ namespace ft
 		color			color;
 	};
 
-	template<class T,
-		class Compare = ft::less<T>,
-		class Alloc = std::allocator<rbt_node<T> >
+	template<class Key,
+		class T = Key,
+		class Compare = ft::less<Key>,
+		class Alloc = std::allocator<rbt_node<ft::pair<Key const, T> > >
 			>
 	class rbt
 	{
@@ -45,11 +46,13 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef T						value_type;
-		typedef Compare					value_compare;
-		typedef Alloc					allocator_type;
-		typedef rbt_node<value_type>	node_t;
-		typedef rbt_node<value_type>*	node_pointer;
+		typedef Key									key_type;
+		typedef T									mapped_type;
+		typedef pair<key_type const, mapped_type>	value_type;
+		typedef Compare								key_compare;
+		typedef Alloc								allocator_type;
+		typedef rbt_node<value_type>				node_t;
+		typedef rbt_node<value_type>*				node_pointer;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -60,15 +63,15 @@ namespace ft
 
 /*                                Constructors                                */
 
-		explicit rbt(value_compare const& comp = value_compare(),
+		explicit rbt(key_compare const& comp = key_compare(),
 				allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
 			_comp(comp),
 			_alloc(alloc)
 		{
-			// All leaf nodes will point to _nil. This will allow us to
+			// All leaf nodes will point to &_nil. This will allow us to
 			// check if _nil
-			_nil.data = value_type();
+			_nil.data = value_type(key_type(), mapped_type());
 			_nil.parent = NULL;
 			_nil.left = NULL;
 			_nil.right = NULL;
@@ -118,32 +121,32 @@ namespace ft
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
 
+		// By key_type
 		void
-		insert(value_type const& val)
+		insert(key_type const& key)
 		{
-			// Ignore duplicates
-			if (find(val))
+			// Ignore duplicates keys
+			if (find(key))
 				return;
 
 			// Allocate new node on the base of _nil
 			node_pointer new_node = _alloc.allocate(1);
-			_alloc.construct(new_node, _nil);
-			new_node->parent = NULL;
-			new_node->data = val;
-			new_node->left = &_nil;
-			new_node->right = &_nil;
-
-			// New node always are red
-			new_node->color = red;
-
-			node_pointer parent = NULL;
-			node_pointer child = _root;
+			node_t	tmp = {
+					value_type(key, key),
+					NULL,
+					&_nil,
+					&_nil,
+					red,
+			};
+			_alloc.construct(new_node, tmp);
 
 			// Find right position for the new node
+			node_pointer parent = NULL;
+			node_pointer child = _root;
 			while (child != &_nil)
 			{
 				parent = child;
-				if (_comp(new_node->data, child->data))
+				if (_comp(new_node->data.first, child->data.first))
 					child = child->left;
 				else
 					child = child->right;
@@ -160,7 +163,64 @@ namespace ft
 				_root->color = black;
 				return;
 			}
-			else if (_comp(new_node->data, parent->data))
+			else if (_comp(new_node->data.first, parent->data.first))
+				parent->left = new_node;
+			else
+				parent->right = new_node;
+
+			// If parent is _root then we are at level 1 of the tree
+			// so we can't be unbalancing the tree
+			if (parent == _root)
+				return;
+			// Else the new node could have unbalanced the red-black tree
+			// so we need to check after each insert
+			else
+				check_insert(new_node);
+		}
+
+		// By pair
+		void
+		insert(value_type const& val)
+		{
+			// Ignore duplicates keys
+			if (find(val.first))
+				return;
+
+			// Allocate new node on the base of _nil
+			node_pointer new_node = _alloc.allocate(1);
+			node_t	tmp = {
+					val,
+					NULL,
+					&_nil,
+					&_nil,
+					red,
+			};
+			_alloc.construct(new_node, tmp);
+
+			// Find right position for the new node
+			node_pointer parent = NULL;
+			node_pointer child = _root;
+			while (child != &_nil)
+			{
+				parent = child;
+				if (_comp(new_node->data.first, child->data.first))
+					child = child->left;
+				else
+					child = child->right;
+			}
+
+			new_node->parent = parent;
+
+			// Set node in the position found. Either left or right
+			// If parent NULL then it means we are at the root of the tree
+			// so we can retrun
+			if (new_node->parent == NULL)
+			{
+				_root = new_node;
+				_root->color = black;
+				return;
+			}
+			else if (_comp(new_node->data.first, parent->data.first))
 				parent->left = new_node;
 			else
 				parent->right = new_node;
@@ -176,9 +236,9 @@ namespace ft
 		}
 
 		node_pointer
-		find(value_type const& val) const
+		find(key_type const& key) const
 		{
-			return find_helper(val, _root);
+			return find_helper(key, _root);
 		}
 
 		void
@@ -189,7 +249,9 @@ namespace ft
 
 			std::cout
 				<< (_root->color == red ? "\033[1;31m" : "")
-				<< _root->data
+				<< _root->data.first
+				<< " | "
+				<< _root->data.second
 				<< "\033[0m"
 				<< std::endl;
 			print_tree_helper(_root, "");
@@ -204,10 +266,24 @@ namespace ft
 			std::cout << std::endl;
 		}
 
+		// Erase by pair
 		void
 		erase(value_type const& val)
 		{
-			node_pointer node = find(val);
+			node_pointer node = find(val.first);
+
+			// Don't do nothing if val not found
+			if (!node)
+				return;
+
+			erase_helper(node);
+		}
+
+		// Erase by key
+		void
+		erase(key_type const& key)
+		{
+			node_pointer node = find(key);
 
 			// Don't do nothing if val not found
 			if (!node)
@@ -240,6 +316,7 @@ namespace ft
 			return node;
 		}
 
+		// Get previous node in order
 		node_pointer
 		predecessor(node_pointer node)
 		{
@@ -264,6 +341,7 @@ namespace ft
 			return predecessor;
 		}
 
+		// Get next node in order
 		node_pointer
 		successor(node_pointer node)
 		{
@@ -459,18 +537,18 @@ namespace ft
 		}
 
 		node_pointer
-		find_helper(value_type const& val, node_pointer const& node) const
+		find_helper(key_type const& key, node_pointer const& node) const
 		{
 			// Base case of recursion
 			if (node == &_nil)
 				return NULL;
-			else if (node->data == val)
+			else if (node->data.first == key)
 				return node;
 
-			if (_comp(val, node->data))
-				return find_helper(val, node->left);
+			if (_comp(key, node->data.first))
+				return find_helper(key, node->left);
 			else
-				return find_helper(val, node->right);
+				return find_helper(key, node->right);
 		}
 
 		void
@@ -497,7 +575,9 @@ namespace ft
 				std::string new_prefix = prefix + (print_strand ? "│   " : "    ");
 				std::cout
 					<< (node->right->color == red ? "\033[0;31m" : "")
-					<< node->right->data
+					<< node->right->data.first
+					<< " | "
+					<< node->right->data.second
 					<< "\033[0m"
 					<< std::endl;
 				print_tree_helper(node->right, new_prefix);
@@ -507,7 +587,9 @@ namespace ft
 			{
 				std::cout << (has_right ? prefix : "") << "└── "
 					<< (node->left->color == red ? "\033[0;31m" : "")
-					<< node->left->data
+					<< node->left->data.first
+					<< " | "
+					<< node->left->data.second
 					<< "\033[0m"
 					<< std::endl;
 				print_tree_helper(node->left, prefix + "    ");
@@ -522,7 +604,10 @@ namespace ft
 				return;
 
 			print_inorder_helper(node->left);
-			std::cout << node->data << " "
+			std::cout
+				<< node->data.first
+				<< " | "
+				<< node->data.second << " "
 				<< "[" << (node->color == black ?
 						"B" :
 						"\033[0;31mR\033[0m") << "] ";
@@ -706,7 +791,7 @@ namespace ft
 
 		node_pointer	_root;
 		node_t			_nil;
-		value_compare	_comp;
+		key_compare		_comp;
 		allocator_type	_alloc;
 	};
 }

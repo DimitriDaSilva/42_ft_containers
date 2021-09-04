@@ -6,12 +6,14 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 10:39:25 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/30 11:20:07 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/04 10:52:45 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PAIR_HPP
 # define PAIR_HPP
+
+# include "remove_const.hpp"
 
 namespace ft
 {
@@ -22,7 +24,7 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef T1 first_type;
+		typedef typename ft::remove_const<T1>::type first_type;
 		typedef T2 second_type;
 
 /******************************************************************************/

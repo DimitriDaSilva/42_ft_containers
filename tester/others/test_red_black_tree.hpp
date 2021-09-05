@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_others.hpp                                    :+:      :+:    :+:   */
+/*   test_red_black_tree.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:41:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/04 19:29:33 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/08/31 08:54:02 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/09/04 19:31:01 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_OTHERS_HPP
-# define TEST_OTHERS_HPP
+#ifndef TEST_RED_BLACK_TREE_HPP
+# define TEST_RED_BLACK_TREE_HPP
 
+# include <iostream>	// std::cout
+# include <string>		// std::string
+
+# include "red_black_tree.hpp"
 # include "test_wrappers.hpp"
-# include "test_distance.hpp"
-# include "test_is_const.hpp"
-# include "test_is_integral.hpp"
-# include "test_iterator_traits.hpp"
-# include "test_lexicographical_compare.hpp"
-# include "test_equal.hpp"
-# include "test_pair.hpp"
-# include "test_less.hpp"
-# include "test_red_black_tree.hpp"
 
-void test_others();
+void test_red_black_tree();
 
 #endif

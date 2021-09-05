@@ -6,16 +6,15 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:46:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/05 00:53:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 # define RANDOM_ACCESS_ITERATOR_HPP
 
-# include <iostream>
-
 # include <iterator>	// std::random_access_iterator_tag
+# include <cstddef>		// std::ptrdiff_t
 
 namespace ft
 {
@@ -27,11 +26,11 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef T value_type;
-		typedef typename std::ptrdiff_t difference_type;
-		typedef value_type& reference;
-		typedef value_type* pointer;
-		typedef std::random_access_iterator_tag iterator_category;
+		typedef T								value_type;
+		typedef typename std::ptrdiff_t			difference_type;
+		typedef value_type&						reference;
+		typedef value_type*						pointer;
+		typedef std::random_access_iterator_tag	iterator_category;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */

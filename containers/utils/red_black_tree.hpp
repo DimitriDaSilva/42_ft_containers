@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/04 11:09:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/05 02:02:35 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 # define RED_BLACK_TREE_HPP
 
 # include <stddef.h>	// NULL
+# include <limits>		// std::numeric_limits
 # include <memory>		// std::allocator
 # include <iostream>	// std::cout
 
+# include "bidirectional_iterator.hpp"
+# include "reverse_iterator.hpp"
 # include "pair.hpp"
 # include "less.hpp"
 
@@ -46,13 +49,22 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef Key									key_type;
-		typedef T									mapped_type;
-		typedef pair<key_type const, mapped_type>	value_type;
-		typedef Compare								key_compare;
-		typedef Alloc								allocator_type;
-		typedef red_black_tree_node<value_type>		node_t;
-		typedef red_black_tree_node<value_type>*	node_pointer;
+		typedef Key											key_type;
+		typedef T											mapped_type;
+		typedef pair<key_type const, mapped_type>			value_type;
+		typedef Compare										key_compare;
+		typedef Alloc										allocator_type;
+		typedef red_black_tree_node<value_type>				node_t;
+		typedef red_black_tree_node<value_type>*			node_pointer;
+
+		typedef ft::bidirectional_iterator<node_t>			iterator;
+		typedef ft::bidirectional_iterator<node_t const>	const_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+
+		typedef typename
+			ft::iterator_traits<iterator>::difference_type		difference_type;
+		typedef std::size_t										size_type;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -63,9 +75,12 @@ namespace ft
 
 /*                                Constructors                                */
 
-		explicit red_black_tree(key_compare const& comp = key_compare(),
-				allocator_type const& alloc = allocator_type()) :
+		explicit
+		red_black_tree(key_compare const& comp = key_compare(),
+						allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
+			_size(0),
+			_max_size(std::numeric_limits<long>::max() / sizeof(value_type)),
 			_comp(comp),
 			_alloc(alloc)
 		{
@@ -84,6 +99,8 @@ namespace ft
 		// Copy
 		red_black_tree(red_black_tree const& rhs) :
 			_root(NULL),
+			_size(0),
+			_max_size(std::numeric_limits<long>::max() / sizeof(value_type)),
 			_nil(rhs._nil),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
@@ -114,12 +131,75 @@ namespace ft
 				clear();
 			copy_helper(_root, rhs._root, NULL, rhs._nil);
 
+			_size = rhs._size;
+
 			return *this;
 		}
 
 /******************************************************************************/
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
+
+
+/*                                 Iterators                                  */
+
+		iterator
+		begin()
+		{
+			return minimum();
+		}
+
+		const_iterator
+		begin() const
+		{
+			return minimum();
+		}
+
+		iterator
+		end()
+		{
+			if (empty())
+				return minimum();
+			return maximum();
+		}
+
+		const_iterator
+		end() const
+		{
+			if (empty())
+				return minimum();
+			return maximum();
+		}
+
+/*                                  Capacity                                  */
+
+		bool
+		empty() const
+		{
+			return _size == 0;
+		}
+
+		size_type
+		size() const
+		{
+			return _size;
+		}
+
+		size_type
+		max_size() const
+		{
+			return _max_size;
+		}
+
+/*                                  Modifiers                                 */
+
+		// With int
+		iterator
+		insert(iterator position, value_type const& val)
+		{
+			(void)position;
+			(void)val;
+		}
 
 		// By pair. For ft::map
 		void
@@ -165,10 +245,18 @@ namespace ft
 			insert_helper(node);
 		}
 
+		template <class InputIterator>
+		void
+		insert(InputIterator first, InputIterator last)
+		{
+			while (first != last)
+				insert(*first++);
+		}
+
 		node_pointer
 		find(key_type const& key) const
 		{
-			return find_helper(key, _root);
+			node_pointer position = find_helper(key, _root);
 		}
 
 		void
@@ -229,10 +317,32 @@ namespace ft
 		}
 
 		node_pointer
+		maximum()
+		{
+			node_pointer node = _root;
+
+			while (node->right != &_nil)
+				node = node->right;
+
+			return node;
+		}
+
+		node_pointer
 		maximum(node_pointer node)
 		{
 			while (node->right != &_nil)
 				node = node->right;
+
+			return node;
+		}
+
+		node_pointer
+		minimum()
+		{
+			node_pointer node = _root;
+
+			while (node->left != &_nil)
+				node = node->left;
 
 			return node;
 		}
@@ -754,6 +864,7 @@ namespace ft
 			// Clear the node itself
 			_alloc.destroy(node);
 			_alloc.deallocate(node, 1);
+			_size--;
 		}
 
 /******************************************************************************/
@@ -762,6 +873,8 @@ namespace ft
 
 		node_pointer	_root;
 		node_t			_nil;
+		size_type		_size;
+		size_type		_max_size;
 		key_compare		_comp;
 		allocator_type	_alloc;
 	};

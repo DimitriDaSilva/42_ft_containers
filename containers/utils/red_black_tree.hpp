@@ -6,14 +6,14 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/05 02:02:35 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/06 17:16:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 # define RED_BLACK_TREE_HPP
 
-# include <stddef.h>	// NULL
+# include <cstddef>		// NULL, std::size_t, std::ptrdiff_t
 # include <limits>		// std::numeric_limits
 # include <memory>		// std::allocator
 # include <iostream>	// std::cout
@@ -38,9 +38,9 @@ namespace ft
 	};
 
 	template<class Key,
-		class T = Key,
+		class T,
 		class Compare = ft::less<Key>,
-		class Alloc = std::allocator<red_black_tree_node<ft::pair<Key const, T> > >
+		class Alloc = std::allocator<red_black_tree_node<T> >
 			>
 	class red_black_tree
 	{
@@ -50,21 +50,27 @@ namespace ft
 /******************************************************************************/
 
 		typedef Key											key_type;
-		typedef T											mapped_type;
-		typedef pair<key_type const, mapped_type>			value_type;
+		typedef T											value_type;
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
-		typedef red_black_tree_node<value_type>				node_t;
+
+		typedef red_black_tree_node<value_type>				node_type;
 		typedef red_black_tree_node<value_type>*			node_pointer;
 
-		typedef ft::bidirectional_iterator<node_t>			iterator;
-		typedef ft::bidirectional_iterator<node_t const>	const_iterator;
+		typedef value_type&									reference;
+		typedef value_type const&							const_reference;
+		typedef value_type*									pointer;
+		typedef value_type const*							const_pointer;
+
+		typedef ft::bidirectional_iterator<node_type,
+											value_type>		iterator;
+		typedef ft::bidirectional_iterator<node_type const,
+										value_type const>	const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
-		typedef typename
-			ft::iterator_traits<iterator>::difference_type		difference_type;
-		typedef std::size_t										size_type;
+		typedef std::ptrdiff_t								difference_type;
+		typedef std::size_t									size_type;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -86,7 +92,7 @@ namespace ft
 		{
 			// All leaf nodes will point to &_nil. This will allow us to
 			// check if _nil
-			_nil.data = value_type(key_type(), mapped_type());
+			_nil.data = value_type();
 			_nil.parent = NULL;
 			_nil.left = NULL;
 			_nil.right = NULL;
@@ -111,7 +117,10 @@ namespace ft
 /*                                Destructors                                 */
 
 		virtual
-		~red_black_tree() {}
+		~red_black_tree()
+		{
+			clear();
+		}
 
 /******************************************************************************/
 /*                   	   OVERLOADING OPERATORS                              */
@@ -146,29 +155,29 @@ namespace ft
 		iterator
 		begin()
 		{
-			return minimum();
+			return iterator(minimum(), _root, &_nil);
 		}
 
 		const_iterator
 		begin() const
 		{
-			return minimum();
+			return const_iterator(minimum(), _root, &_nil);
 		}
 
 		iterator
 		end()
 		{
 			if (empty())
-				return minimum();
-			return maximum();
+				return begin();
+			return iterator(&_nil, _root, &_nil);
 		}
 
 		const_iterator
 		end() const
 		{
 			if (empty())
-				return minimum();
-			return maximum();
+				return begin();
+			return const_iterator(&_nil, _root, &_nil);
 		}
 
 /*                                  Capacity                                  */
@@ -193,48 +202,19 @@ namespace ft
 
 /*                                  Modifiers                                 */
 
-		// With int
-		iterator
-		insert(iterator position, value_type const& val)
-		{
-			(void)position;
-			(void)val;
-		}
-
-		// By pair. For ft::map
-		void
+		// Single element
+		ft::pair<iterator, bool>
 		insert(value_type const& val)
 		{
+			iterator it = find(val);
 			// Ignore duplicates keys
-			if (find(val.first))
-				return;
-
-			// Allocate new node on the base of _nil
-			node_pointer new_node = _alloc.allocate(1);
-			node_t	tmp = {
-					val,
-					NULL,
-					&_nil,
-					&_nil,
-					red,
-			};
-			_alloc.construct(new_node, tmp);
-
-			insert_helper(new_node);
-		}
-
-		// By key_type. For ft::set
-		void
-		insert(key_type const& key)
-		{
-			// Ignore duplicates keys
-			if (find(key))
-				return;
+			if (it != end())
+				return ft::make_pair(it, false);
 
 			// Allocate new node on the base of _nil
 			node_pointer node = _alloc.allocate(1);
-			node_t	tmp = {
-					value_type(key, key),
+			node_type tmp = {
+					val,
 					NULL,
 					&_nil,
 					&_nil,
@@ -242,7 +222,11 @@ namespace ft
 			};
 			_alloc.construct(node, tmp);
 
-			insert_helper(node);
+			it = iterator(insert_helper(node), _root, &_nil);
+
+			_size++;
+
+			return ft::make_pair(it, true);
 		}
 
 		template <class InputIterator>
@@ -253,11 +237,15 @@ namespace ft
 				insert(*first++);
 		}
 
-		node_pointer
-		find(key_type const& key) const
-		{
-			node_pointer position = find_helper(key, _root);
-		}
+/*                                  Modifiers                                 */
+
+		virtual iterator find(value_type const& val) = 0;
+		virtual const_iterator find(value_type const& val) const = 0;
+
+	protected:
+/******************************************************************************/
+/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
+/******************************************************************************/
 
 		void
 		print_tree() const
@@ -277,37 +265,12 @@ namespace ft
 
 		}
 
+
 		void
 		print_inorder() const
 		{
 			print_inorder_helper(_root);
 			std::cout << std::endl;
-		}
-
-		// Erase by pair
-		void
-		erase(value_type const& val)
-		{
-			node_pointer node = find(val.first);
-
-			// Don't do nothing if val not found
-			if (!node)
-				return;
-
-			erase_helper(node);
-		}
-
-		// Erase by key
-		void
-		erase(key_type const& key)
-		{
-			node_pointer node = find(key);
-
-			// Don't do nothing if val not found
-			if (!node)
-				return;
-
-			erase_helper(node);
 		}
 
 		void
@@ -317,9 +280,12 @@ namespace ft
 		}
 
 		node_pointer
-		maximum()
+		maximum() const
 		{
 			node_pointer node = _root;
+
+			if (empty())
+				return &_nil;
 
 			while (node->right != &_nil)
 				node = node->right;
@@ -328,8 +294,11 @@ namespace ft
 		}
 
 		node_pointer
-		maximum(node_pointer node)
+		maximum(node_pointer node) const
 		{
+			if (empty())
+				return NULL;
+
 			while (node->right != &_nil)
 				node = node->right;
 
@@ -337,9 +306,12 @@ namespace ft
 		}
 
 		node_pointer
-		minimum()
+		minimum() const
 		{
 			node_pointer node = _root;
+
+			if (empty())
+				return NULL;
 
 			while (node->left != &_nil)
 				node = node->left;
@@ -348,8 +320,11 @@ namespace ft
 		}
 
 		node_pointer
-		minimum(node_pointer node)
+		minimum(node_pointer node) const
 		{
+			if (empty())
+				return NULL;
+
 			while (node->left != &_nil)
 				node = node->left;
 
@@ -406,16 +381,12 @@ namespace ft
 			return successor;
 		}
 
-	private:
-/******************************************************************************/
-/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
-/******************************************************************************/
 
 		void
 		copy_helper(node_pointer& lhs,
 				node_pointer rhs,
 				node_pointer parent,
-				node_t const& nil_rhs)
+				node_type const& nil_rhs)
 		{
 			// Base case of the recursion
 			if (rhs == &nil_rhs)
@@ -433,7 +404,7 @@ namespace ft
 			copy_helper(lhs->right, rhs->right, lhs, nil_rhs);
 		}
 
-		void
+		node_pointer
 		insert_helper(node_pointer node)
 		{
 			// Find right position for the new node
@@ -442,7 +413,7 @@ namespace ft
 			while (child != &_nil)
 			{
 				parent = child;
-				if (_comp(node->data.first, child->data.first))
+				if (_comp(node->data, child->data))
 					child = child->left;
 				else
 					child = child->right;
@@ -457,21 +428,20 @@ namespace ft
 			{
 				_root = node;
 				_root->color = black;
-				return;
+				return _root;
 			}
-			else if (_comp(node->data.first, parent->data.first))
+			else if (_comp(node->data, parent->data))
 				parent->left = node;
 			else
 				parent->right = node;
 
 			// If parent is _root then we are at level 1 of the tree
 			// so we can't be unbalancing the tree
-			if (parent == _root)
-				return;
 			// Else the new node could have unbalanced the red-black tree
 			// so we need to check after each insert
-			else
+			if (parent != _root)
 				check_insert(node);
+			return node;
 		}
 
 		void
@@ -615,21 +585,6 @@ namespace ft
 			// Update parent
 			parent->parent = node;
 			parent->left = tmp;
-		}
-
-		node_pointer
-		find_helper(key_type const& key, node_pointer const& node) const
-		{
-			// Base case of recursion
-			if (node == &_nil)
-				return NULL;
-			else if (node->data.first == key)
-				return node;
-
-			if (_comp(key, node->data.first))
-				return find_helper(key, node->left);
-			else
-				return find_helper(key, node->right);
 		}
 
 		void
@@ -872,7 +827,7 @@ namespace ft
 /******************************************************************************/
 
 		node_pointer	_root;
-		node_t			_nil;
+		node_type		_nil;
 		size_type		_size;
 		size_type		_max_size;
 		key_compare		_comp;

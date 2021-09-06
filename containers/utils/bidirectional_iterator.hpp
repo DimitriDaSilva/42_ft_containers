@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/05 01:16:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/06 17:19:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace ft
 {
-	template<class T>
+	template<class Node_type, class Value_type>
 	class bidirectional_iterator
 	{
 	public:
@@ -26,11 +26,15 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef T								value_type;
-		typedef typename std::ptrdiff_t			difference_type;
+		typedef Node_type						node_type;
+		typedef node_type*						node_pointer;
+		typedef Value_type						value_type;
 		typedef value_type&						reference;
+		typedef value_type const&				const_reference;
 		typedef value_type*						pointer;
+		typedef value_type const*				const_pointer;
 		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef typename std::ptrdiff_t			difference_type;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */
@@ -39,14 +43,17 @@ namespace ft
 /*                                Constructors                                */
 
 		// Default
-		bidirectional_iterator() : _ptr(NULL) {}
+		bidirectional_iterator() : _ptr(NULL), _root(NULL), _nil(NULL) {}
 
 		// Type specific
-		bidirectional_iterator(pointer ptr) : _ptr(ptr) {}
+		bidirectional_iterator(node_pointer ptr,
+				node_pointer root,
+				node_pointer nil) :
+			_ptr(ptr), _root(root), _nil(nil) {}
 
 		// Copy
-		bidirectional_iterator(bidirectional_iterator const& rhs)
-			: _ptr(rhs._ptr) {}
+		bidirectional_iterator(bidirectional_iterator const& rhs) :
+			_ptr(rhs._ptr), _root(rhs._root), _nil(rhs._nil) {}
 
 /*                                Destructors                                 */
 
@@ -74,9 +81,9 @@ namespace ft
 
 		// Overload called when trying to copy construct a const_iterator
 		// based on an iterator
-		operator bidirectional_iterator<value_type const>() const
+		operator bidirectional_iterator<node_type const, value_type const>() const
 		{
-			return bidirectional_iterator<value_type const>(_ptr);
+			return bidirectional_iterator<node_type const, value_type const>(_ptr);
 		}
 
 /*                            Relational operators                            */
@@ -108,7 +115,7 @@ namespace ft
 		bidirectional_iterator
 		operator++(int)
 		{
-			bidirectional_iterator<T> tmp(*this);
+			bidirectional_iterator tmp(*this);
 
 			_ptr = successor(_ptr);
 
@@ -128,7 +135,7 @@ namespace ft
 		bidirectional_iterator
 		operator--(int)
 		{
-			bidirectional_iterator<T> tmp(*this);
+			bidirectional_iterator tmp(*this);
 
 			_ptr = predecessor(_ptr);
 
@@ -138,12 +145,12 @@ namespace ft
 /*                                 Access                                     */
 
 		reference
-		operator*() const
+		operator*()
 		{
-			return *_ptr;
+			return _ptr->data;
 		}
 
-		pointer
+		node_pointer
 		operator->() const
 		{
 			return _ptr;
@@ -154,8 +161,8 @@ namespace ft
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
 
-		pointer
-		maximum(pointer node)
+		node_pointer
+		maximum(node_pointer node)
 		{
 			while (node->right->right != NULL)
 				node = node->right;
@@ -163,8 +170,8 @@ namespace ft
 			return node;
 		}
 
-		pointer
-		minimum(pointer node)
+		node_pointer
+		minimum(node_pointer node)
 		{
 			while (node->left->left != NULL)
 				node = node->left;
@@ -173,10 +180,10 @@ namespace ft
 		}
 
 		// Get previous node in order
-		pointer
-		predecessor(pointer node)
+		node_pointer
+		predecessor(node_pointer node)
 		{
-			pointer predecessor;
+			node_pointer predecessor;
 
 			// If node has a left child, it's predecessor is the maximum
 			// of its left subtree
@@ -194,14 +201,17 @@ namespace ft
 			}
 
 			// If node is _root then successor is NULL
-			return predecessor;
+			if (!predecessor)
+				return _nil;
+			else
+				return predecessor;
 		}
 
 		// Get next node in order
-		pointer
-		successor(pointer node)
+		node_pointer
+		successor(node_pointer node)
 		{
-			pointer successor;
+			node_pointer successor;
 
 			// If node has a right child, it's successor is the minimum
 			// of its right subtree
@@ -219,14 +229,19 @@ namespace ft
 			}
 
 			// If node is _root then successor is NULL
-			return successor;
+			if (!successor)
+				return _nil;
+			else
+				return successor;
 		}
 
 /******************************************************************************/
 /*                   	        PRIVATE DATA                                  */
 /******************************************************************************/
 
-		pointer _ptr;
+		node_pointer _ptr;
+		node_pointer _root;
+		node_pointer _nil;
 	};
 }
 

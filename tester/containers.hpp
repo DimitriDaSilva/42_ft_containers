@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 10:52:50 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 09:57:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/05 10:07:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <list>		// std::list
 
 # ifdef IS_TEST
-	#  include <map>			// std::map
+	#  include <set>			// std::set
+	//#  include <map>			// std::map
 	#  include <stack>			// std::stack
 	#  include <vector>			// std::vector
 	#  include <iterator>		// std::iterator_traits, std::reverse_iterator
@@ -29,7 +30,8 @@
 	#  include <utility>		// std::pair, std::make_pair
 	namespace ft = std;
 # else
-	#  include "map.hpp"
+	#  include "set.hpp"
+	//#  include "map.hpp"
 	#  include "stack.hpp"
 	#  include "vector.hpp"
 	#  include "iterator_traits.hpp"

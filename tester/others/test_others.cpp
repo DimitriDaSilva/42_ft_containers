@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:41:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/04 19:29:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/05 10:09:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,4 @@ test_others()
 	test_wrapper(test_equal, "equal");
 	subsection_wrapper(test_pair, "pair && make_pair");
 	test_wrapper(test_less, "less");
-	subsection_wrapper(test_red_black_tree, "red-black tree");
 }

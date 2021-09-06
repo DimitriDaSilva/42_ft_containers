@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 17:19:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/06 18:53:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <iterator>	// std::bidirectional_iterator_tag
 # include <cstddef>		// std::ptrdiff_t
+
+# include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -75,6 +77,8 @@ namespace ft
 				return *this;
 
 			_ptr = rhs._ptr;
+			_root = rhs._root;
+			_nil = rhs._nil;
 
 			return *this;
 		}
@@ -106,7 +110,10 @@ namespace ft
 		bidirectional_iterator&
 		operator++()
 		{
-			_ptr = successor(_ptr);
+			if (_ptr == maximum(_root))
+				_ptr = _nil;
+			else if (_ptr != _nil)
+				_ptr = successor(_ptr);
 
 			return *this;
 		}
@@ -117,7 +124,7 @@ namespace ft
 		{
 			bidirectional_iterator tmp(*this);
 
-			_ptr = successor(_ptr);
+			operator++();
 
 			return tmp;
 		}
@@ -126,7 +133,12 @@ namespace ft
 		bidirectional_iterator&
 		operator--()
 		{
-			_ptr = predecessor(_ptr);
+			if (_ptr == minimum(_root))
+				_ptr = _nil;
+			else if (_ptr == _nil)
+				_ptr = maximum(_root);
+			else
+				_ptr = predecessor(_ptr);
 
 			return *this;
 		}
@@ -137,7 +149,7 @@ namespace ft
 		{
 			bidirectional_iterator tmp(*this);
 
-			_ptr = predecessor(_ptr);
+			operator--();
 
 			return tmp;
 		}
@@ -164,7 +176,7 @@ namespace ft
 		node_pointer
 		maximum(node_pointer node)
 		{
-			while (node->right->right != NULL)
+			while (node->right != _nil)
 				node = node->right;
 
 			return node;
@@ -173,7 +185,7 @@ namespace ft
 		node_pointer
 		minimum(node_pointer node)
 		{
-			while (node->left->left != NULL)
+			while (node->left != _nil)
 				node = node->left;
 
 			return node;
@@ -187,14 +199,14 @@ namespace ft
 
 			// If node has a left child, it's predecessor is the maximum
 			// of its left subtree
-			if (node->left->left != NULL)
+			if (node->left != _nil)
 				return maximum(node->left);
 
 			// If not, we need to go look for it in it's parent left side
 			// The predecessor will be the first node that has its
 			// left child that isn't also an ancestor of the base node
 			predecessor = node->parent;
-			while (node->parent != NULL && node == predecessor->left)
+			while (node != _root && node == predecessor->left)
 			{
 				node = predecessor;
 				predecessor = predecessor->parent;
@@ -215,14 +227,14 @@ namespace ft
 
 			// If node has a right child, it's successor is the minimum
 			// of its right subtree
-			if (node->right->right != NULL)
+			if (node->right != _nil)
 				return minimum(node->right);
 
 			// If not, we need to go look for it in it's parent right side
 			// The successor will be the first node that has its
 			// right child that isn't also an ancestor of the base node
 			successor = node->parent;
-			while (node->parent != NULL && node == successor->right)
+			while (node != _root && node == successor->right)
 			{
 				node = successor;
 				successor = successor->parent;

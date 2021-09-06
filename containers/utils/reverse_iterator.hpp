@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/31 18:45:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/06 18:50:06 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ namespace ft
 		reverse_iterator() : _it(iterator_type()) {}
 
 		// Initialization
-		explicit
 		reverse_iterator(iterator_type it) : _it(it) {}
 
 		// Copy
@@ -127,7 +126,7 @@ namespace ft
 		reverse_iterator
 		operator--(int)
 		{
-			reverse_iterator<Iter> tmp(*this);
+			reverse_iterator tmp(*this);
 
 			_it++;
 
@@ -169,7 +168,9 @@ namespace ft
 		reference
 		operator*() const
 		{
-			return *(_it - 1);
+			Iter tmp(_it);
+
+			return *--tmp;
 		}
 
 		pointer

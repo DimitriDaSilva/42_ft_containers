@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 17:16:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/06 19:38:56 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,35 @@ namespace ft
 			return const_iterator(&_nil, _root, &_nil);
 		}
 
+		reverse_iterator
+		rbegin()
+		{
+			iterator it = iterator(&_nil, _root, &_nil);
+			return reverse_iterator(it);
+		}
+
+		const_reverse_iterator
+		rbegin() const
+		{
+			const_iterator it = const_iterator(&_nil, _root, &_nil);
+			return const_reverse_iterator(it);
+		}
+
+		reverse_iterator
+		rend()
+		{
+			iterator it = iterator(minimum(), _root, &_nil);
+			return reverse_iterator(it);
+		}
+
+		const_reverse_iterator
+		rend() const
+		{
+			const_iterator it = const_iterator(minimum(), _root, &_nil);
+			return const_reverse_iterator(it);
+		}
+
+
 /*                                  Capacity                                  */
 
 		bool
@@ -206,8 +235,8 @@ namespace ft
 		ft::pair<iterator, bool>
 		insert(value_type const& val)
 		{
-			iterator it = find(val);
 			// Ignore duplicates keys
+			iterator it = find(val);
 			if (it != end())
 				return ft::make_pair(it, false);
 
@@ -229,6 +258,18 @@ namespace ft
 			return ft::make_pair(it, true);
 		}
 
+		// With hint
+		iterator
+		insert(iterator position, value_type const& val)
+		{
+			// Ignore duplicates keys
+			iterator it = find(val);
+			if (it != end())
+				return it;
+
+		}
+
+		// Range
 		template <class InputIterator>
 		void
 		insert(InputIterator first, InputIterator last)
@@ -265,7 +306,6 @@ namespace ft
 
 		}
 
-
 		void
 		print_inorder() const
 		{
@@ -285,7 +325,7 @@ namespace ft
 			node_pointer node = _root;
 
 			if (empty())
-				return &_nil;
+				return NULL;
 
 			while (node->right != &_nil)
 				node = node->right;

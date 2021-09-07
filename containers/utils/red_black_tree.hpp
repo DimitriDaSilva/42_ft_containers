@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 19:38:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:13:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ namespace ft
 		red_black_tree_node<T>*	left;
 		red_black_tree_node<T>*	right;
 		color					color;
+		red_black_tree_node(T data,
+				red_black_tree_node* parent,
+				red_black_tree_node* left,
+				red_black_tree_node* right,
+				enum color color) :
+			data(data),
+			parent(parent),
+			left(left),
+			right(right),
+			color(color) {}
 	};
 
 	template<class Key,
@@ -85,20 +95,14 @@ namespace ft
 		red_black_tree(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
+			_nil(value_type(), NULL, NULL, NULL, black),
 			_size(0),
 			_max_size(std::numeric_limits<long>::max() / sizeof(value_type)),
 			_comp(comp),
 			_alloc(alloc)
 		{
-			// All leaf nodes will point to &_nil. This will allow us to
-			// check if _nil
-			_nil.data = value_type();
-			_nil.parent = NULL;
-			_nil.left = NULL;
-			_nil.right = NULL;
-			_nil.color = black;
-
-			// Set root pointing to _nil. Empty tree
+			// All leaf nodes will point to &_nil and _nil is a black node
+			// Set root pointing to _nil for an empty tree
 			_root = &_nil;
 		}
 
@@ -141,6 +145,7 @@ namespace ft
 			copy_helper(_root, rhs._root, NULL, rhs._nil);
 
 			_size = rhs._size;
+			_max_size = rhs._max_size;
 
 			return *this;
 		}
@@ -241,15 +246,10 @@ namespace ft
 				return ft::make_pair(it, false);
 
 			// Allocate new node on the base of _nil
+			// New nodes are necessarily red and leaf nodes so they point
+			// to _nil
 			node_pointer node = _alloc.allocate(1);
-			node_type tmp = {
-					val,
-					NULL,
-					&_nil,
-					&_nil,
-					red,
-			};
-			_alloc.construct(node, tmp);
+			_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
 
 			it = iterator(insert_helper(node), _root, &_nil);
 
@@ -258,15 +258,14 @@ namespace ft
 			return ft::make_pair(it, true);
 		}
 
-		// With hint
+		// With hint not implemented as described in cplusplus.com
+		// The address of a node is not accessible. So finding its address
+		// and then check if it's the right position would be more inefficient
+		// than just inserting it via the "insert single element" method
 		iterator
-		insert(iterator position, value_type const& val)
+		insert(iterator, value_type const& val)
 		{
-			// Ignore duplicates keys
-			iterator it = find(val);
-			if (it != end())
-				return it;
-
+			return insert(val).first;
 		}
 
 		// Range

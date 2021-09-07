@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 18:53:56 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 09:34:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ namespace ft
 		node_pointer
 		operator->() const
 		{
-			return _ptr;
+			return &(operator*());
 		}
 
 	private:

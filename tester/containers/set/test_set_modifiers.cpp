@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 19:21:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:11:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,27 @@ test_set_modifiers_insert_single_element_string()
 }
 
 void
+test_set_modifiers_insert_with_hint()
+{
+	ft::set<int> set;
+	ft::set<int>::iterator hint;
+	ft::set<int>::iterator ret;
+
+	set.insert(10);
+	set.insert(100);
+	set.insert(60);
+
+	hint = set.find(10);
+	ret = set.insert(hint, 42);
+	std::cout << "Return: " << *ret << std::endl;
+	print_set_info(set);
+
+	ret = set.insert(set.begin(), 0);
+	std::cout << "Return: " << *ret << std::endl;
+	print_set_info(set);
+}
+
+void
 test_set_modifiers_insert_range()
 {
 	ft::set<int> set1;
@@ -84,5 +105,6 @@ test_set_modifiers()
 {
 	test_wrapper(test_set_modifiers_insert_single_element_int, "insert_single_element_int");
 	test_wrapper(test_set_modifiers_insert_single_element_string, "insert_single_element_string");
+	test_wrapper(test_set_modifiers_insert_with_hint, "insert_with_hint");
 	test_wrapper(test_set_modifiers_insert_range, "insert_range");
 }

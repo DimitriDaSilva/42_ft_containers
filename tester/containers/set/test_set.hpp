@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 09:59:24 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 11:11:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 14:56:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "test_set_constructors.hpp"
 # include "test_set_iterators.hpp"
 # include "test_set_reverse_iterators.hpp"
+# include "test_set_capacity.hpp"
 # include "test_set_modifiers.hpp"
 
 void test_set();

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 10:11:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 17:07:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,66 @@ test_set_modifiers_insert_range()
 }
 
 void
+test_set_modifiers_erase_position()
+{
+	ft::set<int> set;
+
+	for (int i = 0; i < 10; i++)
+		set.insert(i);
+
+	print_set_info(set);
+
+	set.erase(set.find(4));
+	set.erase(set.find(2));
+
+	print_set_info(set);
+
+	while (!set.empty())
+		set.erase(set.begin());
+
+	print_set_info(set);
+}
+
+void
+test_set_modifiers_erase_value()
+{
+	ft::set<int> set;
+
+	for (int i = 0; i < 10; i++)
+		set.insert(i);
+
+	print_set_info(set);
+
+	std::cout << set.erase(4) << std::endl;
+	std::cout << set.erase(4) << std::endl;
+	std::cout << set.erase(2) << std::endl;
+
+	print_set_info(set);
+}
+
+void
+test_set_modifiers_erase_range()
+{
+	ft::set<int> set;
+
+	for (int i = 0; i < 10; i++)
+		set.insert(i);
+
+	print_set_info(set);
+
+	set.erase(set.find(4), set.end());
+
+	print_set_info(set);
+}
+
+void
 test_set_modifiers()
 {
 	test_wrapper(test_set_modifiers_insert_single_element_int, "insert_single_element_int");
 	test_wrapper(test_set_modifiers_insert_single_element_string, "insert_single_element_string");
 	test_wrapper(test_set_modifiers_insert_with_hint, "insert_with_hint");
 	test_wrapper(test_set_modifiers_insert_range, "insert_range");
+	test_wrapper(test_set_modifiers_erase_position, "erase_position");
+	test_wrapper(test_set_modifiers_erase_value, "erase_value");
+	test_wrapper(test_set_modifiers_erase_range, "erase_range");
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 11:55:28 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 17:07:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ namespace ft
 			_root(NULL),
 			_nil(value_type(), NULL, NULL, NULL, black),
 			_size(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(value_type)),
+			_max_size(std::numeric_limits<long>::max() / sizeof(node_type)),
 			_comp(comp),
 			_alloc(alloc)
 		{
@@ -112,7 +112,7 @@ namespace ft
 			_root(NULL),
 			_nil(rhs._nil),
 			_size(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(value_type)),
+			_max_size(std::numeric_limits<long>::max() / sizeof(node_type)),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
 		{
@@ -284,15 +284,42 @@ namespace ft
 				insert(*first++);
 		}
 
-/*                                  Modifiers                                 */
+		// With position
+		void
+		erase(iterator position)
+		{
+			erase_helper(position._ptr);
+			_size--;
+		}
+
+		// With value
+		size_type
+		erase(value_type const& val)
+		{
+			iterator it = find(val);
+
+			// Val not found in tree so nothing erased
+			if (it == end())
+				return 0;
+
+			erase(it);
+			return 1;
+		}
+
+		// Range
+		void
+		erase(iterator first, iterator last)
+		{
+			while (first != last)
+				erase(first++);
+		}
+
+/*                                Operations                                  */
 
 		virtual iterator find(value_type const& val) = 0;
 		virtual const_iterator find(value_type const& val) const = 0;
 
-	protected:
-/******************************************************************************/
-/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
-/******************************************************************************/
+/*                                Temporary                                  */
 
 		void
 		print_tree() const
@@ -302,14 +329,52 @@ namespace ft
 
 			std::cout
 				<< (_root->color == red ? "\033[1;31m" : "")
-				<< _root->data.first
-				<< " | "
-				<< _root->data.second
+				<< _root->data
 				<< "\033[0m"
 				<< std::endl;
 			print_tree_helper(_root, "");
 			std::cout << std::endl;
+		}
 
+		void
+		print_tree_helper(node_pointer node, std::string prefix) const
+		{
+			// Base of recursion
+			if (node == &_nil)
+				return;
+
+			bool has_left = (node->left != &_nil);
+			bool has_right = (node->right != &_nil);
+
+			if (!has_left && !has_right)
+				return;
+
+			std::cout << prefix;
+			std::cout << ((has_left && has_right) ? "├── " : "");
+			std::cout << ((!has_left && has_right) ? "└── " : "");
+
+			if (has_right)
+			{
+				bool print_strand = (has_left && has_right
+						&& (node->right->right != NULL || node->right->left != NULL));
+				std::string new_prefix = prefix + (print_strand ? "│   " : "    ");
+				std::cout
+					<< (node->right->color == red ? "\033[0;31m" : "")
+					<< node->right->data
+					<< "\033[0m"
+					<< std::endl;
+				print_tree_helper(node->right, new_prefix);
+			}
+
+			if (has_left)
+			{
+				std::cout << (has_right ? prefix : "") << "└── "
+					<< (node->left->color == red ? "\033[0;31m" : "")
+					<< node->left->data
+					<< "\033[0m"
+					<< std::endl;
+				print_tree_helper(node->left, prefix + "    ");
+			}
 		}
 
 		void
@@ -318,6 +383,28 @@ namespace ft
 			print_inorder_helper(_root);
 			std::cout << std::endl;
 		}
+
+		void
+		print_inorder_helper(node_pointer const& node) const
+		{
+			// Base case of recursion
+			if (node == &_nil)
+				return;
+
+			print_inorder_helper(node->left);
+			std::cout
+				<< node->data << " "
+				<< "[" << (node->color == black ?
+						"B" :
+						"\033[0;31mR\033[0m") << "] ";
+			print_inorder_helper(node->right);
+		}
+
+
+	protected:
+/******************************************************************************/
+/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
+/******************************************************************************/
 
 		void
 		clear()
@@ -631,69 +718,6 @@ namespace ft
 			// Update parent
 			parent->parent = node;
 			parent->left = tmp;
-		}
-
-		void
-		print_tree_helper(node_pointer node, std::string prefix) const
-		{
-			// Base of recursion
-			if (node == &_nil)
-				return;
-
-			bool has_left = (node->left != &_nil);
-			bool has_right = (node->right != &_nil);
-
-			if (!has_left && !has_right)
-				return;
-
-			std::cout << prefix;
-			std::cout << ((has_left && has_right) ? "├── " : "");
-			std::cout << ((!has_left && has_right) ? "└── " : "");
-
-			if (has_right)
-			{
-				bool print_strand = (has_left && has_right
-						&& (node->right->right != NULL || node->right->left != NULL));
-				std::string new_prefix = prefix + (print_strand ? "│   " : "    ");
-				std::cout
-					<< (node->right->color == red ? "\033[0;31m" : "")
-					<< node->right->data.first
-					<< " | "
-					<< node->right->data.second
-					<< "\033[0m"
-					<< std::endl;
-				print_tree_helper(node->right, new_prefix);
-			}
-
-			if (has_left)
-			{
-				std::cout << (has_right ? prefix : "") << "└── "
-					<< (node->left->color == red ? "\033[0;31m" : "")
-					<< node->left->data.first
-					<< " | "
-					<< node->left->data.second
-					<< "\033[0m"
-					<< std::endl;
-				print_tree_helper(node->left, prefix + "    ");
-			}
-		}
-
-		void
-		print_inorder_helper(node_pointer const& node) const
-		{
-			// Base case of recursion
-			if (node == &_nil)
-				return;
-
-			print_inorder_helper(node->left);
-			std::cout
-				<< node->data.first
-				<< " | "
-				<< node->data.second << " "
-				<< "[" << (node->color == black ?
-						"B" :
-						"\033[0;31mR\033[0m") << "] ";
-			print_inorder_helper(node->right);
 		}
 
 		void

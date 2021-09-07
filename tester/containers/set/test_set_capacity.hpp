@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_set.cpp                                       :+:      :+:    :+:   */
+/*   test_set_capacity.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/05 09:59:24 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 14:56:34 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/09/07 14:57:03 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/09/07 14:59:05 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test_set.hpp"
+#ifndef TEST_SET_CAPACITY_HPP
+# define TEST_SET_CAPACITY_HPP
 
-void
-test_set()
-{
-	subsection_wrapper(test_set_constructors, "set_constructors");
-	subsection_wrapper(test_set_iterators, "set_iterators");
-	subsection_wrapper(test_set_reverse_iterators, "set_reverse_iterators");
-	subsection_wrapper(test_set_capacity, "set_capacity");
-	subsection_wrapper(test_set_modifiers, "set_modifiers");
-}
+# include <iostream>	// std::cout
+
+# include "containers.hpp"
+# include "test_wrappers.hpp"
+# include "print_containers_info.hpp"
+
+void test_set_capacity();
+
+#endif

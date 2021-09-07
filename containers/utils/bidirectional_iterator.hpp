@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 13:32:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 16:16:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,29 @@ namespace ft
 
 		// To comply with iterator_traits<> standards, value_type represents
 		// the type of the node and data_type represents the data in the node
-		typedef Node_type						value_type;
-		typedef value_type*						node_pointer;
+		typedef Node_type								value_type;
+		typedef value_type*								node_pointer;
 
 		typedef typename Node_type::value_type const	data_type;
-		typedef data_type&						reference;
-		typedef data_type const&				const_reference;
-		typedef data_type*						pointer;
-		typedef data_type const*				const_pointer;
+		typedef data_type&								reference;
+		typedef data_type const&						const_reference;
+		typedef data_type*								pointer;
+		typedef data_type const*						const_pointer;
 
-		typedef typename std::ptrdiff_t			difference_type;
-		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef typename std::ptrdiff_t					difference_type;
+		typedef std::bidirectional_iterator_tag			iterator_category;
+
+/******************************************************************************/
+/*                   	        PUBLIC DATA                                   */
+/******************************************************************************/
+
+		// Weird, right? Well in the STL implementation of iterators is a struct
+		// so the underlying pointer to the node is freely accessible with
+		// the name _M_node
+		// So if it works for them, it works for me :)
+		node_pointer _ptr;
+		node_pointer _root;
+		node_pointer _nil;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */
@@ -250,13 +262,6 @@ namespace ft
 				return successor;
 		}
 
-/******************************************************************************/
-/*                   	        PRIVATE DATA                                  */
-/******************************************************************************/
-
-		node_pointer _ptr;
-		node_pointer _root;
-		node_pointer _nil;
 	};
 }
 

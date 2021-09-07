@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/04 12:02:24 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:34:51 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ namespace ft
 
 /*                                Constructors                                */
 
-		// Empty container constructor (default constructor)
+		// Empty (default)
 		explicit
 		vector(allocator_type const& alloc = allocator_type()) :
 			_start(NULL),

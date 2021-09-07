@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:32:33 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 22:18:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:23:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ test_vector_reverse_iterators_constructors_base()
 	iter_type it_begin = rev_from.base();
 
 	if (it_end == from && it_begin == until)
-	{
 		std::cout << "valid" << std::endl;
-	}
 }
 
 void
@@ -132,7 +130,8 @@ test_vector_reverse_iterators_operator_increment()
 	ft::reverse_iterator<iter_type> rev_from(until);
 
 	std::cout << "myvector:";
-	while (rev_from != rev_until) {
+	while (rev_from != rev_until)
+	{
 		std::cout << ' ' << *rev_from;
 		++rev_from;
 	}
@@ -181,7 +180,6 @@ test_vector_reverse_iterators_operator_plus_equal()
 	std::cout << "The third element from the end is: " << *rev_iterator << std::endl;
 }
 
-
 void
 test_vector_reverse_iterators_operator_minus_equal()
 {
@@ -206,14 +204,10 @@ test_vector_reverse_iterators_empty_vectors()
 	ft::vector<int> const const_vec;
 
 	if (vec.rbegin() == vec.rend())
-	{
 		std::cout << "correct" << std::endl;
-	}
 
 	if (const_vec.rbegin() == const_vec.rend())
-	{
 		std::cout << "correct" << std::endl;
-	}
 }
 
 void
@@ -223,15 +217,13 @@ test_vector_reverse_iterators_100_size_vector()
 
 	ft::vector<int> vec;
 
+	srand(g_seed);
+
 	for (int i = 0; i < 10; i++)
-	{
 		vec.push_back(rand() % 100 - 50);
-	}
 
 	for (reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
-	{
 		std::cout << *it << " ";
-	}
 }
 
 void
@@ -242,9 +234,7 @@ test_vector_reverse_iterators_100_size_const_vector()
 	ft::vector<int> const const_vec(100, 42);
 
 	for (const_reverse_iterator it = const_vec.rbegin(); it != const_vec.rend(); it++)
-	{
 		std::cout << *it << " ";
-	}
 }
 
 void
@@ -261,9 +251,7 @@ test_vector_reverse_iterators_copy()
 	const_reverse_iterator const_it(it);
 
 	for (const_reverse_iterator it = const_it; it != vec.rend(); it++)
-	{
 		std::cout << *it << " ";
-	}
 }
 
 void

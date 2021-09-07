@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 09:34:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:24:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@
 # include <iterator>	// std::bidirectional_iterator_tag
 # include <cstddef>		// std::ptrdiff_t
 
-# include "reverse_iterator.hpp"
-
 namespace ft
 {
-	template<class Node_type, class Value_type>
+	template<class Node_type, class Value_type = typename Node_type::value_type const>
 	class bidirectional_iterator
 	{
 	public:
@@ -28,6 +26,8 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
+		// To comply with iterator_traits<> standards, value_type represents
+		// the type of the node and data_type represents the data in the node
 		typedef Node_type						node_type;
 		typedef node_type*						node_pointer;
 		typedef Value_type						value_type;
@@ -87,7 +87,7 @@ namespace ft
 		// based on an iterator
 		operator bidirectional_iterator<node_type const, value_type const>() const
 		{
-			return bidirectional_iterator<node_type const, value_type const>(_ptr);
+			return bidirectional_iterator<node_type const, value_type const>(_ptr, _root, _nil);
 		}
 
 /*                            Relational operators                            */
@@ -157,12 +157,12 @@ namespace ft
 /*                                 Access                                     */
 
 		reference
-		operator*()
+		operator*() const
 		{
 			return _ptr->data;
 		}
 
-		node_pointer
+		pointer
 		operator->() const
 		{
 			return &(operator*());

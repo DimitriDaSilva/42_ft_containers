@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/09/07 09:32:15 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/09/07 12:25:40 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,11 +61,12 @@ _SUCCESS			:=		[$(_GREEN)SUCCESS$(_RESET)]
 _FAILURE			:=		[$(_RED)FAILURE$(_RESET)]
 
 # General functions
-all:						init $(NAME_FT) $(NAME_STL)
+all:						init_ft $(NAME_FT) init_stl $(NAME_STL)
 							@ printf "$(_SUCCESS) Compilation done\n"
 
-init:
+init_ft:
 							@ printf "$(_INFO) Initialize $(NAME_FT)\n"
+init_stl:
 							@ printf "$(_INFO) Initialize $(NAME_STL)\n"
 
 $(NAME_FT):					$(OBJS_FT)

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 17:14:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:49:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ namespace ft
 
 /*                                Constructors                                */
 
-		// Empty
+		// Empty (default)
 		explicit
 		set(key_compare const& comp = key_compare(),
 			allocator_type const& alloc = allocator_type()) :
@@ -86,7 +86,7 @@ namespace ft
 			tree_type(comp),
 			_value_alloc(alloc)
 		{
-			insert(first, last);
+			this->insert(first, last);
 		}
 
 		// Copy

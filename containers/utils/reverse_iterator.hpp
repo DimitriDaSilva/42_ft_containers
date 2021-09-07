@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/06 18:50:06 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:20:03 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>				// NULL
 
 # include "random_access_iterator.hpp"
+# include "bidirectional_iterator.hpp"
 # include "iterator_traits.hpp"
 
 namespace ft
@@ -86,10 +87,29 @@ namespace ft
 
 		// Overload called when trying to copy construct a const_iterator
 		// based on an iterator
-		operator reverse_iterator<typename ft::random_access_iterator<value_type const> >() const
+		operator reverse_iterator<
+			typename ft::random_access_iterator<value_type const> >() const
 		{
-			return reverse_iterator<typename ft::random_access_iterator<value_type const> >(_it);
+			return reverse_iterator<
+				typename ft::random_access_iterator<value_type const> >(_it);
 		}
+
+		//operator reverse_iterator<
+			//typename ft::bidirectional_iterator<value_type const> >() const
+		//{
+			//return reverse_iterator<
+				//typename ft::bidirectional_iterator<value_type const> >(_it);
+		//}
+
+		//template<class It>
+		//operator reverse_iterator<
+			//typename ft::bidirectional_iterator<
+				//value_type const, typename It::value_type const> >() const
+		//{
+			//return reverse_iterator<
+				//typename ft::bidirectional_iterator<
+					//value_type const, typename It::value_type const> >(_it);
+		//}
 
 /*                        Increment / decrement                               */
 

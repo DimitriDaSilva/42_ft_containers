@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:32:33 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 22:26:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:59:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ test_vector_iterators_operator_plus_equal()
 	std::cout << "The third element from the begin is: " << *it << std::endl;
 }
 
-
 void
 test_vector_iterators_operator_minus_equal()
 {
@@ -201,6 +200,8 @@ test_vector_iterators_100_size_vector()
 	typedef ft::vector<int>::iterator iterator;
 
 	ft::vector<int> vec;
+
+	srand(g_seed);
 
 	for (int i = 0; i < 10; i++)
 	{

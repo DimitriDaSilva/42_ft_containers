@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/05 00:53:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:36:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ namespace ft
 
 /*                                Destructors                                 */
 
-		// Default
-		virtual
+		// Default virtual
 		~random_access_iterator() {}
 
 /******************************************************************************/

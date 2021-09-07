@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 22:44:46 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 23:14:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:32:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ test_vector_allocator_strings_custom_allocator()
 void
 test_vector_allocator()
 {
-	//test_wrapper(test_vector_allocator_cplusplus, "cplusplus");
+	test_wrapper(test_vector_allocator_cplusplus, "cplusplus");
 	test_wrapper(test_vector_allocator_custom_allocator, "custom_allocator");
 	test_wrapper(test_vector_allocator_strings_custom_allocator, "strings_custom_allocator");
 }

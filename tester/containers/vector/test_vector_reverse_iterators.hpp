@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:38:23 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/23 10:45:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:01:54 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>	// std::cout
 
+# include "main.hpp"
 # include "containers.hpp"
 # include "test_wrappers.hpp"
 

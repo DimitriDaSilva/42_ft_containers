@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 10:13:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:55:28 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ namespace ft
 	template<class T>
 	struct red_black_tree_node
 	{
-		T						data;
-		red_black_tree_node<T>*	parent;
-		red_black_tree_node<T>*	left;
-		red_black_tree_node<T>*	right;
+		typedef	T value_type;
+
+		value_type				data;
+		red_black_tree_node*	parent;
+		red_black_tree_node*	left;
+		red_black_tree_node*	right;
 		color					color;
-		red_black_tree_node(T data,
+
+		red_black_tree_node(value_type data,
 				red_black_tree_node* parent,
 				red_black_tree_node* left,
 				red_black_tree_node* right,
@@ -72,10 +75,8 @@ namespace ft
 		typedef value_type*									pointer;
 		typedef value_type const*							const_pointer;
 
-		typedef ft::bidirectional_iterator<node_type,
-											value_type>		iterator;
-		typedef ft::bidirectional_iterator<node_type const,
-										value_type const>	const_iterator;
+		typedef ft::bidirectional_iterator<node_type>		iterator;
+		typedef ft::bidirectional_iterator<node_type const>	const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
@@ -109,9 +110,9 @@ namespace ft
 		// Copy
 		red_black_tree(red_black_tree const& rhs) :
 			_root(NULL),
+			_nil(rhs._nil),
 			_size(0),
 			_max_size(std::numeric_limits<long>::max() / sizeof(value_type)),
-			_nil(rhs._nil),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
 		{
@@ -202,6 +203,9 @@ namespace ft
 		reverse_iterator
 		rend()
 		{
+			if (empty())
+				return rbegin();
+
 			iterator it = iterator(minimum(), _root, &_nil);
 			return reverse_iterator(it);
 		}
@@ -209,6 +213,9 @@ namespace ft
 		const_reverse_iterator
 		rend() const
 		{
+			if (empty())
+				return rbegin();
+
 			const_iterator it = const_iterator(minimum(), _root, &_nil);
 			return const_reverse_iterator(it);
 		}

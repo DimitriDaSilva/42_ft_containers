@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/09/07 12:25:40 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/09/07 13:06:47 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,18 +62,19 @@ _FAILURE			:=		[$(_RED)FAILURE$(_RESET)]
 
 # General functions
 all:						init_ft $(NAME_FT) init_stl $(NAME_STL)
-							@ printf "$(_SUCCESS) Compilation done\n"
 
 init_ft:
-							@ printf "$(_INFO) Initialize $(NAME_FT)\n"
+							@ printf "$(_INFO) Compiling $(NAME_FT)...\n"
 init_stl:
-							@ printf "$(_INFO) Initialize $(NAME_STL)\n"
+							@ printf "$(_INFO) Compiling $(NAME_STL)...\n"
 
-$(NAME_FT):					$(OBJS_FT)
+$(NAME_FT):					init_ft $(OBJS_FT)
 							@ $(CC) $(FLAGS_COMP_FT) -o $@ $(OBJS_FT)
+							@ printf "$(_SUCCESS) $(NAME_FT) compiled successfully\n"
 
-$(NAME_STL):				$(OBJS_STL)
+$(NAME_STL):				init_stl $(OBJS_STL)
 							@ $(CC) $(FLAGS_COMP_STL) -o $@ $(OBJS_STL)
+							@ printf "$(_SUCCESS) $(NAME_STL) compiled successfully\n"
 
 $(PATH_BUILD_FT)/%.o:		%.cpp
 							@ mkdir -p $(dir $@)

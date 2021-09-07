@@ -6,17 +6,13 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 12:20:03 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 13:32:39 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_ITERATOR_HPP
 # define REVERSE_ITERATOR_HPP
 
-# include <stdlib.h>				// NULL
-
-# include "random_access_iterator.hpp"
-# include "bidirectional_iterator.hpp"
 # include "iterator_traits.hpp"
 
 namespace ft
@@ -28,7 +24,7 @@ namespace ft
 /******************************************************************************/
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
-		typedef Iter iterator_type;
+		typedef Iter	iterator_type;
 		typedef
 			typename iterator_traits<Iter>::iterator_category
 			iterator_category;
@@ -55,11 +51,15 @@ namespace ft
 		reverse_iterator() : _it(iterator_type()) {}
 
 		// Initialization
-		reverse_iterator(iterator_type it) : _it(it) {}
+		explicit
+		reverse_iterator(iterator_type const& it) : _it(it) {}
 
 		// Copy
-		reverse_iterator(reverse_iterator const& rhs)
-			: _it(rhs._it) {}
+		// Templated because of the edge case where we initialize a
+		// const_reverse_iterator with a reverse_iterator as a parameter
+		template<class Iterator>
+		reverse_iterator(reverse_iterator<Iterator> const& rhs)
+			: _it(rhs.base()) {}
 
 /*                                Destructors                                 */
 
@@ -84,32 +84,6 @@ namespace ft
 
 			return *this;
 		}
-
-		// Overload called when trying to copy construct a const_iterator
-		// based on an iterator
-		operator reverse_iterator<
-			typename ft::random_access_iterator<value_type const> >() const
-		{
-			return reverse_iterator<
-				typename ft::random_access_iterator<value_type const> >(_it);
-		}
-
-		//operator reverse_iterator<
-			//typename ft::bidirectional_iterator<value_type const> >() const
-		//{
-			//return reverse_iterator<
-				//typename ft::bidirectional_iterator<value_type const> >(_it);
-		//}
-
-		//template<class It>
-		//operator reverse_iterator<
-			//typename ft::bidirectional_iterator<
-				//value_type const, typename It::value_type const> >() const
-		//{
-			//return reverse_iterator<
-				//typename ft::bidirectional_iterator<
-					//value_type const, typename It::value_type const> >(_it);
-		//}
 
 /*                        Increment / decrement                               */
 

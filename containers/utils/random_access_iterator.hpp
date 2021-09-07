@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 11:36:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 13:32:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define RANDOM_ACCESS_ITERATOR_HPP
 
 # include <iterator>	// std::random_access_iterator_tag
-# include <cstddef>		// std::ptrdiff_t
+# include <cstddef>		// std::ptrdiff_t, NULL
 
 namespace ft
 {
@@ -27,9 +27,10 @@ namespace ft
 /******************************************************************************/
 
 		typedef T								value_type;
-		typedef typename std::ptrdiff_t			difference_type;
 		typedef value_type&						reference;
 		typedef value_type*						pointer;
+
+		typedef typename std::ptrdiff_t			difference_type;
 		typedef std::random_access_iterator_tag	iterator_category;
 
 /******************************************************************************/

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 12:24:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 13:32:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define BIDIRECTIONAL_ITERATOR_HPP
 
 # include <iterator>	// std::bidirectional_iterator_tag
-# include <cstddef>		// std::ptrdiff_t
+# include <cstddef>		// std::ptrdiff_t, NULL
 
 namespace ft
 {
-	template<class Node_type, class Value_type = typename Node_type::value_type const>
+	template<class Node_type>
 	class bidirectional_iterator
 	{
 	public:
@@ -28,15 +28,17 @@ namespace ft
 
 		// To comply with iterator_traits<> standards, value_type represents
 		// the type of the node and data_type represents the data in the node
-		typedef Node_type						node_type;
-		typedef node_type*						node_pointer;
-		typedef Value_type						value_type;
-		typedef value_type&						reference;
-		typedef value_type const&				const_reference;
-		typedef value_type*						pointer;
-		typedef value_type const*				const_pointer;
-		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef Node_type						value_type;
+		typedef value_type*						node_pointer;
+
+		typedef typename Node_type::value_type const	data_type;
+		typedef data_type&						reference;
+		typedef data_type const&				const_reference;
+		typedef data_type*						pointer;
+		typedef data_type const*				const_pointer;
+
 		typedef typename std::ptrdiff_t			difference_type;
+		typedef std::bidirectional_iterator_tag	iterator_category;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */
@@ -45,7 +47,8 @@ namespace ft
 /*                                Constructors                                */
 
 		// Default
-		bidirectional_iterator() : _ptr(NULL), _root(NULL), _nil(NULL) {}
+		bidirectional_iterator() :
+			_ptr(NULL), _root(NULL), _nil(NULL) {}
 
 		// Type specific
 		bidirectional_iterator(node_pointer ptr,
@@ -85,9 +88,9 @@ namespace ft
 
 		// Overload called when trying to copy construct a const_iterator
 		// based on an iterator
-		operator bidirectional_iterator<node_type const, value_type const>() const
+		operator bidirectional_iterator<value_type const>() const
 		{
-			return bidirectional_iterator<node_type const, value_type const>(_ptr, _root, _nil);
+			return bidirectional_iterator<value_type const>(_ptr, _root, _nil);
 		}
 
 /*                            Relational operators                            */

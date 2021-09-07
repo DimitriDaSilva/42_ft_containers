@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 11:02:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 12:03:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 13:30:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ test_set_reverse_iterators_operator_decrement()
 
 	typedef ft::set<int>::iterator iter_type;
 
-	ft::reverse_iterator<iter_type> rev_begin (myset.end());
-	ft::reverse_iterator<iter_type> rev_end (myset.begin());
+	ft::reverse_iterator<iter_type> rev_begin(myset.end());
+	ft::reverse_iterator<iter_type> rev_end(myset.begin());
 
 	ft::reverse_iterator<iter_type> rev_iterator = rev_begin;
 	while (rev_iterator != rev_end)
@@ -152,20 +152,20 @@ test_set_reverse_iterators_100_size_const_set()
 void
 test_set_reverse_iterators_copy()
 {
-	//typedef ft::set<int>::reverse_iterator reverse_iterator;
-	//typedef ft::set<int>::const_reverse_iterator const_reverse_iterator;
+	typedef ft::set<int>::reverse_iterator reverse_iterator;
+	typedef ft::set<int>::const_reverse_iterator const_reverse_iterator;
 
-	//ft::set<int> set;
+	ft::set<int> set;
 
-	//srand(g_seed);
-	//for (int i = 0; i < 10; i++)
-		//set.insert(rand() % 100 - 50);
+	srand(g_seed);
+	for (int i = 0; i < 10; i++)
+		set.insert(rand() % 100 - 50);
 
-	//reverse_iterator it(set.rbegin());
-	//const_reverse_iterator const_it(it);
+	reverse_iterator it(set.rbegin());
+	const_reverse_iterator const_it(it);
 
-	//for (const_reverse_iterator it = const_it; it != set.rend(); it++)
-		//std::cout << *it << " ";
+	for (const_reverse_iterator it = const_it; it != set.rend(); it++)
+		std::cout << *it << " ";
 }
 
 void

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 17:07:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 20:31:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,15 +142,29 @@ void
 test_set_modifiers_erase_range()
 {
 	ft::set<int> set;
+	ft::set<int>::iterator it;
 
 	for (int i = 0; i < 10; i++)
 		set.insert(i);
 
-	print_set_info(set);
+	it = set.find(9);
 
-	set.erase(set.find(4), set.end());
+	std::cout << *it << " at address: " << it._M_node << std::endl;
 
-	print_set_info(set);
+	for (int i = 0; i < 9; i++)
+		set.erase(i);
+	
+	std::cout << *it << " at address: " << it._M_node << std::endl;
+
+	//print_set_info(set);
+
+	//set.print_tree();
+
+	//set.erase(set.find(4), set.end());
+
+	//set.print_tree();
+
+	//print_set_info(set);
 }
 
 void

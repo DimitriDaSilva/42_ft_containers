@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 15:36:17 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/07 19:59:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,20 +113,7 @@ namespace ft
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
 
-/*                                  Modifiers                                 */
-
-		// Erase by key
-		//void
-		//erase(value_type const& key)
-		//{
-			//node_pointer node = find(key);
-
-			//// Don't do nothing if val not found
-			//if (!node)
-				//return;
-
-			//erase_helper(node);
-		//}
+/*                                  Operations                                */
 
 		iterator
 		find(value_type const& val)

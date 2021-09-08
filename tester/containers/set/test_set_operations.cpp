@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 16:28:40 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 18:33:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 22:13:41 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,48 @@ test_set_operations_lower_upper_bound()
 }
 
 void
+test_set_operations_equal_range_match()
+{
+	ft::set<int> set;
+	typedef ft::set<int>::const_iterator const_iterator;
+
+	for (int i = 1; i <= 5; i++)
+		set.insert(i * 10);
+
+	ft::pair<const_iterator, const_iterator> ret;
+	ret = set.equal_range(30);
+
+	std::cout << "the lower bound points to: " << *ret.first << '\n';
+	std::cout << "the upper bound points to: " << *ret.second << '\n';
+}
+
+void
+test_set_operations_equal_range_no_match()
+{
+	ft::set<int> set;
+	typedef ft::set<int>::const_iterator const_iterator;
+
+	for (int i = 1; i <= 5; i++)
+		set.insert(i * 10);
+
+	ft::pair<const_iterator, const_iterator> ret;
+	ret = set.equal_range(25);
+	std::cout << "the lower bound points to: " << *ret.first << '\n';
+	std::cout << "the upper bound points to: " << *ret.second << '\n';
+
+	ret = set.equal_range(-42);
+	std::cout << "the lower bound points to: " << *ret.first << '\n';
+	std::cout << "the upper bound points to: " << *ret.second << '\n';
+}
+
+void
 test_set_operations()
 {
-	test_wrapper(test_set_operations_find, "operations_find");
-	test_wrapper(test_set_operations_count, "operations_count");
-	test_wrapper(test_set_operations_lower_bound, "operations_lower_bound");
-	test_wrapper(test_set_operations_upper_bound, "operations_upper_bound");
-	test_wrapper(test_set_operations_lower_upper_bound, "operations_lower_upper_bound");
+	test_wrapper(test_set_operations_find, "find");
+	test_wrapper(test_set_operations_count, "count");
+	test_wrapper(test_set_operations_lower_bound, "lower_bound");
+	test_wrapper(test_set_operations_upper_bound, "upper_bound");
+	test_wrapper(test_set_operations_lower_upper_bound, "lower_upper_bound");
+	test_wrapper(test_set_operations_equal_range_match, "equal_range_match");
+	test_wrapper(test_set_operations_equal_range_no_match, "equal_range_no_match");
 }

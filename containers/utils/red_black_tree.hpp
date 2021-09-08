@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 19:42:57 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 22:35:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1021,6 +1021,7 @@ namespace ft
 		key_compare		_comp;
 		allocator_type	_alloc;
 	};
+
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 10:00:22 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 13:37:36 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 22:30:00 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,39 @@ test_set_constructors_copy_string()
 }
 
 void
+test_set_constructors_custom_compare_int()
+{
+	ft::set<int, greater<int> > set;
+
+	srand(g_seed);
+
+	for (int i = 0; i < 100; i++)
+		set.insert(rand() % 10000 - 10000 / 2);
+
+	print_set_info(set);
+}
+
+void
+test_set_constructors_custom_compare_string()
+{
+	ft::set<std::string, greater<std::string> > set;
+
+	srand(g_seed);
+
+	for (int i = 0; i < 100; i++)
+		set.insert(SSTR(rand() % 10000 - 10000 / 2));
+
+	print_set_info(set);
+}
+
+
+void
 test_set_constructors()
 {
 	test_wrapper(test_set_constructors_empty, "empty");
 	test_wrapper(test_set_constructors_range, "range");
 	test_wrapper(test_set_constructors_copy_int, "copy int");
 	test_wrapper(test_set_constructors_copy_string, "copy string");
+	test_wrapper(test_set_constructors_custom_compare_int, "custom_compare_int");
+	test_wrapper(test_set_constructors_custom_compare_string, "custom_compare_string");
 }

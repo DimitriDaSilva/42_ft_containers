@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 19:27:44 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 22:40:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include "iterator_traits.hpp"
 # include "pair.hpp"
 # include "less.hpp"
+# include "lexicographical_compare.hpp"
+# include "equal.hpp"
 
 namespace ft
 {
@@ -232,6 +234,30 @@ namespace ft
 			return end;
 		}
 
+		ft::pair<iterator,iterator>
+		equal_range(value_type const& val)
+		{
+			return ft::pair<iterator, iterator>
+				(this->lower_bound(val), this->upper_bound(val));
+		}
+
+		ft::pair<const_iterator, const_iterator>
+		equal_range(value_type const& val) const
+		{
+			return ft::pair<const_iterator, const_iterator>
+				(this->lower_bound(val), this->upper_bound(val));
+		}
+
+/*                                  Allocator                                 */
+
+		allocator_type
+		get_allocator() const
+		{
+			return _value_alloc;
+		}
+
+
+
 	private:
 /******************************************************************************/
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
@@ -258,6 +284,62 @@ namespace ft
 
 		allocator_type	_value_alloc;
 	};
+
+/******************************************************************************/
+/*                        NON-MEMBER FUNCTION OVERLOADS                       */
+/******************************************************************************/
+
+/*                              Relational operators                          */
+
+	template<class T, class Compare, class Alloc>
+	bool
+	operator==(set<T,Compare,Alloc> const& lhs, set<T,Compare,Alloc> const& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+
+		return equal(lhs.begin(), lhs.end(), rhs.begin());
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool
+	operator!=(set<T,Compare,Alloc> const& lhs, set<T,Compare,Alloc> const& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool
+	operator<(set<T,Compare,Alloc> const& lhs, set<T,Compare,Alloc> const& rhs)
+	{
+		return lexicographical_compare(lhs.begin(),
+										lhs.end(),
+										rhs.begin(),
+										rhs.end());
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool
+	operator<=(set<T,Compare,Alloc> const& lhs, set<T,Compare,Alloc> const& rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool
+	operator>(set<T,Compare,Alloc> const& lhs, set<T,Compare,Alloc> const& rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool
+	operator>=(set<T,Compare,Alloc> const& lhs, set<T,Compare,Alloc> const& rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+/*                                  Swap                                      */
 
 	template <class T, class Compare, class Alloc>
 	void

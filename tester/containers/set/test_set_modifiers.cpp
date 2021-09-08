@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 13:54:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 22:43:48 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,22 +267,6 @@ test_set_modifiers_swap()
 }
 
 void
-test_set_modifiers_swap_overload()
-{
-	int myints[] = {12, 75, 10, 32, 20, 25};
-	ft::set<int> first(myints, myints + 3);
-	ft::set<int> second(myints + 3, myints+ 6);
-
-	print_set_info(first);
-	print_set_info(second);
-
-	swap(first, second);
-
-	print_set_info(first);
-	print_set_info(second);
-}
-
-void
 test_set_modifiers_clear_int()
 {
 	ft::set<int> myset;
@@ -339,7 +323,6 @@ test_set_modifiers()
 	test_wrapper(test_set_modifiers_erase_iterators_validity, "erase_iterators_validity");
 	test_wrapper(test_set_modifiers_erase_cplusplus, "erase_cplusplus");
 	test_wrapper(test_set_modifiers_swap, "swap");
-	test_wrapper(test_set_modifiers_swap_overload, "swap_overload");
 	test_wrapper(test_set_modifiers_clear_int, "clear_int");
 	test_wrapper(test_set_modifiers_clear_string, "clear_string");
 }

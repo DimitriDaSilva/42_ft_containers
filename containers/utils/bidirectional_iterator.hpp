@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 19:02:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 19:48:18 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ namespace ft
 		// the name _M_node
 		// So if it works for them, it works for me :)
 		node_pointer	_ptr;
-		node_pointer	_root;
-		node_pointer	_nil;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */
@@ -125,9 +123,7 @@ namespace ft
 		bidirectional_iterator&
 		operator++()
 		{
-			if (_ptr == maximum(_root))
-				_ptr = _nil;
-			else if (_ptr != _nil)
+			if (_ptr != _nil)
 				_ptr = successor(_ptr);
 
 			return *this;
@@ -148,9 +144,7 @@ namespace ft
 		bidirectional_iterator&
 		operator--()
 		{
-			if (_ptr == minimum(_root))
-				_ptr = _nil;
-			else if (_ptr == _nil)
+			if (_ptr == _nil)
 				_ptr = maximum(_root);
 			else
 				_ptr = predecessor(_ptr);
@@ -221,7 +215,7 @@ namespace ft
 			// The predecessor will be the first node that has its
 			// left child that isn't also an ancestor of the base node
 			predecessor = node->parent;
-			while (node != _root && node == predecessor->left)
+			while (node->parent != NULL && node == predecessor->left)
 			{
 				node = predecessor;
 				predecessor = predecessor->parent;
@@ -249,7 +243,7 @@ namespace ft
 			// The successor will be the first node that has its
 			// right child that isn't also an ancestor of the base node
 			successor = node->parent;
-			while (node != _root && node == successor->right)
+			while (node->parent != NULL && node == successor->right)
 			{
 				node = successor;
 				successor = successor->parent;
@@ -262,6 +256,12 @@ namespace ft
 				return successor;
 		}
 
+/******************************************************************************/
+/*                   	       PRIVATE DATA                                   */
+/******************************************************************************/
+
+		node_pointer	_root;
+		node_pointer	_nil;
 	};
 }
 

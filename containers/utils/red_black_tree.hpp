@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 19:03:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 19:42:57 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,12 +343,8 @@ namespace ft
 		void
 		erase(iterator first, iterator last)
 		{
-			print_tree();
 			while (first != last)
-			{
 				erase(first++);
-				print_tree();
-			}
 		}
 
 		void

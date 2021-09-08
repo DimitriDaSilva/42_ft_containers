@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 20:24:01 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 12:06:33 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,10 +311,7 @@ namespace ft
 		erase(iterator first, iterator last)
 		{
 			while (first != last)
-			{
-				erase(*first);
-				print_tree();
-			}
+				erase(first++);
 		}
 
 /*                                Operations                                  */
@@ -760,12 +757,66 @@ namespace ft
 				else
 					tmp = predecessor(node);
 
-				// Only copy data. The color stays the same
-				node->data = tmp->data;
+				// Swap nodes but they switch colors and node gets tmp's data
+				// but tmp keeps it's data
+				swap_nodes(node, tmp);
 
 				// Recursively replace and delete node
-				erase_helper(tmp);
+				erase_helper(node);
 			}
+		}
+
+		// Swap nodes but not strict swap:
+		// - They take each other's colors
+		// - Node a get's b's data but b keeps its data
+		void
+		swap_nodes(node_pointer a, node_pointer b)
+		{
+			node_type		tmp = *b;
+			node_pointer	old_root = _root;
+
+			// Update parentage
+			// a's parent points to b
+			if (_root == a)
+				_root = b;
+			else if (a->parent->left == a)
+				a->parent->left = b;
+			else if (a->parent->right == a)
+				a->parent->right = b;
+			// and b points at a's parent
+			b->parent = a->parent;
+
+			// b's parent (via tmp) points to a
+			// If root changed it means that _root was originally a and
+			// was changed to b
+			if (old_root == _root && _root == b)
+				_root = a;
+			else if (tmp.parent->left == b)
+				tmp.parent->left = a;
+			else if (tmp.parent->right == b)
+				tmp.parent->right = a;
+			// and a points back at b's parent
+			a->parent = tmp.parent;
+
+			// Update children
+			b->left = a->left;
+			if (b->left != &_nil)
+				b->left->parent = b;
+			b->right = a->right;
+			if (b->right != &_nil)
+				b->right->parent = b;
+			a->left = tmp.left;
+			if (a->left != &_nil)
+				a->left->parent = a;
+			a->right = tmp.right;
+			if (a->right != &_nil)
+				a->right->parent = a;
+
+			// Update colors
+			swap_color(a, b);
+
+			// Update data
+			a->data = b->data;
 		}
 
 		void

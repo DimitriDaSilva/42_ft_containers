@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 12:06:33 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 13:30:12 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ namespace ft
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
 
-
 /*                                 Iterators                                  */
 
 		iterator
@@ -220,7 +219,6 @@ namespace ft
 			return const_reverse_iterator(it);
 		}
 
-
 /*                                  Capacity                                  */
 
 		bool
@@ -252,13 +250,12 @@ namespace ft
 			if (it != end())
 				return ft::make_pair(it, false);
 
-			// Allocate new node on the base of _nil
 			// New nodes are necessarily red and leaf nodes so they point
 			// to _nil
 			node_pointer node = _alloc.allocate(1);
 			_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
 
-			it = iterator(insert_helper(node), _root, &_nil);
+			it = iterator(insert_helper(node, _root), _root, &_nil);
 
 			_size++;
 
@@ -270,9 +267,25 @@ namespace ft
 		// and then check if it's the right position would be more inefficient
 		// than just inserting it via the "insert single element" method
 		iterator
-		insert(iterator, value_type const& val)
+		insert(iterator hint, value_type const& val)
 		{
-			return insert(val).first;
+			node_pointer successor = this->successor(hint._ptr);
+			node_pointer node;
+
+			// Check if position is correct
+			if (_comp(*hint, val) && _comp(val, successor->data))
+			{
+				// New nodes are necessarily red and leaf nodes so they point
+				// to _nil
+				node = _alloc.allocate(1);
+				_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
+
+				_size++;
+
+				return iterator(insert_helper(node, hint._ptr), _root, &_nil);
+			}
+			else
+				return insert(val).first;
 		}
 
 		// Range
@@ -314,12 +327,24 @@ namespace ft
 				erase(first++);
 		}
 
+		void
+		clear()
+		{
+			clear_helper(_root);
+			_root = &_nil;
+		}
+
 /*                                Operations                                  */
 
 		virtual iterator find(value_type const& val) = 0;
 		virtual const_iterator find(value_type const& val) const = 0;
 
-/*                                Temporary                                  */
+	protected:
+/******************************************************************************/
+/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
+/******************************************************************************/
+
+/*                              Print helpers                                 */
 
 		void
 		print_tree() const
@@ -400,120 +425,7 @@ namespace ft
 			print_inorder_helper(node->right);
 		}
 
-
-	protected:
-/******************************************************************************/
-/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
-/******************************************************************************/
-
-		void
-		clear()
-		{
-			clear_helper(_root);
-		}
-
-		node_pointer
-		maximum() const
-		{
-			node_pointer node = _root;
-
-			if (empty())
-				return NULL;
-
-			while (node->right != &_nil)
-				node = node->right;
-
-			return node;
-		}
-
-		node_pointer
-		maximum(node_pointer node) const
-		{
-			if (empty())
-				return NULL;
-
-			while (node->right != &_nil)
-				node = node->right;
-
-			return node;
-		}
-
-		node_pointer
-		minimum() const
-		{
-			node_pointer node = _root;
-
-			if (empty())
-				return NULL;
-
-			while (node->left != &_nil)
-				node = node->left;
-
-			return node;
-		}
-
-		node_pointer
-		minimum(node_pointer node) const
-		{
-			if (empty())
-				return NULL;
-
-			while (node->left != &_nil)
-				node = node->left;
-
-			return node;
-		}
-
-		// Get previous node in order
-		node_pointer
-		predecessor(node_pointer node)
-		{
-			node_pointer predecessor;
-
-			// If node has a left child, it's predecessor is the maximum
-			// of its left subtree
-			if (node->left != &_nil)
-				return maximum(node->left);
-
-			// If not, we need to go look for it in it's parent left side
-			// The predecessor will be the first node that has its
-			// left child that isn't also an ancestor of the base node
-			predecessor = node->parent;
-			while (node != _root && node == predecessor->left)
-			{
-				node = predecessor;
-				predecessor = predecessor->parent;
-			}
-
-			// If node is _root then successor is NULL
-			return predecessor;
-		}
-
-		// Get next node in order
-		node_pointer
-		successor(node_pointer node)
-		{
-			node_pointer successor;
-
-			// If node has a right child, it's successor is the minimum
-			// of its right subtree
-			if (node->right != &_nil)
-				return minimum(node->right);
-
-			// If not, we need to go look for it in it's parent right side
-			// The successor will be the first node that has its
-			// right child that isn't also an ancestor of the base node
-			successor = node->parent;
-			while (node != _root && node == successor->right)
-			{
-				node = successor;
-				successor = successor->parent;
-			}
-
-			// If node is _root then successor is NULL
-			return successor;
-		}
-
+/*                             Copying helper                                 */
 
 		void
 		copy_helper(node_pointer& lhs,
@@ -537,22 +449,12 @@ namespace ft
 			copy_helper(lhs->right, rhs->right, lhs, nil_rhs);
 		}
 
-		node_pointer
-		insert_helper(node_pointer node)
-		{
-			// Find right position for the new node
-			node_pointer parent = NULL;
-			node_pointer child = _root;
-			while (child != &_nil)
-			{
-				parent = child;
-				if (_comp(node->data, child->data))
-					child = child->left;
-				else
-					child = child->right;
-			}
+/*                           Insertion helpers                                */
 
-			node->parent = parent;
+		node_pointer
+		insert_helper(node_pointer node, node_pointer hint)
+		{
+			node->parent = find_right_position(node, hint);
 
 			// Set node in the position found. Either left or right
 			// If parent NULL then it means we are at the root of the tree
@@ -563,18 +465,39 @@ namespace ft
 				_root->color = black;
 				return _root;
 			}
-			else if (_comp(node->data, parent->data))
-				parent->left = node;
+			else if (_comp(node->data, node->parent->data))
+				node->parent->left = node;
 			else
-				parent->right = node;
+				node->parent->right = node;
 
 			// If parent is _root then we are at level 1 of the tree
 			// so we can't be unbalancing the tree
 			// Else the new node could have unbalanced the red-black tree
 			// so we need to check after each insert
-			if (parent != _root)
+			if (node->parent != _root)
 				check_insert(node);
 			return node;
+		}
+
+		// Returns the parent where the new node will go
+		// The hint will only be a real hint if
+		// insert(iterator hint, value_type const& val) is called
+		// Else it's _root
+		node_pointer
+		find_right_position(node_pointer node, node_pointer hint)
+		{
+			node_pointer	parent = NULL;
+			node_pointer	child = hint;
+
+			while (child != &_nil)
+			{
+				parent = child;
+				if (_comp(node->data, child->data))
+					child = child->left;
+				else
+					child = child->right;
+			}
+			return parent;
 		}
 
 		void
@@ -720,6 +643,110 @@ namespace ft
 			parent->left = tmp;
 		}
 
+		// Get previous node in order
+		node_pointer
+		predecessor(node_pointer node)
+		{
+			node_pointer predecessor;
+
+			// If node has a left child, it's predecessor is the maximum
+			// of its left subtree
+			if (node->left != &_nil)
+				return maximum(node->left);
+
+			// If not, we need to go look for it in it's parent left side
+			// The predecessor will be the first node that has its
+			// left child that isn't also an ancestor of the base node
+			predecessor = node->parent;
+			while (node != _root && node == predecessor->left)
+			{
+				node = predecessor;
+				predecessor = predecessor->parent;
+			}
+
+			// If node is _root then successor is NULL
+			return predecessor;
+		}
+
+		// Get next node in order
+		node_pointer
+		successor(node_pointer node)
+		{
+			node_pointer successor;
+
+			// If node has a right child, it's successor is the minimum
+			// of its right subtree
+			if (node->right != &_nil)
+				return minimum(node->right);
+
+			// If not, we need to go look for it in it's parent right side
+			// The successor will be the first node that has its
+			// right child that isn't also an ancestor of the base node
+			successor = node->parent;
+			while (node != _root && node == successor->right)
+			{
+				node = successor;
+				successor = successor->parent;
+			}
+
+			// If node is _root then successor is NULL
+			return successor;
+		}
+
+		node_pointer
+		maximum() const
+		{
+			node_pointer node = _root;
+
+			if (empty())
+				return NULL;
+
+			while (node->right != &_nil)
+				node = node->right;
+
+			return node;
+		}
+
+		node_pointer
+		maximum(node_pointer node) const
+		{
+			if (empty())
+				return NULL;
+
+			while (node->right != &_nil)
+				node = node->right;
+
+			return node;
+		}
+
+		node_pointer
+		minimum() const
+		{
+			node_pointer node = _root;
+
+			if (empty())
+				return NULL;
+
+			while (node->left != &_nil)
+				node = node->left;
+
+			return node;
+		}
+
+		node_pointer
+		minimum(node_pointer node) const
+		{
+			if (empty())
+				return NULL;
+
+			while (node->left != &_nil)
+				node = node->left;
+
+			return node;
+		}
+
+/*                           Erasing helpers                                  */
+
 		void
 		erase_helper(node_pointer node)
 		{
@@ -805,6 +832,7 @@ namespace ft
 			b->right = a->right;
 			if (b->right != &_nil)
 				b->right->parent = b;
+
 			a->left = tmp.left;
 			if (a->left != &_nil)
 				a->left->parent = a;
@@ -943,6 +971,7 @@ namespace ft
 			// Clear the node itself
 			_alloc.destroy(node);
 			_alloc.deallocate(node, 1);
+
 			_size--;
 		}
 

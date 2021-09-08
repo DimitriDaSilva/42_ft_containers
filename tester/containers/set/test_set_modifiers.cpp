@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 12:05:10 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 13:54:46 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,12 +251,85 @@ test_set_modifiers_erase_cplusplus()
 }
 
 void
+test_set_modifiers_swap()
+{
+	int myints[] = {12, 75, 10, 32, 20, 25};
+	ft::set<int> first(myints, myints + 3);
+	ft::set<int> second(myints + 3, myints+ 6);
+
+	print_set_info(first);
+	print_set_info(second);
+
+	first.swap(second);
+
+	print_set_info(first);
+	print_set_info(second);
+}
+
+void
+test_set_modifiers_swap_overload()
+{
+	int myints[] = {12, 75, 10, 32, 20, 25};
+	ft::set<int> first(myints, myints + 3);
+	ft::set<int> second(myints + 3, myints+ 6);
+
+	print_set_info(first);
+	print_set_info(second);
+
+	swap(first, second);
+
+	print_set_info(first);
+	print_set_info(second);
+}
+
+void
+test_set_modifiers_clear_int()
+{
+	ft::set<int> myset;
+
+	myset.insert(100);
+	myset.insert(200);
+	myset.insert(300);
+
+	print_set_info(myset);
+
+	myset.clear();
+
+	print_set_info(myset);
+
+	myset.insert(1101);
+	myset.insert(2202);
+
+	print_set_info(myset);
+}
+
+void
+test_set_modifiers_clear_string()
+{
+	ft::set<std::string> myset;
+
+	myset.insert("hello");
+	myset.insert("world");
+	myset.insert("!");
+
+	print_set_info(myset);
+
+	myset.clear();
+
+	print_set_info(myset);
+
+	myset.insert("this is");
+	myset.insert("a test");
+
+	print_set_info(myset);
+}
+
+void
 test_set_modifiers()
 {
 	test_wrapper(test_set_modifiers_insert_single_element_int, "insert_single_element_int");
 	test_wrapper(test_set_modifiers_insert_single_element_string, "insert_single_element_string");
 	test_wrapper(test_set_modifiers_insert_with_hint, "insert_with_hint");
-	test_wrapper(test_set_modifiers_insert_range, "insert_range");
 	test_wrapper(test_set_modifiers_insert_range, "insert_range");
 	test_wrapper(test_set_modifiers_insert_iterators_validity, "insert_iterators_validity");
 	test_wrapper(test_set_modifiers_insert_cplusplus, "insert_cplusplus");
@@ -265,4 +338,8 @@ test_set_modifiers()
 	test_wrapper(test_set_modifiers_erase_range, "erase_range");
 	test_wrapper(test_set_modifiers_erase_iterators_validity, "erase_iterators_validity");
 	test_wrapper(test_set_modifiers_erase_cplusplus, "erase_cplusplus");
+	test_wrapper(test_set_modifiers_swap, "swap");
+	test_wrapper(test_set_modifiers_swap_overload, "swap_overload");
+	test_wrapper(test_set_modifiers_clear_int, "clear_int");
+	test_wrapper(test_set_modifiers_clear_string, "clear_string");
 }

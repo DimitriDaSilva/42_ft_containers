@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 10:00:22 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 10:50:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 13:37:36 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ test_set_constructors_copy_int()
 
 	{
 		ft::set<int> cpy1 = set;
-		ft::set<int> cpy2(set);
+		ft::set<int> cpy2(cpy1);
 
 		print_set_info(set);
 		print_set_info(cpy1);

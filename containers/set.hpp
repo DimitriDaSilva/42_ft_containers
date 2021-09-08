@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 19:59:15 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 13:53:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,35 @@ namespace ft
 		set&
 		operator=(set const& rhs)
 		{
-			this->tree_type::operator=(rhs);
+			// Self-assignement check
+			if (this == &rhs)
+				return *this;
+
+			// Clear current
+			if (this->_root != NULL)
+				this->clear();
+			this->copy_helper(this->_root, rhs._root, NULL, rhs._nil);
+
+			this->_size = rhs._size;
+			this->_max_size = rhs._max_size;
+
+			return *this;
 		}
 
 /******************************************************************************/
 /*                   	    OTHER MEMBER FUNCTIONS                            */
 /******************************************************************************/
+
+/*                                  Modifiers                                 */
+
+		void
+		swap(set& rhs)
+		{
+			set tmp(rhs);
+
+			rhs = *this;
+			*this = tmp;
+		}
 
 /*                                  Operations                                */
 
@@ -160,6 +183,13 @@ namespace ft
 
 		allocator_type	_value_alloc;
 	};
+
+	template <class T, class Compare, class Alloc>
+	void
+	swap(ft::set<T, Compare, Alloc>& lhs, ft::set<T, Compare, Alloc>& rhs)
+	{
+		lhs.swap(rhs);
+	}
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 20:16:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 19:02:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ namespace ft
 		// so the underlying pointer to the node is freely accessible with
 		// the name _M_node
 		// So if it works for them, it works for me :)
-		node_pointer _ptr;
-		node_pointer _root;
-		node_pointer _nil;
+		node_pointer	_ptr;
+		node_pointer	_root;
+		node_pointer	_nil;
 
 /******************************************************************************/
 /*                   	 CONSTRUCTORS & DESTRUCTORS                           */

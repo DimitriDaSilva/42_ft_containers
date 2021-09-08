@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 13:53:55 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 19:03:24 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,12 +136,21 @@ namespace ft
 			*this = tmp;
 		}
 
+/*                                Observers                                   */
+
+		value_compare
+		value_comp() const
+		{
+			return value_compare();
+		}
+
 /*                                  Operations                                */
 
 		iterator
 		find(value_type const& val)
 		{
 			node_pointer position = find_helper(val, this->_root);
+
 			if (!position)
 				return this->end();
 			else
@@ -152,16 +161,82 @@ namespace ft
 		find(value_type const& val) const
 		{
 			node_pointer position = find_helper(val, this->_root);
+
 			if (!position)
 				return this->end();
 			else
 				return const_iterator(position, this->_root, &(this->_nil));
 		}
 
+		iterator
+		lower_bound(value_type const& val)
+		{
+			iterator begin = this->begin();
+			iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(val, *begin) || val == *begin)
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		const_iterator
+		lower_bound(value_type const& val) const
+		{
+			const_iterator begin = this->begin();
+			const_iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(val, *begin) || val == *begin)
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		iterator
+		upper_bound(value_type const& val)
+		{
+			iterator begin = this->begin();
+			iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(val, *begin))
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		const_iterator
+		upper_bound(value_type const& val) const
+		{
+			const_iterator begin = this->begin();
+			const_iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(val, *begin))
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
 	private:
 /******************************************************************************/
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
+
 		node_pointer
 		find_helper(value_type const& val, node_pointer const& node) const
 		{

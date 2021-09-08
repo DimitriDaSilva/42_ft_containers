@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 13:30:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/08 19:03:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,23 @@ namespace ft
 		typedef T											value_type;
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
+
+		// Returns a comparison object that can be used to compare two elements
+		class value_compare : ft::binary_function<value_type, value_type, bool>
+		{
+		friend class map;
+
+		public:
+			bool
+			operator() (value_type const& x, value_type const& y) const
+			{
+				return comp(x.first, y.first);
+			}
+
+		protected:
+			Compare comp;
+			value_compare(Compare c) : comp(c) {}
+		};
 
 		typedef red_black_tree_node<value_type>				node_type;
 		typedef red_black_tree_node<value_type>*			node_pointer;
@@ -301,6 +318,9 @@ namespace ft
 		void
 		erase(iterator position)
 		{
+			if (position == end())
+				return;
+
 			erase_helper(position._ptr);
 			_size--;
 		}
@@ -323,8 +343,12 @@ namespace ft
 		void
 		erase(iterator first, iterator last)
 		{
+			print_tree();
 			while (first != last)
+			{
 				erase(first++);
+				print_tree();
+			}
 		}
 
 		void
@@ -334,10 +358,25 @@ namespace ft
 			_root = &_nil;
 		}
 
+/*                                Observers                                   */
+
+		key_compare
+		key_comp() const
+		{
+			return key_compare();
+		}
+
 /*                                Operations                                  */
 
 		virtual iterator find(value_type const& val) = 0;
 		virtual const_iterator find(value_type const& val) const = 0;
+
+
+		size_type
+		count(value_type const& val) const
+		{
+			return (find(val) != end());
+		}
 
 	protected:
 /******************************************************************************/

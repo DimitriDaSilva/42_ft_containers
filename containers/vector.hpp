@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 22:35:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 15:16:26 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ namespace ft
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
-		typedef T value_type;
-		typedef A allocator_type;
-		typedef typename A::reference reference;
-		typedef typename A::const_reference const_reference;
-		typedef typename A::pointer pointer;
-		typedef typename A::const_pointer const_pointer;
-		typedef typename A::difference_type difference_type;
-		typedef typename A::size_type size_type;
+		typedef T												value_type;
+		typedef A 												allocator_type;
+		typedef typename A::reference							reference;
+		typedef typename A::const_reference						const_reference;
+		typedef typename A::pointer								pointer;
+		typedef typename A::const_pointer						const_pointer;
+		typedef typename A::difference_type						difference_type;
+		typedef typename A::size_type							size_type;
 
-		typedef ft::random_access_iterator<value_type> iterator;
-		typedef ft::random_access_iterator<value_type const> const_iterator;
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::random_access_iterator<value_type>			iterator;
+		typedef ft::random_access_iterator<value_type const>	const_iterator;
+		typedef ft::reverse_iterator<iterator> 					reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> 			const_reverse_iterator;
 
 /******************************************************************************/
 /*                   	        MEMBER FUNCTIONS                              */
@@ -339,6 +339,12 @@ namespace ft
 		back() const
 		{
 			return *(_start + _size - 1);
+		}
+
+		pointer
+		data()
+		{
+			return _start;
 		}
 
 /*                                  Modifiers                                 */

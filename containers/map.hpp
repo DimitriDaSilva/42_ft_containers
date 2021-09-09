@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 13:34:43 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 15:02:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,6 @@ namespace ft
 		mapped_type&
 		operator[] (key_type const& k)
 		{
-			//return (*((this->insert(ft::make_pair(k, mapped_type()))).first)).second;
 			node_pointer position = this->find_helper(k, this->_root);
 
 			// Match
@@ -171,13 +170,27 @@ namespace ft
 		mapped_type&
 		at(key_type const& k)
 		{
-			(void)k;
+			node_pointer position = this->find_helper(k, this->_root);
+
+			// Match
+			if (position)
+				return position->data.second;
+			// No match
+			else
+				throw std::out_of_range("at:: out of range index");
 		}
 
 		mapped_type const&
 		at(key_type const& k) const
 		{
-			(void)k;
+			node_pointer position = this->find_helper(k, this->_root);
+
+			// Match
+			if (position)
+				return position->data.second;
+			// No match
+			else
+				throw std::out_of_range("at:: out of range index");
 		}
 
 /*                                  Modifiers                                 */

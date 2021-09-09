@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 23:10:01 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/28 09:59:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 15:15:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,23 @@ test_vector_element_access_front_back_mix()
 }
 
 void
+test_vector_element_access_data()
+{
+	std::vector<int> myvector(5);
+
+	print_vec_info(myvector);
+
+	int* p = myvector.data();
+
+	*p = 10;
+	++p;
+	*p = 20;
+	p[2] = 100;
+
+	print_vec_info(myvector);
+}
+
+void
 test_vector_element_access()
 {
 	test_wrapper(test_vector_element_access_brackets, "brackets");
@@ -125,4 +142,5 @@ test_vector_element_access()
 	test_wrapper(test_vector_element_access_front, "front");
 	test_wrapper(test_vector_element_access_back, "back");
 	test_wrapper(test_vector_element_access_front_back_mix, "front back mix");
+	test_wrapper(test_vector_element_access_data, "data");
 }

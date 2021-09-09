@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:09:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/28 09:56:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 15:20:11 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ test_subject()
 	ft::stack<int> stack_int;
 	ft::vector<Buffer> vector_buffer;
 	ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
-	//ft::map<int, int> map_int;
+	ft::map<int, int> map_int;
 
 	for (int i = 0; i < COUNT; i++)
 	{
@@ -33,7 +33,7 @@ test_subject()
 
 	for (int i = 0; i < COUNT; i++)
 	{
-		const int idx = rand() % COUNT;
+		int const idx = rand() % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
 	ft::vector<Buffer>().swap(vector_buffer);
@@ -42,32 +42,33 @@ test_subject()
 	{
 		for (int i = 0; i < COUNT; i++)
 		{
-			const int idx = rand() % COUNT;
+			int const idx = rand() % COUNT;
 			vector_buffer.at(idx);
 			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
 		}
 	}
-	catch(const std::exception& e)
+	catch (std::exception const& e)
 	{
 		//NORMAL ! :P
 	}
 
-	//for (int i = 0; i < COUNT; ++i)
-	//{
-		//map_int.insert(ft::make_pair(rand(), rand()));
-	//}
+	for (int i = 0; i < COUNT; ++i)
+	{
+		map_int.insert(ft::make_pair(rand(), rand()));
+	}
 
-	//int sum = 0;
-	//for (int i = 0; i < 10000; i++)
-	//{
-		//int access = rand();
-		//sum += map_int[access];
-	//}
-	//std::cout << "should be constant with the same g_seed: " << sum << std::endl;
+	int sum = 0;
+	for (int i = 0; i < 10000; i++)
+	{
+		int access = rand();
+		sum += map_int[access];
+	}
+	std::cout << "should be constant with the same g_seed: " << sum << std::endl;
 
-	//{
-		//ft::map<int, int> copy = map_int;
-	//}
+	{
+		ft::map<int, int> copy = map_int;
+	}
+
 	MutantStack<char> iterable_stack;
 	for (char letter = 'a'; letter <= 'z'; letter++)
 		iterable_stack.push(letter);

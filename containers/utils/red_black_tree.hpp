@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 22:35:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 12:49:50 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,6 @@ namespace ft
 		typedef T											value_type;
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
-
-		// Returns a comparison object that can be used to compare two elements
-		class value_compare : ft::binary_function<value_type, value_type, bool>
-		{
-		friend class map;
-
-		public:
-			bool
-			operator() (value_type const& x, value_type const& y) const
-			{
-				return comp(x.first, y.first);
-			}
-
-		protected:
-			Compare comp;
-			value_compare(Compare c) : comp(c) {}
-		};
 
 		typedef red_black_tree_node<value_type>				node_type;
 		typedef red_black_tree_node<value_type>*			node_pointer;
@@ -259,54 +242,17 @@ namespace ft
 /*                                  Modifiers                                 */
 
 		// Single element
+		virtual
 		ft::pair<iterator, bool>
-		insert(value_type const& val)
-		{
-			// Ignore duplicates keys
-			iterator it = find(val);
-			if (it != end())
-				return ft::make_pair(it, false);
+		insert(value_type const& val) = 0;
 
-			// New nodes are necessarily red and leaf nodes so they point
-			// to _nil
-			node_pointer node = _alloc.allocate(1);
-			_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
-
-			it = iterator(insert_helper(node, _root), _root, &_nil);
-
-			_size++;
-
-			return ft::make_pair(it, true);
-		}
-
-		// With hint not implemented as described in cplusplus.com
-		// The address of a node is not accessible. So finding its address
-		// and then check if it's the right position would be more inefficient
-		// than just inserting it via the "insert single element" method
+		// With hint
+		virtual
 		iterator
-		insert(iterator hint, value_type const& val)
-		{
-			node_pointer successor = this->successor(hint._ptr);
-			node_pointer node;
-
-			// Check if position is correct
-			if (_comp(*hint, val) && _comp(val, successor->data))
-			{
-				// New nodes are necessarily red and leaf nodes so they point
-				// to _nil
-				node = _alloc.allocate(1);
-				_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
-
-				_size++;
-
-				return iterator(insert_helper(node, hint._ptr), _root, &_nil);
-			}
-			else
-				return insert(val).first;
-		}
+		insert(iterator hint, value_type const& val) = 0;
 
 		// Range
-		template <class InputIterator>
+		template<class InputIterator>
 		void
 		insert(InputIterator first, InputIterator last)
 		{
@@ -325,11 +271,11 @@ namespace ft
 			_size--;
 		}
 
-		// With value
+		// With key
 		size_type
-		erase(value_type const& val)
+		erase(key_type const& key)
 		{
-			iterator it = find(val);
+			iterator it = find(key);
 
 			// Val not found in tree so nothing erased
 			if (it == end())
@@ -364,14 +310,35 @@ namespace ft
 
 /*                                Operations                                  */
 
-		virtual iterator find(value_type const& val) = 0;
-		virtual const_iterator find(value_type const& val) const = 0;
+		//virtual iterator find(value_type const& val) = 0;
+		//virtual const_iterator find(value_type const& val) const = 0;
 
+		iterator
+		find(key_type const& key)
+		{
+			node_pointer position = find_helper(key, this->_root);
+
+			if (!position)
+				return this->end();
+			else
+				return iterator(position, this->_root, &(this->_nil));
+		}
+
+		const_iterator
+		find(key_type const& key) const
+		{
+			node_pointer position = find_helper(key, this->_root);
+
+			if (!position)
+				return this->end();
+			else
+				return const_iterator(position, this->_root, &(this->_nil));
+		}
 
 		size_type
-		count(value_type const& val) const
+		count(key_type const& key) const
 		{
-			return (find(val) != end());
+			return (find(key) != end());
 		}
 
 	protected:
@@ -379,6 +346,10 @@ namespace ft
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
 
+/*                            Finding helpers                                 */
+
+		virtual node_pointer
+		find_helper(key_type const& key, node_pointer const& node) const = 0;
 /*                              Print helpers                                 */
 
 		void
@@ -486,54 +457,13 @@ namespace ft
 
 /*                           Insertion helpers                                */
 
+		virtual
 		node_pointer
-		insert_helper(node_pointer node, node_pointer hint)
-		{
-			node->parent = find_right_position(node, hint);
+		insert_helper(node_pointer node, node_pointer hint) = 0;
 
-			// Set node in the position found. Either left or right
-			// If parent NULL then it means we are at the root of the tree
-			// so we can retrun
-			if (node->parent == NULL)
-			{
-				_root = node;
-				_root->color = black;
-				return _root;
-			}
-			else if (_comp(node->data, node->parent->data))
-				node->parent->left = node;
-			else
-				node->parent->right = node;
-
-			// If parent is _root then we are at level 1 of the tree
-			// so we can't be unbalancing the tree
-			// Else the new node could have unbalanced the red-black tree
-			// so we need to check after each insert
-			if (node->parent != _root)
-				check_insert(node);
-			return node;
-		}
-
-		// Returns the parent where the new node will go
-		// The hint will only be a real hint if
-		// insert(iterator hint, value_type const& val) is called
-		// Else it's _root
+		virtual
 		node_pointer
-		find_right_position(node_pointer node, node_pointer hint)
-		{
-			node_pointer	parent = NULL;
-			node_pointer	child = hint;
-
-			while (child != &_nil)
-			{
-				parent = child;
-				if (_comp(node->data, child->data))
-					child = child->left;
-				else
-					child = child->right;
-			}
-			return parent;
-		}
+		find_right_position(node_pointer node, node_pointer hint) = 0;
 
 		void
 		check_insert(node_pointer& node)

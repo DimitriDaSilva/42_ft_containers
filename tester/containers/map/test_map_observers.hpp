@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_containers.hpp                                :+:      :+:    :+:   */
+/*   test_map_observers.hpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/20 11:13:02 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 11:45:05 by dda-silv         ###   ########.fr       */
+/*   Created: 2021/09/08 16:23:50 by dda-silv          #+#    #+#             */
+/*   Updated: 2021/09/09 08:11:22 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_CONTAINERS_HPP
-# define TEST_CONTAINERS_HPP
+#ifndef TEST_MAP_OBSERVERS_HPP
+# define TEST_MAP_OBSERVERS_HPP
 
-# include "test_subject.hpp"
-# include "test_vector.hpp"
-# include "test_stack.hpp"
-# include "test_map.hpp"
-# include "test_set.hpp"
+# include "containers.hpp"
 # include "test_wrappers.hpp"
+# include "print_containers_info.hpp"
 
-void test_containers();
+void test_map_observers();
 
 #endif

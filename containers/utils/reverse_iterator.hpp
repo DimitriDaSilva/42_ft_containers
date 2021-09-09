@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 13:32:39 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 12:50:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ namespace ft
 		{
 			Iter tmp(_it);
 
-			return *--tmp;
+			return *(--tmp);
 		}
 
 		pointer

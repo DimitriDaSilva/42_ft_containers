@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 19:48:18 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 12:50:21 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace ft
 		typedef Node_type								value_type;
 		typedef value_type*								node_pointer;
 
-		typedef typename Node_type::value_type const	data_type;
+		typedef typename Node_type::value_type			data_type;
 		typedef data_type&								reference;
 		typedef data_type const&						const_reference;
 		typedef data_type*								pointer;

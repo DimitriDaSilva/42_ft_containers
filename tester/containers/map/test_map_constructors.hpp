@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 10:00:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 11:48:07 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:37:32 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@
 # include "containers.hpp"
 # include "test_wrappers.hpp"
 # include "print_containers_info.hpp"
-
-bool fncomp(char lhs, char rhs) {return lhs<rhs;}
-
-struct classcomp
-{
-	bool
-	operator()(char const& lhs, char const& rhs) const {return lhs < rhs;}
-};
 
 void test_map_constructors();
 

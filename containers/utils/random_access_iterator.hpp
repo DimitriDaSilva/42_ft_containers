@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 13:32:49 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:11:14 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ namespace ft
 		typedef T								value_type;
 		typedef value_type&						reference;
 		typedef value_type*						pointer;
+		typedef value_type const&				const_reference;
+		typedef value_type const*				const_pointer;
 
 		typedef typename std::ptrdiff_t			difference_type;
 		typedef std::random_access_iterator_tag	iterator_category;

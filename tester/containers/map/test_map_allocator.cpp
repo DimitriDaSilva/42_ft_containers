@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 16:29:38 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 09:29:15 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:42:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ test_map_allocator_cplusplus()
 void
 test_map_allocator_custom_allocator()
 {
-	ft::map<int, char, ft::less<int>, custom_allocator<int> > map;
+	ft::map<int, char, ft::less<int>, custom_allocator<ft::pair<int const, char> > > map;
 
 	map.insert(ft::make_pair(-42, 'z'));
 	map.insert(ft::make_pair(0, 'd'));
@@ -45,7 +45,7 @@ test_map_allocator_custom_allocator()
 void
 test_map_allocator_strings_custom_allocator()
 {
-	ft::map<std::string, std::string, ft::less<std::string>, custom_allocator<std::string> > map;
+	ft::map<std::string, std::string, ft::less<std::string>, custom_allocator<ft::pair<std::string const, std::string> > > map;
 
 	map.insert(ft::make_pair("hello", "h"));
 	map.insert(ft::make_pair("world", "w"));

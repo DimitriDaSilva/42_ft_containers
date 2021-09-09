@@ -6,11 +6,19 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 10:00:22 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 09:48:07 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:38:38 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test_map_constructors.hpp"
+
+bool fncomp(char lhs, char rhs) {return lhs<rhs;}
+
+struct classcomp
+{
+	bool
+	operator()(char const& lhs, char const& rhs) const {return lhs < rhs;}
+};
 
 void
 test_map_constructors_empty()
@@ -93,7 +101,7 @@ test_map_constructors_custom_compare_string()
 	srand(g_seed);
 
 	for (char i = 'a'; i <= 'z'; i++)
-		map.insert(ft::make_pair(rand() % 10000 - 10000 / 2, i));
+		map.insert(ft::make_pair(SSTR(rand() % 10000 - 10000 / 2), i));
 
 	print_map_info(map);
 }

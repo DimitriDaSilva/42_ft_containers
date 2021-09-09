@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 12:31:12 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:34:43 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,14 +150,22 @@ namespace ft
 		operator[] (key_type const& k)
 		{
 			//return (*((this->insert(ft::make_pair(k, mapped_type()))).first)).second;
-			iterator it = this->find(k);
+			node_pointer position = this->find_helper(k, this->_root);
 
 			// Match
-			if (it != this->end())
-				return it->second;
+			if (position)
+				return position->data.second;
 			// No match
 			else
-				return this->insert(ft::make_pair(k, mapped_type())).second;
+			{
+				ft::pair<iterator, bool> pr;
+
+				pr = this->insert(ft::make_pair(k, mapped_type()));
+
+				iterator it = pr.first;
+
+				return it._ptr->data.second;
+			}
 		}
 
 		mapped_type&
@@ -242,7 +250,7 @@ namespace ft
 		value_compare
 		value_comp() const
 		{
-			return value_compare();
+			return value_compare(key_compare());
 		}
 
 /*                                  Operations                                */

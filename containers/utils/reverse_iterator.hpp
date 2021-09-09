@@ -6,12 +6,14 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 14:34:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 12:50:21 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:11:01 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_ITERATOR_HPP
 # define REVERSE_ITERATOR_HPP
+
+# include <stdlib.h>				// NULL
 
 # include "iterator_traits.hpp"
 
@@ -164,7 +166,7 @@ namespace ft
 		{
 			Iter tmp(_it);
 
-			return *(--tmp);
+			return *--tmp;
 		}
 
 		pointer

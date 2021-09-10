@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 12:49:50 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:03:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ namespace ft
 			_root(NULL),
 			_nil(value_type(), NULL, NULL, NULL, black),
 			_size(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(node_type)),
+			_max_size(std::numeric_limits<size_type>::max() / sizeof(node_type)),
 			_comp(comp),
 			_alloc(alloc)
 		{
@@ -112,7 +112,7 @@ namespace ft
 			_root(NULL),
 			_nil(rhs._nil),
 			_size(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(node_type)),
+			_max_size(std::numeric_limits<size_type>::max() / sizeof(node_type)),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
 		{

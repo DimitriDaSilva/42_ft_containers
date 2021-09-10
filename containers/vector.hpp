@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 15:16:26 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:03:04 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ namespace ft
 			_allocator(alloc),
 			_size(0),
 			_capacity(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(value_type))
+			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
 		{}
 
 		// Fill
@@ -77,7 +77,7 @@ namespace ft
 			_allocator(alloc),
 			_size(0),
 			_capacity(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(value_type))
+			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
 		{
 			reserve(n);
 
@@ -98,7 +98,7 @@ namespace ft
 			_allocator(alloc),
 			_size(0),
 			_capacity(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(value_type))
+			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
 		{
 			reserve(ft::distance(first, last));
 
@@ -115,7 +115,7 @@ namespace ft
 			_allocator(rhs._allocator),
 			_size(0),
 			_capacity(0),
-			_max_size(std::numeric_limits<long>::max() / sizeof(value_type))
+			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
 		{
 			*this = rhs;
 		}

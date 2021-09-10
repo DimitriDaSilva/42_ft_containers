@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 11:46:27 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 11:56:20 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -536,7 +536,7 @@ namespace ft
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
-				new_capacity = new_size;
+				new_capacity = get_new_capacity(new_size);
 
 				// Reallocate new
 				new_vec = _allocator.allocate(new_capacity);

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 13:58:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:12:47 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define SET_HPP
 
 # include <memory>		// std::allocator
-# include <cstddef>		// std::size_t
 
 # include "red_black_tree.hpp"
 # include "iterator_traits.hpp"

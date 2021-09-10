@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 13:58:42 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:14:30 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <memory>		// std::allocator
 # include <stdexcept>	// std::out_of_range
-# include <cstddef>		// std::size_t
 
 # include "red_black_tree.hpp"
 # include "iterator_traits.hpp"

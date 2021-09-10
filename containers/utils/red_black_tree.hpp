@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 14:02:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:14:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define RED_BLACK_TREE_HPP
 
 # include <cstddef>		// NULL, std::size_t, std::ptrdiff_t
-# include <limits>		// std::numeric_limits
 # include <memory>		// std::allocator
 # include <iostream>	// std::cout
 
@@ -504,87 +503,6 @@ namespace ft
 				return find_helper(key, node->right);
 		}
 
-/*                              Print helpers                                 */
-
-		void
-		print_tree() const
-		{
-			if (_root == &_nil)
-				return;
-
-			std::cout
-				<< (_root->color == red ? "\033[1;31m" : "")
-				<< _root->data
-				<< "\033[0m"
-				<< std::endl;
-			print_tree_helper(_root, "");
-			std::cout << std::endl;
-		}
-
-		void
-		print_tree_helper(node_pointer node, std::string prefix) const
-		{
-			// Base of recursion
-			if (node == &_nil)
-				return;
-
-			bool has_left = (node->left != &_nil);
-			bool has_right = (node->right != &_nil);
-
-			if (!has_left && !has_right)
-				return;
-
-			std::cout << prefix;
-			std::cout << ((has_left && has_right) ? "├── " : "");
-			std::cout << ((!has_left && has_right) ? "└── " : "");
-
-			if (has_right)
-			{
-				bool print_strand = (has_left && has_right
-						&& (node->right->right != NULL || node->right->left != NULL));
-				std::string new_prefix = prefix + (print_strand ? "│   " : "    ");
-				std::cout
-					<< (node->right->color == red ? "\033[0;31m" : "")
-					<< node->right->data
-					<< "\033[0m"
-					<< std::endl;
-				print_tree_helper(node->right, new_prefix);
-			}
-
-			if (has_left)
-			{
-				std::cout << (has_right ? prefix : "") << "└── "
-					<< (node->left->color == red ? "\033[0;31m" : "")
-					<< node->left->data
-					<< "\033[0m"
-					<< std::endl;
-				print_tree_helper(node->left, prefix + "    ");
-			}
-		}
-
-		void
-		print_inorder() const
-		{
-			print_inorder_helper(_root);
-			std::cout << std::endl;
-		}
-
-		void
-		print_inorder_helper(node_pointer const& node) const
-		{
-			// Base case of recursion
-			if (node == &_nil)
-				return;
-
-			print_inorder_helper(node->left);
-			std::cout
-				<< node->data << " "
-				<< "[" << (node->color == black ?
-						"B" :
-						"\033[0;31mR\033[0m") << "] ";
-			print_inorder_helper(node->right);
-		}
-
 /*                             Copying helper                                 */
 
 		void
@@ -1005,9 +923,6 @@ namespace ft
 
 			// Update colors
 			swap_color(a, b);
-
-			// Update data
-			a->data = b->data;
 		}
 
 		void

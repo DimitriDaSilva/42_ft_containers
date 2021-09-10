@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 10:00:22 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 13:38:38 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 09:52:31 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ test_map_constructors_copy_string()
 	srand(g_seed);
 
 	for (char i = 'a'; i <= 'z'; i++)
-		map.insert(ft::make_pair(i, SSTR(rand() % 10000 - 10000 / 2)));
+		map.insert(ft::make_pair(i, ft_itoa(rand() % 10000 - 10000 / 2)));
 
 	{
 		ft::map<char, std::string> cpy1(map);
@@ -101,7 +101,7 @@ test_map_constructors_custom_compare_string()
 	srand(g_seed);
 
 	for (char i = 'a'; i <= 'z'; i++)
-		map.insert(ft::make_pair(SSTR(rand() % 10000 - 10000 / 2), i));
+		map.insert(ft::make_pair(ft_itoa(rand() % 10000 - 10000 / 2), i));
 
 	print_map_info(map);
 }

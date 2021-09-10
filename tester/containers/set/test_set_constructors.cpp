@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 10:00:22 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 22:30:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 09:52:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ test_set_constructors_copy_string()
 	srand(g_seed);
 
 	for (int i = 0; i < 100; i++)
-		set.insert(SSTR(rand() % 10000 - 10000 / 2));
+		set.insert(ft_itoa(rand() % 10000 - 10000 / 2));
 
 	{
 		ft::set<std::string> cpy1 = set;
@@ -99,7 +99,7 @@ test_set_constructors_custom_compare_string()
 	srand(g_seed);
 
 	for (int i = 0; i < 100; i++)
-		set.insert(SSTR(rand() % 10000 - 10000 / 2));
+		set.insert(ft_itoa(rand() % 10000 - 10000 / 2));
 
 	print_set_info(set);
 }

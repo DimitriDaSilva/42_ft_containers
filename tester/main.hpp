@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:04:34 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 10:44:40 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 09:53:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,16 @@
 # include "test_others.hpp"
 # include "test_wrappers.hpp"
 
-# define SSTR( x ) static_cast< std::ostringstream & >( \
-        ( std::ostringstream() << std::dec << x ) ).str()
+template<typename T>
+std::string
+ft_itoa(T n)
+{
+        std::ostringstream ss;
+
+        ss << n;
+
+        return ss.str();
+}
 
 extern int g_seed;
 

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:09:43 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 15:20:11 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 09:43:13 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ test_subject()
 	ft::vector<int> vector_int;
 	ft::stack<int> stack_int;
 	ft::vector<Buffer> vector_buffer;
-	ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
+	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
 	ft::map<int, int> map_int;
 
 	for (int i = 0; i < COUNT; i++)

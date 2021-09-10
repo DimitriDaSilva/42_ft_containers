@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 13:47:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:02:53 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ namespace ft
 			_comp(comp),
 			_alloc(alloc)
 		{
-			this->insert(first, last);
+			insert(first, last);
 		}
 
 		// Copy
@@ -259,19 +259,19 @@ namespace ft
 		insert(value_type const& val)
 		{
 			// Ignore duplicates keys
-			iterator it = this->find(get_key_from_val(val));
+			iterator it = find(get_key_from_val(val));
 
-			if (it != this->end())
+			if (it != end())
 				return ft::make_pair(it, false);
 
 			// New nodes are necessarily red and leaf nodes so they point
 			// to _nil
-			node_pointer node = this->_alloc.allocate(1);
-			this->_alloc.construct(node, node_type(val, NULL, &this->_nil, &this->_nil, red));
+			node_pointer node = _alloc.allocate(1);
+			_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
 
-			it = iterator(insert_helper(node, this->_root), this->_root, &this->_nil);
+			it = iterator(insert_helper(node, _root), _root, &_nil);
 
-			this->_size++;
+			_size++;
 
 			return ft::make_pair(it, true);
 		}
@@ -280,21 +280,21 @@ namespace ft
 		iterator
 		insert(iterator hint, value_type const& val)
 		{
-			node_pointer successor = this->successor(hint._ptr);
+			node_pointer successor = get_successor(hint._ptr);
 			node_pointer node;
 
 			// Check if position is correct
-			if (this->_comp(get_key_from_iterator(hint), get_key_from_val(val))
-					&& this->_comp(get_key_from_val(val), get_key_from_val(successor->data)))
+			if (_comp(get_key_from_iterator(hint), get_key_from_val(val))
+					&& _comp(get_key_from_val(val), get_key_from_val(successor->data)))
 			{
 				// New nodes are necessarily red and leaf nodes so they point
 				// to _nil
-				node = this->_alloc.allocate(1);
-				this->_alloc.construct(node, node_type(val, NULL, &this->_nil, &this->_nil, red));
+				node = _alloc.allocate(1);
+				_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
 
-				this->_size++;
+				_size++;
 
-				return iterator(insert_helper(node, hint._ptr), this->_root, &this->_nil);
+				return iterator(insert_helper(node, hint._ptr), _root, &_nil);
 			}
 			else
 				return insert(val).first;
@@ -362,23 +362,23 @@ namespace ft
 		iterator
 		find(key_type const& key)
 		{
-			node_pointer position = find_helper(key, this->_root);
+			node_pointer position = find_helper(key, _root);
 
 			if (!position)
-				return this->end();
+				return end();
 			else
-				return iterator(position, this->_root, &(this->_nil));
+				return iterator(position, _root, &(_nil));
 		}
 
 		const_iterator
 		find(key_type const& key) const
 		{
-			node_pointer position = find_helper(key, this->_root);
+			node_pointer position = find_helper(key, _root);
 
 			if (!position)
-				return this->end();
+				return end();
 			else
-				return const_iterator(position, this->_root, &(this->_nil));
+				return const_iterator(position, _root, &(_nil));
 		}
 
 		size_type
@@ -395,7 +395,7 @@ namespace ft
 
 			while (begin != end)
 			{
-				if (this->_comp(k, get_key_from_iterator(begin))
+				if (_comp(k, get_key_from_iterator(begin))
 						|| k == get_key_from_iterator(begin))
 					return begin;
 				begin++;
@@ -407,12 +407,12 @@ namespace ft
 		const_iterator
 		lower_bound(key_type const& k) const
 		{
-			const_iterator begin = this->begin();
-			const_iterator end = this->end();
+			const_iterator begin = begin();
+			const_iterator end = end();
 
 			while (begin != end)
 			{
-				if (this->_comp(k, get_key_from_const_iterator(begin))
+				if (_comp(k, get_key_from_const_iterator(begin))
 						|| k == get_key_from_const_iterator(begin))
 					return begin;
 				begin++;
@@ -429,7 +429,7 @@ namespace ft
 
 			while (begin != end)
 			{
-				if (this->_comp(k, get_key_from_iterator(begin)))
+				if (_comp(k, get_key_from_iterator(begin)))
 					return begin;
 				begin++;
 			}
@@ -440,12 +440,12 @@ namespace ft
 		const_iterator
 		upper_bound(key_type const& k) const
 		{
-			const_iterator begin = this->begin();
-			const_iterator end = this->end();
+			const_iterator begin = begin();
+			const_iterator end = end();
 
 			while (begin != end)
 			{
-				if (this->_comp(k, get_key_from_const_iterator(begin)))
+				if (_comp(k, get_key_from_const_iterator(begin)))
 					return begin;
 				begin++;
 			}
@@ -457,16 +457,15 @@ namespace ft
 		equal_range(key_type const& k)
 		{
 			return ft::pair<iterator, iterator>
-				(this->lower_bound(k), this->upper_bound(k));
+				(lower_bound(k), upper_bound(k));
 		}
 
 		ft::pair<const_iterator, const_iterator>
 		equal_range(key_type const& k) const
 		{
 			return ft::pair<const_iterator, const_iterator>
-				(this->lower_bound(k), this->upper_bound(k));
+				(lower_bound(k), upper_bound(k));
 		}
-
 
 	protected:
 /******************************************************************************/
@@ -490,8 +489,21 @@ namespace ft
 
 /*                            Finding helpers                                 */
 
-		virtual node_pointer
-		find_helper(key_type const& key, node_pointer const& node) const = 0;
+		node_pointer
+		find_helper(key_type const& key, node_pointer const& node) const
+		{
+			// Base case of recursion
+			if (node == &(_nil))
+				return NULL;
+			else if (get_key_from_val(node->data) == key)
+				return node;
+
+			if (_comp(key, get_key_from_val(node->data)))
+				return find_helper(key, node->left);
+			else
+				return find_helper(key, node->right);
+		}
+
 /*                              Print helpers                                 */
 
 		void
@@ -599,11 +611,57 @@ namespace ft
 
 /*                           Insertion helpers                                */
 
-		virtual node_pointer
-		insert_helper(node_pointer node, node_pointer hint) = 0;
+		node_pointer
+		insert_helper(node_pointer node, node_pointer hint)
+		{
+			node->parent = find_right_position(node, hint);
 
-		virtual node_pointer
-		find_right_position(node_pointer node, node_pointer hint) = 0;
+			// Set node in the position found. Either left or right
+			// If parent NULL then it means we are at the root of the tree
+			// so we can retrun
+			if (node->parent == NULL)
+			{
+				_root = node;
+				_root->color = black;
+
+				return _root;
+			}
+			else if (_comp(get_key_from_val(node->data), get_key_from_val(node->parent->data)))
+				node->parent->left = node;
+			else
+				node->parent->right = node;
+
+			// If parent is _root then we are at level 1 of the tree
+			// so we can't be unbalancing the tree
+			// Else the new node could have unbalanced the red-black tree
+			// so we need to check after each insert
+			if (node->parent != _root)
+				check_insert(node);
+
+			return node;
+		}
+
+		// Returns the parent where the new node will go
+		// The hint will only be a real hint if
+		// insert(iterator hint, value_type const& val) is called
+		// Else it's _root
+		node_pointer
+		find_right_position(node_pointer node, node_pointer hint)
+		{
+			node_pointer	parent = NULL;
+			node_pointer	child = hint;
+
+			while (child != &_nil)
+			{
+				parent = child;
+				if (_comp(get_key_from_val(node->data), get_key_from_val(child->data)))
+					child = child->left;
+				else
+					child = child->right;
+			}
+
+			return parent;
+		}
 
 		void
 		check_insert(node_pointer& node)
@@ -750,7 +808,7 @@ namespace ft
 
 		// Get previous node in order
 		node_pointer
-		predecessor(node_pointer node)
+		get_predecessor(node_pointer node)
 		{
 			node_pointer predecessor;
 
@@ -775,7 +833,7 @@ namespace ft
 
 		// Get next node in order
 		node_pointer
-		successor(node_pointer node)
+		get_successor(node_pointer node)
 		{
 			node_pointer successor;
 
@@ -885,9 +943,9 @@ namespace ft
 			{
 				// Find predecessor or successor
 				if (node->right != &_nil)
-					tmp = successor(node);
+					tmp = get_successor(node);
 				else
-					tmp = predecessor(node);
+					tmp = get_predecessor(node);
 
 				// Swap nodes but they switch colors and node gets tmp's data
 				// but tmp keeps it's data

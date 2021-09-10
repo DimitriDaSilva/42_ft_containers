@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/09/10 12:24:07 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/09/10 13:51:40 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,9 +107,9 @@ test:						debug
 								/usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;		\
 							else																										\
 								printf "$(_INFO) Time efficiency:\n";																	\
-								printf "- stl_containers";														\
+								printf "stl_containers";														\
 								time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log;												\
-								printf "- ft_containers";															\
+								printf "ft_containers";															\
 								time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;												\
 							fi;
 							@ diff -I '::' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 13:47:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 13:58:42 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ namespace ft
 		// Allows to have one insert for red_black_tree that works for
 		// both set and map
 		key_type
-		get_key_from_val(value_type const& val) const 
+		get_key_from_val(value_type const& val) const
 		{
 			return val.first;
 		}
@@ -244,78 +244,6 @@ namespace ft
 		get_key_from_const_iterator(const_iterator it) const
 		{
 			return it->first;
-		}
-
-
-/*                            Finding helpers                                 */
-
-		node_pointer
-		find_helper(key_type const& key, node_pointer const& node) const
-		{
-			// Base case of recursion
-			if (node == &(this->_nil))
-				return NULL;
-			else if (node->data.first == key)
-				return node;
-
-			if (this->_comp(key, node->data.first))
-				return find_helper(key, node->left);
-			else
-				return find_helper(key, node->right);
-		}
-
-/*                           Insertion helpers                                */
-
-		node_pointer
-		insert_helper(node_pointer node, node_pointer hint)
-		{
-			node->parent = find_right_position(node, hint);
-
-			// Set node in the position found. Either left or right
-			// If parent NULL then it means we are at the root of the tree
-			// so we can retrun
-			if (node->parent == NULL)
-			{
-				this->_root = node;
-				this->_root->color = black;
-
-				return this->_root;
-			}
-			else if (this->_comp(node->data.first, node->parent->data.first))
-				node->parent->left = node;
-			else
-				node->parent->right = node;
-
-			// If parent is _root then we are at level 1 of the tree
-			// so we can't be unbalancing the tree
-			// Else the new node could have unbalanced the red-black tree
-			// so we need to check after each insert
-			if (node->parent != this->_root)
-				this->check_insert(node);
-
-			return node;
-		}
-
-		// Returns the parent where the new node will go
-		// The hint will only be a real hint if
-		// insert(iterator hint, value_type const& val) is called
-		// Else it's _root
-		node_pointer
-		find_right_position(node_pointer node, node_pointer hint)
-		{
-			node_pointer	parent = NULL;
-			node_pointer	child = hint;
-
-			while (child != &this->_nil)
-			{
-				parent = child;
-				if (this->_comp(node->data.first, child->data.first))
-					child = child->left;
-				else
-					child = child->right;
-			}
-
-			return parent;
 		}
 
 /******************************************************************************/

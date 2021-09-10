@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 10:03:04 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 11:46:27 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ namespace ft
 			_start(NULL),
 			_allocator(alloc),
 			_size(0),
-			_capacity(0),
-			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
+			_capacity(0)
 		{}
 
 		// Fill
@@ -76,8 +75,7 @@ namespace ft
 			_start(NULL),
 			_allocator(alloc),
 			_size(0),
-			_capacity(0),
-			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
+			_capacity(0)
 		{
 			reserve(n);
 
@@ -97,8 +95,7 @@ namespace ft
 			_start(NULL),
 			_allocator(alloc),
 			_size(0),
-			_capacity(0),
-			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
+			_capacity(0)
 		{
 			reserve(ft::distance(first, last));
 
@@ -114,8 +111,7 @@ namespace ft
 			_start(NULL),
 			_allocator(rhs._allocator),
 			_size(0),
-			_capacity(0),
-			_max_size(std::numeric_limits<size_type>::max() / sizeof(value_type))
+			_capacity(0)
 		{
 			*this = rhs;
 		}
@@ -127,7 +123,9 @@ namespace ft
 		~vector()
 		{
 			clear();
-			_allocator.deallocate(_start, _capacity);
+			if (_capacity != 0)
+				_allocator.deallocate(_start, _capacity);
+			_capacity = 0;
 		}
 
 /******************************************************************************/
@@ -142,6 +140,11 @@ namespace ft
 			// Self-assignement check
 			if (this == &rhs)
 				return *this;
+
+			this->~vector();
+
+			// Make sure there is enough or just enough space for the new data
+			reserve(rhs._size);
 
 			// Deep copy of the rhs sequence
 			assign(rhs.begin(), rhs.end());
@@ -224,7 +227,7 @@ namespace ft
 		size_type
 		max_size() const
 		{
-			return _max_size;
+			return _allocator.max_size();
 		}
 
 		void
@@ -243,7 +246,7 @@ namespace ft
 			else if (n > _size)
 			{
 				if (n > _capacity)
-					reserve(n);
+					reserve(get_new_capacity(n));
 				for (size_type i = _size; i < n; i++)
 					_allocator.construct(&_start[i], val);
 				_size = n;
@@ -267,7 +270,7 @@ namespace ft
 		reserve(size_type n)
 		{
 			// We need to throw we try to allocate more than max_size
-			if (n > _max_size)
+			if (n > _allocator.max_size())
 				throw std::length_error("reserve:: cannot increase capacity beyond max_size");
 			else if (n > _capacity)
 			{
@@ -360,16 +363,22 @@ namespace ft
 			// Destroy existing elements
 			clear();
 
+			// Make sure there is enough or just enough space for the new data
+			reserve(ft::distance(first, last));
+
 			// Setting new elements
 			insert(begin(), first, last);
 		}
 
 		// Fill
 		void
-		assign(size_type n, const value_type& val)
+		assign(size_type n, value_type const& val)
 		{
 			// Destroy existing elements
 			clear();
+
+			// Make sure there is enough or just enough space for the new data
+			reserve(n);
 
 			// Setting new elements
 			insert(begin(), n, val);
@@ -379,7 +388,7 @@ namespace ft
 		push_back(value_type const& val)
 		{
 			if (empty())
-				reserve(2);
+				reserve(1);
 			else if (_size == _capacity)
 				reserve(_capacity * 2);
 
@@ -401,13 +410,15 @@ namespace ft
 			iterator	ret_position = NULL;
 			value_type*	new_vec;
 			size_type	new_size = _size + 1;
-			size_type	new_capacity = _capacity == 0 ? 2 : _capacity * 2;
+			size_type	new_capacity;
 			iterator 	it_old;
 			iterator 	it_new;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
+				new_capacity = get_new_capacity(new_size);
+
 				// Reallocate new. If empty, size 2, otherwise * 2
 				new_vec = _allocator.allocate(new_capacity);
 
@@ -451,7 +462,7 @@ namespace ft
 		{
 			value_type*	new_vec;
 			size_type	new_size = _size + n;
-			size_type	new_capacity = _capacity == 0 ? 2 : _capacity;
+			size_type	new_capacity;
 			iterator 	it_old;
 			iterator 	it_new;
 			int 		i;
@@ -459,9 +470,7 @@ namespace ft
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
-				// Get new capacity
-				while (new_size > new_capacity)
-					new_capacity *= 2;
+				new_capacity = get_new_capacity(new_size);
 
 				// Reallocate new
 				new_vec = _allocator.allocate(new_capacity);
@@ -520,16 +529,14 @@ namespace ft
 			value_type*		new_vec;
 			difference_type	distance = ft::distance(first, last);
 			size_type		new_size = _size + distance;
-			size_type		new_capacity = _capacity == 0 ? 2 : _capacity;
+			size_type		new_capacity;
 			iterator 		it_old;
 			iterator 		it_new;
 
 			// New element requires reallocation because vector is full
 			if (new_size > _capacity)
 			{
-				// Get new capacity
-				while (new_size > new_capacity)
-					new_capacity *= 2;
+				new_capacity = new_size;
 
 				// Reallocate new
 				new_vec = _allocator.allocate(new_capacity);
@@ -647,6 +654,28 @@ namespace ft
 
 	private:
 /******************************************************************************/
+/*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
+/******************************************************************************/
+
+		// Get a new_capacity that is large enough to contain the new_size
+		size_type
+		get_new_capacity(size_type& projected_size)
+		{
+			size_type new_capacity;
+
+			// If the vector is empty, the new capcity is the size itself
+			if (_capacity == 0)
+				return projected_size;
+
+			new_capacity = _capacity;
+
+			while (projected_size > new_capacity)
+				new_capacity *= 2;
+
+			return new_capacity;
+		}
+
+/******************************************************************************/
 /*                   	        PRIVATE DATA                                  */
 /******************************************************************************/
 
@@ -654,7 +683,6 @@ namespace ft
 		allocator_type	_allocator;
 		size_type		_size;
 		size_type		_capacity;
-		size_type		_max_size;
 	};
 
 /******************************************************************************/

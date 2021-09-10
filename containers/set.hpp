@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 12:18:46 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:23:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ namespace ft
 			this->copy_helper(this->_root, rhs._root, NULL, rhs._nil);
 
 			this->_size = rhs._size;
-			this->_max_size = rhs._max_size;
 
 			return *this;
 		}

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 10:03:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:23:17 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ namespace ft
 			_root(NULL),
 			_nil(value_type(), NULL, NULL, NULL, black),
 			_size(0),
-			_max_size(std::numeric_limits<size_type>::max() / sizeof(node_type)),
 			_comp(comp),
 			_alloc(alloc)
 		{
@@ -112,7 +111,6 @@ namespace ft
 			_root(NULL),
 			_nil(rhs._nil),
 			_size(0),
-			_max_size(std::numeric_limits<size_type>::max() / sizeof(node_type)),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
 		{
@@ -146,7 +144,6 @@ namespace ft
 			copy_helper(_root, rhs._root, NULL, rhs._nil);
 
 			_size = rhs._size;
-			_max_size = rhs._max_size;
 
 			return *this;
 		}
@@ -236,7 +233,7 @@ namespace ft
 		size_type
 		max_size() const
 		{
-			return _max_size;
+			return _alloc.max_size();
 		}
 
 /*                                  Modifiers                                 */
@@ -947,7 +944,6 @@ namespace ft
 		node_pointer	_root;
 		node_type		_nil;
 		size_type		_size;
-		size_type		_max_size;
 		key_compare		_comp;
 		allocator_type	_alloc;
 	};

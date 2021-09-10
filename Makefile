@@ -6,7 +6,7 @@
 #    By: dda-silv <dda-silv@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/11 09:33:15 by dda-silv          #+#    #+#              #
-#    Updated: 2021/09/09 15:11:55 by dda-silv         ###   ########.fr        #
+#    Updated: 2021/09/10 11:47:51 by dda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,14 +101,18 @@ test:						debug
 							@ printf "$(_INFO) Starting test\n"
 							@ mkdir -p $(PATH_LOGS)
 							@ if [ $(UNAME) == "Linux" ]; then																			\
+								printf "$(_INFO) Executing stl_containers...\n";																				\
 								/usr/bin/time -o $(PATH_LOGS)/$(NAME_STL).time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log;	\
+								printf "$(_INFO) Executing ft_containers...\n";																				\
 								/usr/bin/time -o $(PATH_LOGS)/$(NAME_FT).time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;		\
 							else																										\
 								printf "$(_INFO) Time efficiency:\n";																	\
-								./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log;													\
-								./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;														\
+								printf "Executing stl_containers...\n";																				\
+								time ./$(NAME_STL) $(SEED) > $(PATH_LOGS)/$(NAME_STL).log;												\
+								printf "Executing ft_containers...\n";																				\
+								time ./$(NAME_FT) $(SEED) > $(PATH_LOGS)/$(NAME_FT).log;												\
 							fi;
-							@ diff -I '::' -I '^Capacity' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
+							@ diff -I '::' $(PATH_LOGS)/$(NAME_FT).log $(PATH_LOGS)/$(NAME_STL).log > $(PATH_LOGS)/diff.log; [ $$? -ge 0 ]
 							@ if [ -s $(PATH_LOGS)/diff.log ]; then						\
 								printf "$(_FAILURE) Failed test. Check the logs:\n";	\
 								cat $(PATH_LOGS)/diff.log;								\

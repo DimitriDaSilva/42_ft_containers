@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/08 22:43:48 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:43:25 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ test_set_modifiers_insert_single_element_int()
 	ret = set.insert(-42);
 	std::cout << "Return: " << *ret.first << " " << ret.second << std::endl;
 
-	print_set_info(set);
-}
+	print_set_info(set); }
 
 void
 test_set_modifiers_insert_single_element_string()

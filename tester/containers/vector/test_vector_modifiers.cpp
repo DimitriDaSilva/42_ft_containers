@@ -6,9 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/28 11:06:12 by dda-silv         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/*   Updated: 2021/09/10 10:59:23 by dda-silv         ###   ########.fr       */
 
 #include "test_vector_modifiers.hpp"
 

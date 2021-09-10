@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/27 15:36:45 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/08/28 09:51:00 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:26:52 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define STACK_HPP
 
 # include <cstddef>		// std::size_t
-# include <deque>
 
 # include "vector.hpp"
-# include <vector>
 
 namespace ft
 {
@@ -40,8 +38,7 @@ namespace ft
 /*                                Constructor                                 */
 
 		explicit
-		stack(container_type const& ctnr = container_type()) :
-			c(ctnr) {}
+		stack(container_type const& ctnr = container_type()) : c(ctnr) {}
 
 		bool
 		empty() const

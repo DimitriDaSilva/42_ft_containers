@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 12:18:41 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 13:47:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ namespace ft
 
 /*                                Constructors                                */
 
+		// Empty (default)
 		explicit
 		red_black_tree(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type()) :
@@ -104,6 +105,21 @@ namespace ft
 			// All leaf nodes will point to &_nil and _nil is a black node
 			// Set root pointing to _nil for an empty tree
 			_root = &_nil;
+		}
+
+		// Range
+		template<class InputIterator>
+		red_black_tree(InputIterator first,
+				InputIterator last,
+				key_compare const& comp = key_compare(),
+				allocator_type const& alloc = allocator_type()) :
+			_root(NULL),
+			_nil(value_type(), NULL, NULL, NULL, black),
+			_size(0),
+			_comp(comp),
+			_alloc(alloc)
+		{
+			this->insert(first, last);
 		}
 
 		// Copy
@@ -239,14 +255,50 @@ namespace ft
 /*                                  Modifiers                                 */
 
 		// Single element
-		virtual
 		ft::pair<iterator, bool>
-		insert(value_type const& val) = 0;
+		insert(value_type const& val)
+		{
+			// Ignore duplicates keys
+			iterator it = this->find(get_key_from_val(val));
+
+			if (it != this->end())
+				return ft::make_pair(it, false);
+
+			// New nodes are necessarily red and leaf nodes so they point
+			// to _nil
+			node_pointer node = this->_alloc.allocate(1);
+			this->_alloc.construct(node, node_type(val, NULL, &this->_nil, &this->_nil, red));
+
+			it = iterator(insert_helper(node, this->_root), this->_root, &this->_nil);
+
+			this->_size++;
+
+			return ft::make_pair(it, true);
+		}
 
 		// With hint
-		virtual
 		iterator
-		insert(iterator hint, value_type const& val) = 0;
+		insert(iterator hint, value_type const& val)
+		{
+			node_pointer successor = this->successor(hint._ptr);
+			node_pointer node;
+
+			// Check if position is correct
+			if (this->_comp(get_key_from_iterator(hint), get_key_from_val(val))
+					&& this->_comp(get_key_from_val(val), get_key_from_val(successor->data)))
+			{
+				// New nodes are necessarily red and leaf nodes so they point
+				// to _nil
+				node = this->_alloc.allocate(1);
+				this->_alloc.construct(node, node_type(val, NULL, &this->_nil, &this->_nil, red));
+
+				this->_size++;
+
+				return iterator(insert_helper(node, hint._ptr), this->_root, &this->_nil);
+			}
+			else
+				return insert(val).first;
+		}
 
 		// Range
 		template<class InputIterator>
@@ -307,9 +359,6 @@ namespace ft
 
 /*                                Operations                                  */
 
-		//virtual iterator find(value_type const& val) = 0;
-		//virtual const_iterator find(value_type const& val) const = 0;
-
 		iterator
 		find(key_type const& key)
 		{
@@ -338,10 +387,106 @@ namespace ft
 			return (find(key) != end());
 		}
 
+		iterator
+		lower_bound(key_type const& k)
+		{
+			iterator begin = this->begin();
+			iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(k, get_key_from_iterator(begin))
+						|| k == get_key_from_iterator(begin))
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		const_iterator
+		lower_bound(key_type const& k) const
+		{
+			const_iterator begin = this->begin();
+			const_iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(k, get_key_from_const_iterator(begin))
+						|| k == get_key_from_const_iterator(begin))
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		iterator
+		upper_bound(key_type const& k)
+		{
+			iterator begin = this->begin();
+			iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(k, get_key_from_iterator(begin)))
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		const_iterator
+		upper_bound(key_type const& k) const
+		{
+			const_iterator begin = this->begin();
+			const_iterator end = this->end();
+
+			while (begin != end)
+			{
+				if (this->_comp(k, get_key_from_const_iterator(begin)))
+					return begin;
+				begin++;
+			}
+
+			return end;
+		}
+
+		ft::pair<iterator,iterator>
+		equal_range(key_type const& k)
+		{
+			return ft::pair<iterator, iterator>
+				(this->lower_bound(k), this->upper_bound(k));
+		}
+
+		ft::pair<const_iterator, const_iterator>
+		equal_range(key_type const& k) const
+		{
+			return ft::pair<const_iterator, const_iterator>
+				(this->lower_bound(k), this->upper_bound(k));
+		}
+
+
 	protected:
 /******************************************************************************/
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
+
+/*                            Compare helpers                                 */
+
+		// Allows to have one insert for red_black_tree that works for
+		// both set and map
+		// This function is defined in each set (return val) and
+		// map (return val.first)
+		virtual	key_type
+		get_key_from_val(value_type const& val) const = 0;
+
+		virtual	key_type
+		get_key_from_iterator(iterator it) const = 0;
+
+		virtual	key_type
+		get_key_from_const_iterator(const_iterator it) const = 0;
 
 /*                            Finding helpers                                 */
 
@@ -454,12 +599,10 @@ namespace ft
 
 /*                           Insertion helpers                                */
 
-		virtual
-		node_pointer
+		virtual node_pointer
 		insert_helper(node_pointer node, node_pointer hint) = 0;
 
-		virtual
-		node_pointer
+		virtual node_pointer
 		find_right_position(node_pointer node, node_pointer hint) = 0;
 
 		void

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 12:18:53 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 13:47:16 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,60 +194,6 @@ namespace ft
 
 /*                                  Modifiers                                 */
 
-		// Single element
-		ft::pair<iterator, bool>
-		insert(value_type const& val)
-		{
-			// Ignore duplicates keys
-			iterator it = this->find(val.first);
-
-			if (it != this->end())
-				return ft::make_pair(it, false);
-
-			// New nodes are necessarily red and leaf nodes so they point
-			// to _nil
-			node_pointer node = this->_alloc.allocate(1);
-			this->_alloc.construct(node, node_type(val, NULL, &this->_nil, &this->_nil, red));
-
-			it = iterator(insert_helper(node, this->_root), this->_root, &this->_nil);
-
-			this->_size++;
-
-			return ft::make_pair(it, true);
-		}
-
-		// With hint
-		iterator
-		insert(iterator hint, value_type const& val)
-		{
-			node_pointer successor = this->successor(hint._ptr);
-			node_pointer node;
-
-			// Check if position is correct
-			if (this->_comp(hint->first, val.first) && this->_comp(val.first, successor->data.first))
-			{
-				// New nodes are necessarily red and leaf nodes so they point
-				// to _nil
-				node = this->_alloc.allocate(1);
-				this->_alloc.construct(node, node_type(val, NULL, &this->_nil, &this->_nil, red));
-
-				this->_size++;
-
-				return iterator(insert_helper(node, hint._ptr), this->_root, &this->_nil);
-			}
-			else
-				return insert(val).first;
-		}
-
-		// Range
-		template<class InputIterator>
-		void
-		insert(InputIterator first, InputIterator last)
-		{
-			while (first != last)
-				insert(*first++);
-		}
-
 		void
 		swap(map& rhs)
 		{
@@ -265,86 +211,6 @@ namespace ft
 			return value_compare(key_compare());
 		}
 
-/*                                  Operations                                */
-
-		iterator
-		lower_bound(key_type const& k)
-		{
-			iterator begin = this->begin();
-			iterator end = this->end();
-
-			while (begin != end)
-			{
-				if (this->_comp(k, begin->first) || k == begin->first)
-					return begin;
-				begin++;
-			}
-
-			return end;
-		}
-
-		const_iterator
-		lower_bound(key_type const& k) const
-		{
-			const_iterator begin = this->begin();
-			const_iterator end = this->end();
-
-			while (begin != end)
-			{
-				if (this->_comp(k, begin->first) || k == begin->first)
-					return begin;
-				begin++;
-			}
-
-			return end;
-		}
-
-		iterator
-		upper_bound(key_type const& k)
-		{
-			iterator begin = this->begin();
-			iterator end = this->end();
-
-			while (begin != end)
-			{
-				if (this->_comp(k, begin->first))
-					return begin;
-				begin++;
-			}
-
-			return end;
-		}
-
-		const_iterator
-		upper_bound(key_type const& k) const
-		{
-			const_iterator begin = this->begin();
-			const_iterator end = this->end();
-
-			while (begin != end)
-			{
-				if (this->_comp(k, begin->first))
-					return begin;
-				begin++;
-			}
-
-			return end;
-		}
-
-		ft::pair<iterator,iterator>
-		equal_range(key_type const& k)
-		{
-			return ft::pair<iterator, iterator>
-				(this->lower_bound(k), this->upper_bound(k));
-		}
-
-		ft::pair<const_iterator, const_iterator>
-		equal_range(key_type const& k) const
-		{
-			return ft::pair<const_iterator, const_iterator>
-				(this->lower_bound(k), this->upper_bound(k));
-		}
-
 /*                                  Allocator                                 */
 
 		allocator_type
@@ -357,6 +223,29 @@ namespace ft
 /******************************************************************************/
 /*                   	 HELPERS FOR PUBLIC FUNCTIONS                         */
 /******************************************************************************/
+
+/*                            Compare helpers                                 */
+
+		// Allows to have one insert for red_black_tree that works for
+		// both set and map
+		key_type
+		get_key_from_val(value_type const& val) const 
+		{
+			return val.first;
+		}
+
+		key_type
+		get_key_from_iterator(iterator it) const
+		{
+			return it->first;
+		}
+
+		key_type
+		get_key_from_const_iterator(const_iterator it) const
+		{
+			return it->first;
+		}
+
 
 /*                            Finding helpers                                 */
 

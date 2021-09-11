@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:33:35 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 10:59:23 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:19:08 by dda-silv         ###   ########.fr       */
 
 #include "test_vector_modifiers.hpp"
 
@@ -917,6 +917,33 @@ test_vector_modifiers_swap_strings()
 }
 
 void
+test_vector_modifiers_swap_iterator_validity()
+{
+	ft::vector<int> v1(5, 42), v2(100, -42);
+
+	ft::vector<int>::iterator it_v1, it_v2;
+
+	print_vec_info(v1);
+	print_vec_info(v2);
+
+	it_v1 = v1.begin();
+	it_v2 = v2.begin();
+
+	std::cout << *it_v1 << std::endl;
+	std::cout << *it_v2 << std::endl;
+
+	v1.swap(v2);
+
+	print_vec_info(v1);
+	print_vec_info(v2);
+
+	std::cout << *it_v1 << std::endl;
+	std::cout << *it_v2 << std::endl;
+
+}
+
+
+void
 test_vector_modifiers_clear_ints()
 {
 	ft::vector<int> vec(100, 42);
@@ -996,6 +1023,7 @@ test_vector_modifiers()
 	test_wrapper(test_vector_modifiers_erase_cplusplus, "erase cplusplus");
 	test_wrapper(test_vector_modifiers_swap_ints, "swap ints");
 	test_wrapper(test_vector_modifiers_swap_strings, "swap strings");
+	test_wrapper(test_vector_modifiers_swap_iterator_validity, "swap iterator validity");
 	test_wrapper(test_vector_modifiers_clear_ints, "clear ints");
 	test_wrapper(test_vector_modifiers_clear_strings, "clear strings");
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:32:33 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/07 10:59:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:15:07 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ test_vector_iterators_constructors_base()
 	iter_type cpy(from);
 
 	if (from == cpy)
-	{
 		std::cout << "valid" << std::endl;
-	}
 }
 
 void
@@ -111,7 +109,8 @@ test_vector_iterators_operator_increment()
 	iter_type until(myvector.end());
 
 	std::cout << "myvector:";
-	while (from != until) {
+	while (from != until)
+	{
 		std::cout << ' ' << *from;
 		++from;
 	}
@@ -184,14 +183,10 @@ test_vector_iterators_empty_vectors()
 	ft::vector<int> const const_vec;
 
 	if (vec.begin() == vec.end())
-	{
 		std::cout << "correct" << std::endl;
-	}
 
 	if (const_vec.begin() == const_vec.end())
-	{
 		std::cout << "correct" << std::endl;
-	}
 }
 
 void
@@ -204,13 +199,10 @@ test_vector_iterators_100_size_vector()
 	srand(g_seed);
 
 	for (int i = 0; i < 10; i++)
-	{
 		vec.push_back(rand() % 100 - 50);
-	}
+
 	for (iterator it = vec.begin(); it != vec.end(); it++)
-	{
 		std::cout << *it << " ";
-	}
 }
 
 void
@@ -221,9 +213,7 @@ test_vector_iterators_100_size_const_vector()
 	ft::vector<int> const const_vec(100, 42);
 
 	for (const_iterator it = const_vec.begin(); it != const_vec.end(); it++)
-	{
 		std::cout << *it << " ";
-	}
 }
 
 void
@@ -240,9 +230,28 @@ test_vector_iterators_copy()
 	const_iterator const_it(it);
 
 	for (const_iterator it = const_it; it != vec.end(); it++)
-	{
 		std::cout << *it << " ";
-	}
+}
+
+void
+test_vector_iterators_compare_const()
+{
+	typedef ft::vector<int>::iterator iterator;
+	typedef ft::vector<int>::const_iterator const_iterator;
+
+	ft::vector<int> vec(6, 42);
+
+	iterator it(vec.begin());
+	*it = 3;
+	*(it + 1) = 4;
+	const_iterator const_it(it);
+
+	std::cout << (it == const_it) << std::endl;
+	std::cout << (it != const_it) << std::endl;
+	std::cout << (it < const_it) << std::endl;
+	std::cout << (it > const_it) << std::endl;
+	std::cout << (it <= const_it) << std::endl;
+	std::cout << (it >= const_it) << std::endl;
 }
 
 void
@@ -261,4 +270,5 @@ test_vector_iterators()
 	test_wrapper(test_vector_iterators_100_size_vector, "100 size vector");
 	test_wrapper(test_vector_iterators_100_size_const_vector, "100 size const vector");
 	test_wrapper(test_vector_iterators_copy, "copy");
+	test_wrapper(test_vector_iterators_compare_const, "compare");
 }

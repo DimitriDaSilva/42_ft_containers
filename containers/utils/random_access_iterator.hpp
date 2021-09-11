@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 13:11:14 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:10:15 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,21 @@ namespace ft
 			return _ptr == rhs._ptr;
 		}
 
+		template<typename T_lhs, typename T_rhs>
+		friend bool
+		operator==(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs);
+
 		bool
 		operator!=(random_access_iterator const& rhs) const
 		{
 			return _ptr != rhs._ptr;
 		}
+
+		template<typename T_lhs, typename T_rhs>
+		friend bool
+		operator!=(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs);
 
 		bool
 		operator<(random_access_iterator const& rhs) const
@@ -101,11 +111,21 @@ namespace ft
 			return _ptr < rhs._ptr;
 		}
 
+		template<typename T_lhs, typename T_rhs>
+		friend bool
+		operator<(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs);
+
 		bool
 		operator>(random_access_iterator const& rhs) const
 		{
 			return _ptr > rhs._ptr;
 		}
+
+		template<typename T_lhs, typename T_rhs>
+		friend bool
+		operator>(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs);
 
 		bool
 		operator<=(random_access_iterator const& rhs) const
@@ -113,11 +133,21 @@ namespace ft
 			return _ptr <= rhs._ptr;
 		}
 
+		template<typename T_lhs, typename T_rhs>
+		friend bool
+		operator<=(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs);
+
 		bool
 		operator>=(random_access_iterator const& rhs) const
 		{
 			return _ptr >= rhs._ptr;
 		}
+
+		template<typename T_lhs, typename T_rhs>
+		friend bool
+		operator>=(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs);
 
 /*                        Increment / decrement                               */
 
@@ -234,6 +264,56 @@ namespace ft
 /******************************************************************************/
 /*                        NON-MEMBER FUNCTION OVERLOADS                       */
 /******************************************************************************/
+
+/*                            Relational operators                            */
+
+		template<typename T_lhs, typename T_rhs>
+		bool
+		operator==(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs)
+		{
+			return (lhs._ptr == rhs._ptr);
+		}
+
+		template<typename T_lhs, typename T_rhs>
+		bool
+		operator!=(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs)
+		{
+			return (lhs._ptr != rhs._ptr);
+		}
+
+		template<typename T_lhs, typename T_rhs>
+		bool
+		operator<(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs)
+		{
+			return (lhs._ptr < rhs._ptr);
+		}
+
+		template<typename T_lhs, typename T_rhs>
+		bool
+		operator>(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs)
+		{
+			return (lhs._ptr > rhs._ptr);
+		}
+
+		template<typename T_lhs, typename T_rhs>
+		bool
+		operator<=(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs)
+		{
+			return (lhs._ptr <= rhs._ptr);
+		}
+
+		template<typename T_lhs, typename T_rhs>
+		bool
+		operator>=(ft::random_access_iterator<T_lhs> const& lhs,
+				ft::random_access_iterator<T_rhs> const& rhs)
+		{
+			return (lhs._ptr >= rhs._ptr);
+		}
 
 /*                                Arithmetic                                  */
 

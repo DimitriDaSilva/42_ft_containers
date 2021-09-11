@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 11:14:19 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 14:14:19 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:23:44 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,17 @@ namespace ft
 		red_black_tree(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
-			_nil(value_type(), NULL, NULL, NULL, black),
+			_nil(NULL),
 			_size(0),
 			_comp(comp),
 			_alloc(alloc)
 		{
-			// All leaf nodes will point to &_nil and _nil is a black node
+			_nil = _alloc.allocate(1);
+			_alloc.construct(_nil, node_type(value_type(), NULL, NULL, NULL, black));
+
+			// All leaf nodes will point to _nil and _nil is a black node
 			// Set root pointing to _nil for an empty tree
-			_root = &_nil;
+			_root = _nil;
 		}
 
 		// Range
@@ -113,22 +116,36 @@ namespace ft
 				key_compare const& comp = key_compare(),
 				allocator_type const& alloc = allocator_type()) :
 			_root(NULL),
-			_nil(value_type(), NULL, NULL, NULL, black),
+			_nil(NULL),
 			_size(0),
 			_comp(comp),
 			_alloc(alloc)
 		{
+			_nil = _alloc.allocate(1);
+			_alloc.construct(_nil, node_type(value_type(), NULL, NULL, NULL, black));
+
+			// All leaf nodes will point to _nil and _nil is a black node
+			// Set root pointing to _nil for an empty tree
+			_root = _nil;
+
 			insert(first, last);
 		}
 
 		// Copy
 		red_black_tree(red_black_tree const& rhs) :
 			_root(NULL),
-			_nil(rhs._nil),
+			_nil(NULL),
 			_size(0),
 			_comp(rhs._comp),
 			_alloc(rhs._alloc)
 		{
+			_nil = _alloc.allocate(1);
+			_alloc.construct(_nil, node_type(value_type(), NULL, NULL, NULL, black));
+
+			// All leaf nodes will point to _nil and _nil is a black node
+			// Set root pointing to _nil for an empty tree
+			_root = _nil;
+
 			*this = rhs;
 		}
 
@@ -138,6 +155,9 @@ namespace ft
 		~red_black_tree()
 		{
 			clear();
+
+			_alloc.destroy(_nil);
+			_alloc.deallocate(_nil, 1);
 		}
 
 /******************************************************************************/
@@ -172,13 +192,13 @@ namespace ft
 		iterator
 		begin()
 		{
-			return iterator(minimum(), _root, &_nil);
+			return iterator(minimum(), _root, _nil);
 		}
 
 		const_iterator
 		begin() const
 		{
-			return const_iterator(minimum(), _root, &_nil);
+			return const_iterator(minimum(), _root, _nil);
 		}
 
 		iterator
@@ -186,7 +206,7 @@ namespace ft
 		{
 			if (empty())
 				return begin();
-			return iterator(&_nil, _root, &_nil);
+			return iterator(_nil, _root, _nil);
 		}
 
 		const_iterator
@@ -194,20 +214,20 @@ namespace ft
 		{
 			if (empty())
 				return begin();
-			return const_iterator(&_nil, _root, &_nil);
+			return const_iterator(_nil, _root, _nil);
 		}
 
 		reverse_iterator
 		rbegin()
 		{
-			iterator it = iterator(&_nil, _root, &_nil);
+			iterator it = iterator(_nil, _root, _nil);
 			return reverse_iterator(it);
 		}
 
 		const_reverse_iterator
 		rbegin() const
 		{
-			const_iterator it = const_iterator(&_nil, _root, &_nil);
+			const_iterator it = const_iterator(_nil, _root, _nil);
 			return const_reverse_iterator(it);
 		}
 
@@ -217,7 +237,7 @@ namespace ft
 			if (empty())
 				return rbegin();
 
-			iterator it = iterator(minimum(), _root, &_nil);
+			iterator it = iterator(minimum(), _root, _nil);
 			return reverse_iterator(it);
 		}
 
@@ -227,7 +247,7 @@ namespace ft
 			if (empty())
 				return rbegin();
 
-			const_iterator it = const_iterator(minimum(), _root, &_nil);
+			const_iterator it = const_iterator(minimum(), _root, _nil);
 			return const_reverse_iterator(it);
 		}
 
@@ -266,9 +286,9 @@ namespace ft
 			// New nodes are necessarily red and leaf nodes so they point
 			// to _nil
 			node_pointer node = _alloc.allocate(1);
-			_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
+			_alloc.construct(node, node_type(val, NULL, _nil, _nil, red));
 
-			it = iterator(insert_helper(node, _root), _root, &_nil);
+			it = iterator(insert_helper(node, _root), _root, _nil);
 
 			_size++;
 
@@ -289,11 +309,11 @@ namespace ft
 				// New nodes are necessarily red and leaf nodes so they point
 				// to _nil
 				node = _alloc.allocate(1);
-				_alloc.construct(node, node_type(val, NULL, &_nil, &_nil, red));
+				_alloc.construct(node, node_type(val, NULL, _nil, _nil, red));
 
 				_size++;
 
-				return iterator(insert_helper(node, hint._ptr), _root, &_nil);
+				return iterator(insert_helper(node, hint._ptr), _root, _nil);
 			}
 			else
 				return insert(val).first;
@@ -345,7 +365,7 @@ namespace ft
 		clear()
 		{
 			clear_helper(_root);
-			_root = &_nil;
+			_root = _nil;
 		}
 
 /*                                Observers                                   */
@@ -366,7 +386,7 @@ namespace ft
 			if (!position)
 				return end();
 			else
-				return iterator(position, _root, &(_nil));
+				return iterator(position, _root, _nil);
 		}
 
 		const_iterator
@@ -377,7 +397,7 @@ namespace ft
 			if (!position)
 				return end();
 			else
-				return const_iterator(position, _root, &(_nil));
+				return const_iterator(position, _root, _nil);
 		}
 
 		size_type
@@ -492,7 +512,7 @@ namespace ft
 		find_helper(key_type const& key, node_pointer const& node) const
 		{
 			// Base case of recursion
-			if (node == &(_nil))
+			if (node == _nil)
 				return NULL;
 			else if (get_key_from_val(node->data) == key)
 				return node;
@@ -509,12 +529,12 @@ namespace ft
 		copy_helper(node_pointer& lhs,
 				node_pointer rhs,
 				node_pointer parent,
-				node_type const& nil_rhs)
+				node_pointer nil_rhs)
 		{
 			// Base case of the recursion
-			if (rhs == &nil_rhs)
+			if (rhs == nil_rhs)
 			{
-				lhs = &_nil;
+				lhs = _nil;
 				return;
 			}
 
@@ -569,7 +589,7 @@ namespace ft
 			node_pointer	parent = NULL;
 			node_pointer	child = hint;
 
-			while (child != &_nil)
+			while (child != _nil)
 			{
 				parent = child;
 				if (_comp(get_key_from_val(node->data), get_key_from_val(child->data)))
@@ -660,7 +680,7 @@ namespace ft
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
-			node_pointer tmp = &_nil;
+			node_pointer tmp = _nil;
 
 			// Update grandparent
 			if (grandparent == NULL)
@@ -671,7 +691,7 @@ namespace ft
 				grandparent->right = node;
 
 			// Save node to the left of node before overwritting it
-			if (node->left != &_nil)
+			if (node->left != _nil)
 			{
 				tmp = node->left;
 				tmp->parent = parent;
@@ -694,7 +714,7 @@ namespace ft
 		{
 			node_pointer grandparent = node->parent->parent;
 			node_pointer parent = node->parent;
-			node_pointer tmp = &_nil;
+			node_pointer tmp = _nil;
 
 			// Update grandparent
 			if (grandparent == NULL)
@@ -706,7 +726,7 @@ namespace ft
 
 			// Save node to the right of node before overwritting it
 			// and set its new parent
-			if (node->right != &_nil)
+			if (node->right != _nil)
 			{
 				tmp = node->right;
 				tmp->parent = parent;
@@ -732,7 +752,7 @@ namespace ft
 
 			// If node has a left child, it's predecessor is the maximum
 			// of its left subtree
-			if (node->left != &_nil)
+			if (node->left != _nil)
 				return maximum(node->left);
 
 			// If not, we need to go look for it in it's parent left side
@@ -757,7 +777,7 @@ namespace ft
 
 			// If node has a right child, it's successor is the minimum
 			// of its right subtree
-			if (node->right != &_nil)
+			if (node->right != _nil)
 				return minimum(node->right);
 
 			// If not, we need to go look for it in it's parent right side
@@ -782,7 +802,7 @@ namespace ft
 			if (empty())
 				return NULL;
 
-			while (node->right != &_nil)
+			while (node->right != _nil)
 				node = node->right;
 
 			return node;
@@ -794,7 +814,7 @@ namespace ft
 			if (empty())
 				return NULL;
 
-			while (node->right != &_nil)
+			while (node->right != _nil)
 				node = node->right;
 
 			return node;
@@ -808,7 +828,7 @@ namespace ft
 			if (empty())
 				return NULL;
 
-			while (node->left != &_nil)
+			while (node->left != _nil)
 				node = node->left;
 
 			return node;
@@ -820,7 +840,7 @@ namespace ft
 			if (empty())
 				return NULL;
 
-			while (node->left != &_nil)
+			while (node->left != _nil)
 				node = node->left;
 
 			return node;
@@ -835,7 +855,7 @@ namespace ft
 
 			// Case: leaf node (base case of the recursion)
 			// We only delete leaf nodes. Internal nodes are replaced
-			if (node->left == &_nil && node->right == &_nil)
+			if (node->left == _nil && node->right == _nil)
 			{
 				// Fix double black case. If we delete a black leaf node
 				// we are violating the rule that states that all paths
@@ -845,11 +865,11 @@ namespace ft
 
 				// Update parent
 				if (node == _root)
-					_root = &_nil;
+					_root = _nil;
 				else if (node->parent->left == node)
-					node->parent->left = &_nil;
+					node->parent->left = _nil;
 				else
-					node->parent->right = &_nil;
+					node->parent->right = _nil;
 
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
@@ -860,7 +880,7 @@ namespace ft
 			else
 			{
 				// Find predecessor or successor
-				if (node->right != &_nil)
+				if (node->right != _nil)
 					tmp = get_successor(node);
 				else
 					tmp = get_predecessor(node);
@@ -908,17 +928,17 @@ namespace ft
 
 			// Update children
 			b->left = a->left;
-			if (b->left != &_nil)
+			if (b->left != _nil)
 				b->left->parent = b;
 			b->right = a->right;
-			if (b->right != &_nil)
+			if (b->right != _nil)
 				b->right->parent = b;
 
 			a->left = tmp.left;
-			if (a->left != &_nil)
+			if (a->left != _nil)
 				a->left->parent = a;
 			a->right = tmp.right;
-			if (a->right != &_nil)
+			if (a->right != _nil)
 				a->right->parent = a;
 
 			// Update colors
@@ -1039,7 +1059,7 @@ namespace ft
 		clear_helper(node_pointer const& node)
 		{
 			// Base case of recursion
-			if (node == &_nil)
+			if (node == _nil)
 				return;
 
 			// Clear all nodes to the left and right of it
@@ -1058,7 +1078,7 @@ namespace ft
 /******************************************************************************/
 
 		node_pointer	_root;
-		node_type		_nil;
+		node_pointer	_nil;
 		size_type		_size;
 		key_compare		_comp;
 		allocator_type	_alloc;

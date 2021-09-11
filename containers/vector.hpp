@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:07:06 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 11:56:20 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:21:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -631,10 +631,20 @@ namespace ft
 		void
 		swap(vector& rhs)
 		{
-			vector tmp(rhs);
+			// Swap start
+			pointer tmp_start = _start;
+			_start = rhs._start;
+			rhs._start = tmp_start;
 
-			rhs = *this;
-			*this = tmp;
+			// Swap size
+			size_type tmp_size = _size;
+			_size = rhs._size;
+			rhs._size = tmp_size;
+
+			// Swap capacity
+			size_type tmp_capacity = _capacity;
+			_capacity = rhs._capacity;
+			rhs._capacity = tmp_capacity;
 		}
 
 		void

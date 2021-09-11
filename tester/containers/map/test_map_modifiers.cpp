@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/09 10:20:16 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:28:34 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,6 +299,37 @@ test_map_modifiers_swap()
 }
 
 void
+test_map_modifiers_swap_iterator_validity()
+{
+	ft::map<char, int> first, second;
+	ft::map<char, int>::iterator it_first, it_second;
+
+	first['x'] = 100;
+	first['y'] = 200;
+
+	second['a'] = 11;
+	second['b'] = 22;
+	second['c'] = 33;
+
+	it_first = first.begin();
+	it_second = second.begin();
+
+	std::cout << "[" << it_first->first << "] = " << it_first->second << std::endl;
+	std::cout << "[" << it_second->first << "] = " << it_second->second << std::endl;
+
+	print_map_info(first);
+	print_map_info(second);
+
+	first.swap(second);
+
+	std::cout << "[" << it_first->first << "] = " << it_first->second << std::endl;
+	std::cout << "[" << it_second->first << "] = " << it_second->second << std::endl;
+
+	print_map_info(first);
+	print_map_info(second);
+}
+
+void
 test_map_modifiers_clear_int()
 {
 	ft::map<int, int> mymap;
@@ -355,6 +386,7 @@ test_map_modifiers()
 	test_wrapper(test_map_modifiers_erase_iterators_validity, "erase_iterators_validity");
 	test_wrapper(test_map_modifiers_erase_cplusplus, "erase_cplusplus");
 	test_wrapper(test_map_modifiers_swap, "swap");
+	test_wrapper(test_map_modifiers_swap_iterator_validity, "swap iterator validity");
 	test_wrapper(test_map_modifiers_clear_int, "clear_int");
 	test_wrapper(test_map_modifiers_clear_string, "clear_string");
 }

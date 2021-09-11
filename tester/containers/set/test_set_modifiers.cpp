@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:21:16 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 10:43:25 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:05:55 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,30 @@ test_set_modifiers_swap()
 }
 
 void
+test_set_modifiers_swap_iterator_validity()
+{
+	int myints[] = {12, 75, 10, 32, 20, 25};
+	ft::set<int> first(myints, myints + 3);
+	ft::set<int> second(myints + 3, myints+ 6);
+	ft::set<int>::iterator it_first = first.begin();
+	ft::set<int>::iterator it_second = second.begin();
+
+	print_set_info(first);
+	print_set_info(second);
+
+	std::cout << *it_first << std::endl;
+	std::cout << *it_second << std::endl;
+
+	first.swap(second);
+
+	print_set_info(first);
+	print_set_info(second);
+
+	std::cout << *it_first << std::endl;
+	std::cout << *it_second << std::endl;
+}
+
+void
 test_set_modifiers_clear_int()
 {
 	ft::set<int> myset;
@@ -322,6 +346,7 @@ test_set_modifiers()
 	test_wrapper(test_set_modifiers_erase_iterators_validity, "erase_iterators_validity");
 	test_wrapper(test_set_modifiers_erase_cplusplus, "erase_cplusplus");
 	test_wrapper(test_set_modifiers_swap, "swap");
+	test_wrapper(test_set_modifiers_swap_iterator_validity, "swap iterator validity");
 	test_wrapper(test_set_modifiers_clear_int, "clear_int");
 	test_wrapper(test_set_modifiers_clear_string, "clear_string");
 }

@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 11:11:55 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 11:48:02 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:24:19 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void
 test_containers()
 {
-	test_wrapper(test_subject, "subject");
+	//test_wrapper(test_subject, "subject");
 	subsection_wrapper(test_vector, "vector");
 	subsection_wrapper(test_stack, "stack");
 	subsection_wrapper(test_map, "map");

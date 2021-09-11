@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 14:14:30 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:30:49 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,33 @@ namespace ft
 		class Compare = ft::less<Key>,
 		class Alloc = std::allocator<ft::pair<Key const, T> >
 		>
-	class map : public ft::red_black_tree<Key, ft::pair<Key const, T>, Compare>
+	class map : public ft::red_black_tree<Key,
+						ft::pair<Key const, T>,
+						Compare,
+						typename Alloc::template
+							rebind<ft::red_black_tree_node<ft::pair<Key const, T> > >::other >
 	{
 	public:
 /******************************************************************************/
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
+		typedef Alloc										allocator_type;
+		typedef typename allocator_type::reference			reference;
+		typedef typename allocator_type::const_reference	const_reference;
+		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::const_pointer		const_pointer;
+
+		// We are rebinding the allocator to have nodes instead of pair<>
+		typedef typename allocator_type::template
+			rebind<typename ft::red_black_tree_node<
+				ft::pair<Key const, T> > >::other			node_allocator_type;
+
 		// Typedef the abstract class to inherit from its member types
-		typedef ft::red_black_tree<Key, ft::pair<Key const, T>, Compare> tree_type;
+		typedef ft::red_black_tree<Key,
+					ft::pair<Key const, T>,
+					Compare,
+					node_allocator_type>					tree_type;
 
 		// In map, we need to have pointers to the nodes, not just
 		// the pair<> value_type
@@ -64,12 +82,6 @@ namespace ft
 			Compare comp;
 			value_compare(Compare c) : comp(c) {}
 		};
-
-		typedef Alloc										allocator_type;
-		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
 
 		typedef typename tree_type::iterator				iterator;
 		typedef typename tree_type::const_iterator			const_iterator;
@@ -196,10 +208,20 @@ namespace ft
 		void
 		swap(map& rhs)
 		{
-			map tmp(rhs);
+			// Swao root
+			node_pointer tmp_root = this->_root;
+			this->_root = rhs._root;
+			rhs._root = tmp_root;
 
-			rhs = *this;
-			*this = tmp;
+			// Swao nil
+			node_pointer tmp_nil = this->_nil;
+			this->_nil = rhs._nil;
+			rhs._nil = tmp_nil;
+
+			// Swao size
+			size_type tmp_size = this->_size;
+			this->_size = rhs._size;
+			rhs._size = tmp_size;
 		}
 
 /*                                Observers                                   */

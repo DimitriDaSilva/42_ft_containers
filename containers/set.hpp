@@ -6,7 +6,7 @@
 /*   By: dda-silv <dda-silv@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/28 11:13:07 by dda-silv          #+#    #+#             */
-/*   Updated: 2021/09/10 14:12:47 by dda-silv         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:23:02 by dda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,33 @@ namespace ft
 		class Compare = ft::less<T>,
 		class Alloc = std::allocator<T>
 		>
-	class set : public ft::red_black_tree<T, T, Compare>
+	class set : public ft::red_black_tree<T,
+							T,
+							Compare,
+							typename Alloc::template
+								rebind<ft::red_black_tree_node<T> >::other >
 	{
 	public:
 /******************************************************************************/
 /*                   	        MEMBER TYPES					              */
 /******************************************************************************/
 
+		typedef Alloc										allocator_type;
+		typedef typename allocator_type::reference			reference;
+		typedef typename allocator_type::const_reference	const_reference;
+		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::const_pointer		const_pointer;
+
+		// We are rebinding the allocator to have nodes instead of T
+		typedef typename allocator_type::template
+			rebind<typename
+				ft::red_black_tree_node<T > >::other		node_allocator_type;
+
 		// Typedef the abstract class to inherit from its member types
-		typedef ft::red_black_tree<T, T, Compare>			tree_type;
+		typedef ft::red_black_tree<T,
+					T,
+					Compare,
+					node_allocator_type>					tree_type;
 
 		// In set, we need to have pointers to the nodes, not just
 		// the value_type
@@ -47,12 +65,6 @@ namespace ft
 		typedef typename tree_type::value_type				value_type;
 		typedef typename tree_type::key_compare				key_compare;
 		typedef typename tree_type::key_compare				value_compare;
-
-		typedef Alloc										allocator_type;
-		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
 
 		typedef typename tree_type::iterator				iterator;
 		typedef typename tree_type::const_iterator			const_iterator;
@@ -130,10 +142,20 @@ namespace ft
 		void
 		swap(set& rhs)
 		{
-			set tmp(rhs);
+			// Swao root
+			node_pointer tmp_root = this->_root;
+			this->_root = rhs._root;
+			rhs._root = tmp_root;
 
-			rhs = *this;
-			*this = tmp;
+			// Swao nil
+			node_pointer tmp_nil = this->_nil;
+			this->_nil = rhs._nil;
+			rhs._nil = tmp_nil;
+
+			// Swao size
+			size_type tmp_size = this->_size;
+			this->_size = rhs._size;
+			rhs._size = tmp_size;
 		}
 
 /*                                Observers                                   */
